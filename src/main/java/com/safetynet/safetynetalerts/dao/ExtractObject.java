@@ -12,12 +12,13 @@ import java.io.IOException;
 import java.util.List;
 
 public class ExtractObject {
-
-    public void extractDataFromJason(){
+    public static SafetyNet safetyNet = null;
+    public static SafetyNet extractDataFromJason(){
         File jsonInput = new File("src/main/resources/data/data.json") ;
         Gson gson = new Gson();
+
         try (FileReader reader = new FileReader(jsonInput)) {
-            SafetyNet safetyNet = gson.fromJson(reader, SafetyNet.class);
+            safetyNet = gson.fromJson(reader, SafetyNet.class);
 
             List<Person> persons = safetyNet.getPersons();
             List<Firestation> firestations = safetyNet.getFirestations();
@@ -28,8 +29,12 @@ public class ExtractObject {
             System.out.println(firestations.get(0).getStation());
             System.out.println(medicalRecords.get(0).getFirstName());
 
+            //doit renvoyer un safetynet objct
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return safetyNet;
     }
 }
