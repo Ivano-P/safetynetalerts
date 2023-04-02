@@ -1,44 +1,35 @@
 package com.safetynet.safetynetalerts.dao;
 
-import com.jsoniter.JsonIterator;
-import com.jsoniter.any.Any;
+import com.google.gson.Gson;
+import java.io.FileReader;
 import com.safetynet.safetynetalerts.model.Firestation;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.SafetyNet;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 public class ExtractObject {
 
     public void extractDataFromJason(){
         File jsonInput = new File("src/main/resources/data/data.json") ;
-        try(InputStream inputStream = new FileInputStream(jsonInput)) {
-            JsonIterator iterator = JsonIterator.parse(inputStream, 1024);
-            Any dataAny = iterator.readAny();
-            SafetyNet safetyNet = dataAny.as(SafetyNet.class);
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(jsonInput)) {
+            SafetyNet safetyNet = gson.fromJson(reader, SafetyNet.class);
 
             List<Person> persons = safetyNet.getPersons();
             List<Firestation> firestations = safetyNet.getFirestations();
             List<MedicalRecord> medicalRecords = safetyNet.getMedicalrecords();
 
-            //testing that object is populated correctly
-            System.out.println(persons);
-            System.out.println(firestations);
-            System.out.println(medicalRecords);
+            //checking that json data object is populated correctly
+            System.out.println(persons.get(0).getFirstName());
+            System.out.println(firestations.get(0).getStation());
+            System.out.println(medicalRecords.get(0).getFirstName());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    public void printLists(){
-
-    }
-
-
 }
