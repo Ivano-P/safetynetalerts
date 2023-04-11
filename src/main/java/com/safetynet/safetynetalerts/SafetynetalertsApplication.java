@@ -1,7 +1,7 @@
 package com.safetynet.safetynetalerts;
 
 import com.safetynet.safetynetalerts.dao.ExtractObject;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.safetynet.safetynetalerts.repository.FirestationsRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

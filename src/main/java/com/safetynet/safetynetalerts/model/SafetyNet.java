@@ -7,7 +7,8 @@ public class SafetyNet{
     private List<Firestation> firestations;
     private List<MedicalRecord> medicalrecords;
 
-    public SafetyNet(List<Person> persons, List<Firestation> firestations, List<MedicalRecord> medicalrecords) {
+    public SafetyNet(List<Person> persons, List<Firestation> firestations,
+                     List<MedicalRecord> medicalrecords) {
         this.persons = persons;
         this.firestations = firestations;
         this.medicalrecords = medicalrecords;

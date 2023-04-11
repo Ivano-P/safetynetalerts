@@ -24,13 +24,12 @@ public class ExtractObject {
             List<Firestation> firestations = safetyNet.getFirestations();
             List<MedicalRecord> medicalRecords = safetyNet.getMedicalrecords();
 
-            //checking that json data object is populated correctly
+            /*
+            checking that json data object is populated correctly
             System.out.println(persons.get(0).getFirstName());
             System.out.println(firestations.get(0).getStation());
             System.out.println(medicalRecords.get(0).getFirstName());
-
-            //doit renvoyer un safetynet objct
-
+             */
 
         } catch (IOException e) {
             e.printStackTrace();
