@@ -30,7 +30,7 @@ public class SafetyNet{
         this.firestations = firestations;
     }
 
-    public List<MedicalRecord> getMedicalrecords() {
+    public List<MedicalRecord> getMedicalRecords() {
         return medicalrecords;
     }
 

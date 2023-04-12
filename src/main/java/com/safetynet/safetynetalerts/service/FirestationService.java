@@ -35,7 +35,7 @@ public class FirestationService {
       }
 
       int amountOfPersons = peopleByFirestation.size();
-      int amountOfAdults = medicalRecordsRepository.getAmountOfAdults(medicalRecordsRepository
+      int amountOfAdults = medicalRecordsRepository.countAmountOfAdults(medicalRecordsRepository
               .calculateAges(medicalRecordsRepository.convertListOfStringsToListOfDateOfBirth(medicalRecordsRepository
                       .checkAgesInMedicalRecords(peopleByFirestation))));
 

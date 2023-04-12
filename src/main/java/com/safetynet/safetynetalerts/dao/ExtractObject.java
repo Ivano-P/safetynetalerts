@@ -22,7 +22,7 @@ public class ExtractObject {
 
             List<Person> persons = safetyNet.getPersons();
             List<Firestation> firestations = safetyNet.getFirestations();
-            List<MedicalRecord> medicalRecords = safetyNet.getMedicalrecords();
+            List<MedicalRecord> medicalRecords = safetyNet.getMedicalRecords();
 
             /*
             checking that json data object is populated correctly

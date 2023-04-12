@@ -18,7 +18,7 @@ public class MedicalRecordsRepository {
 
     //to get the dob of a list of people from medical records using their first and last name.
     public ArrayList<String> checkAgesInMedicalRecords(List<Person> listOfPeopleToCheck){
-        List<MedicalRecord> medicalRecords = extractDataFromJason().getMedicalrecords();
+        List<MedicalRecord> medicalRecords = extractDataFromJason().getMedicalRecords();
         ArrayList<String> dateOfBirths = new ArrayList<String>();
 
         for(Person person : listOfPeopleToCheck){
@@ -61,7 +61,7 @@ public class MedicalRecordsRepository {
         return ages;
     }
 
-    public Integer getAmountOfAdults(List<Integer> ages){
+    public Integer countAmountOfAdults(List<Integer> ages){
         int amountOfAdults = 0;
         for (int age : ages){
             if (age >= 19){
@@ -71,7 +71,7 @@ public class MedicalRecordsRepository {
         return amountOfAdults;
     }
 
-    public int getAmountOfMinors(List<Integer> ages){
+    public int countAmountOfMinors(List<Integer> ages){
         int amountOfMinors = 0;
         for (int age : ages){
             if (age < 19){

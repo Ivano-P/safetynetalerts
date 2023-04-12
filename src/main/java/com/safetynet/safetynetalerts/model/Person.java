@@ -9,7 +9,7 @@ public class Person {
     private String phone;
     private String email;
 
-    public Person(String firstName, String lastName, String address, String city, String zip, String phone, String email) {
+    public Person(String firstName, String lastName, String address, String city, String zip, String phone, String s) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
