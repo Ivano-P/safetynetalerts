@@ -4,11 +4,9 @@ import com.safetynet.safetynetalerts.dao.ExtractObject;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.SafetyNet;
-import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.DisplayName;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -32,7 +30,7 @@ public class MedicalRecordsRepositoryTest {
 
 
     @Test
-    @Disabled
+    @DisplayName("test retrieval of list of Persons ages when searching with list of Persons")
     public void testCheckAgesInMedicalRecords() {
         //Arrange
         List<String> expextedDatesOfBirth = Arrays.asList("04/04/2024", "05/05/2025", "06/06/2026");
