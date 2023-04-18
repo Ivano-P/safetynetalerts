@@ -36,10 +36,6 @@ class PersonServiceTest {
     private List<String> dobListString;
     private List<Integer> ages;
 
-
-
-
-
     @BeforeEach
     void setUpPerEach() {
         personsAtSameAddress = new ArrayList<>();
@@ -76,5 +72,6 @@ class PersonServiceTest {
         assertThat(minorAndFamilyByAddress.getMinorsAgesAndFamilyMembers().get(0).getAge()).isEqualTo(13);
         assertThat(minorAndFamilyByAddress.getMinorsAgesAndFamilyMembers().get(1).getAge()).isEqualTo(8);
     }
+
 }
 

@@ -3,6 +3,7 @@ package com.safetynet.safetynetalerts.controller;
 import com.safetynet.safetynetalerts.dto.MinorAndFamily;
 import com.safetynet.safetynetalerts.dto.MinorAndFamilyByAddress;
 import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
+import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
 import com.safetynet.safetynetalerts.service.FirestationService;
 import com.safetynet.safetynetalerts.service.PersonService;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -25,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(Controller.class)
- class FirestationControllerTest {
+ class ControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,6 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
    private PeopleByFirestationNumber peopleByFirestationNumber;
    private MinorAndFamilyByAddress minorAndFamilyByAddress;
+
+   private PhoneNumbersByFirestation phoneNumbersByFirestation;
 
    private static List<MinorAndFamily> minorAndFamilyList;
 
@@ -80,6 +84,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
       //Assert
       verify(personService, times(1)).getListMinorsAndFamilyByAddress("1 route saint george");
+   }
+
+   @Test
+    void testGetPhoneNumbersOfPeopleByFirestation() throws Exception {
+       // Arrange
+       String firestationNumber = "1";
+       List<String> phoneNumbers = Arrays.asList("123-456-7890", "098-765-4321");
+       PhoneNumbersByFirestation mockPhoneNumbersByFirestation = new PhoneNumbersByFirestation(phoneNumbers);
+       when(firestationService.getListOfPhoneNumbersByFirestation(firestationNumber)).thenReturn(mockPhoneNumbersByFirestation);
+
+       // Act
+       mockMvc.perform(get("/phoneAlert?firestation=1")).andExpect(status().isOk());
+
+       //Assert
+       verify(firestationService, times(1))
+               .getListOfPhoneNumbersByFirestation("1");
    }
 
 }
