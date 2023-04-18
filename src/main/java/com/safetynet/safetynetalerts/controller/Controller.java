@@ -1,6 +1,7 @@
 package com.safetynet.safetynetalerts.controller;
 
 import com.safetynet.safetynetalerts.dto.MinorAndFamilyByAddress;
+import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
 import com.safetynet.safetynetalerts.service.FirestationService;
 import com.safetynet.safetynetalerts.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,4 +28,10 @@ public class Controller {
     public MinorAndFamilyByAddress getMinorAndFamilyByAddress(@RequestParam("address") String address){
         return personService.getListMinorsAndFamilyByAddress(address);
     }
+
+    @GetMapping("/phoneAlert")
+    public PhoneNumbersByFirestation getPhoneNumbersOfPeopleByFirestation(@RequestParam("firestation") String stationNumber) {
+        return firestationService.getListOfPhoneNumbersByFirestation(stationNumber);
+    }
+
 }

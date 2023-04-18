@@ -34,7 +34,7 @@ class FirestationServiceTest {
 
     @Test
     @DisplayName("Verify that repository methods are called once when searching by firestation")
-    void testRepositoryMethodsCalledWhenSearchingByFirestation() {
+    void testGetListOfAdultsAndMinorsCoveredByFirestation() {
         // Arrange
         List<String> addressesHandlesByFirestation1 = Arrays.asList("1234 rue jean", "5678 route jacque");
 

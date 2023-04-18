@@ -1,6 +1,7 @@
 package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
+import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.FirestationsRepository;
 import com.safetynet.safetynetalerts.repository.MedicalRecordsRepository;
@@ -23,16 +24,20 @@ public class FirestationService {
     @Autowired
     MedicalRecordsRepository medicalRecordsRepository;
 
+    public List<Person> getPersonsLinkedToFireStation(String firestationNumber){
+        List<String> addressesHandledByFirestation = firestationsRepository
+                .sortAdressRelatedToFirestation(firestationNumber);
+
+        List<Person> peopleByFirestation = new ArrayList<>();
+
+        for(String address: addressesHandledByFirestation){
+            peopleByFirestation.addAll(personRepository.sortPeopleByFireStation(address));
+        }
+        return peopleByFirestation;
+    }
+
     public PeopleByFirestationNumber getListOfAdultsAndMinorsCoveredByFirestation(String firestationNumber){
-      //adds to this list all addresses handled by fire-station with the fire-station number inputted in parameter.
-      List<String> addressHandledByFirestation = firestationsRepository
-              .sortAdressRelatedToFirestation(firestationNumber);
-
-      List<Person> peopleByFirestation = new ArrayList<>();
-
-      for(String address: addressHandledByFirestation){
-        peopleByFirestation.addAll(personRepository.sortPeopleByFireStation(address));
-      }
+      List<Person> peopleByFirestation = getPersonsLinkedToFireStation(firestationNumber);
 
       int amountOfPersons = peopleByFirestation.size();
       int amountOfAdults = medicalRecordsRepository.countAmountOfAdults(medicalRecordsRepository
@@ -45,5 +50,15 @@ public class FirestationService {
     }
 
 
+    public PhoneNumbersByFirestation getListOfPhoneNumbersByFirestation(String firestationNumber){
+        List<Person> peopleByFirestation = getPersonsLinkedToFireStation(firestationNumber);
 
+        List<String> phoneNumberOfPeopleRelatedToFirestation = new ArrayList<>();
+
+        for (Person person : peopleByFirestation) {
+            phoneNumberOfPeopleRelatedToFirestation.add(person.getPhone());
+        }
+
+        return new PhoneNumbersByFirestation(phoneNumberOfPeopleRelatedToFirestation);
+    }
 }
