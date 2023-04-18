@@ -12,20 +12,31 @@ import java.util.List;
 
 import static com.safetynet.safetynetalerts.dao.ExtractObject.extractDataFromJason;
 
+
 @Repository
 public class MedicalRecordsRepository {
 
+    List<MedicalRecord> listOfAllMedicalRecords;
+    //Dependency injection constructor for production
+    public MedicalRecordsRepository (){
+        this.listOfAllMedicalRecords =  extractDataFromJason().getMedicalRecords();
+    }
+
+    //Dependency injection consctructor for test
+    public MedicalRecordsRepository (List<MedicalRecord> listOfAllMedicalRecords){
+        this.listOfAllMedicalRecords = listOfAllMedicalRecords;
+    }
+
 
     //to get the dob of a list of people from medical records using their first and last name.
-    public ArrayList<String> checkAgesInMedicalRecords(List<Person> listOfPeopleToCheck){
-        List<MedicalRecord> medicalRecords = extractDataFromJason().getMedicalRecords();
-        ArrayList<String> dateOfBirths = new ArrayList<String>();
+    public List<String> checkAgesInMedicalRecords(List<Person> listOfPeopleToCheck){
+        ArrayList<String> dateOfBirths = new ArrayList<>();
 
         for(Person person : listOfPeopleToCheck){
             String lastName = person.getLastName();
             String firstName = person.getFirstName();
 
-            for(MedicalRecord medicalRecord : medicalRecords) {
+            for(MedicalRecord medicalRecord : listOfAllMedicalRecords) {
                 if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)){
                     dateOfBirths.add(medicalRecord.getBirthdate());
                 }
@@ -34,7 +45,7 @@ public class MedicalRecordsRepository {
         return dateOfBirths;
     }
 
-    public ArrayList<LocalDate> convertListOfStringsToListOfDateOfBirth(List<String> datesOfBirthStrings){
+    public List<LocalDate> convertListOfStringsToListOfDateOfBirth(List<String> datesOfBirthStrings){
         ArrayList<LocalDate> datesOfBirthLocalDateFormat = new ArrayList<>();
 
         for (String dateOfBirth : datesOfBirthStrings){
@@ -51,7 +62,7 @@ public class MedicalRecordsRepository {
 
 
     //converts list of date of births into a list of ages
-    public List<Integer> calculateAges(ArrayList<LocalDate> datesOfBirth) {
+    public List<Integer> calculateAges(List<LocalDate> datesOfBirth) {
         ArrayList<Integer> ages = new ArrayList<>();
         for (LocalDate dateOfBirth : datesOfBirth){
             LocalDate now = LocalDate.now();
@@ -80,22 +91,5 @@ public class MedicalRecordsRepository {
         }
         return amountOfMinors;
     }
-
-
-    /*to get the dob of one people using their first and last name.
-    public String checkAgesOfPersonInMedicalRecords(String firstName, String lastName){
-        List<MedicalRecord> medicalRecords = extractDataFromJason().getMedicalrecords();
-        String dateOfBirths = null;
-
-        for(MedicalRecord medicalRecord : medicalRecords) {
-            if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)){
-                dateOfBirths = medicalRecord.getBirthdate();
-            }
-        }
-        return dateOfBirths;
-    }
-    */
-
-
 
 }

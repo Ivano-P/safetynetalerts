@@ -10,17 +10,41 @@ import static com.safetynet.safetynetalerts.dao.ExtractObject.extractDataFromJas
 
 @Repository
 public class PersonRepository {
-    public ArrayList<Person> sortPeopleByFireStation(String addressCovereByFirestation){
-        List<Person> persons = extractDataFromJason().getPersons();
+    List<Person> listOfAllPersons;
+
+    //constructor for productions
+    public PersonRepository() {
+
+        this.listOfAllPersons = extractDataFromJason().getPersons();
+    }
+
+    // Dependency injection constructor for testing
+    PersonRepository(List<Person> listOfAllPersons) {
+
+        this.listOfAllPersons = listOfAllPersons;
+    }
+
+
+    public List<Person> sortPeopleByFireStation(String addressCovereByFirestation){
         ArrayList<Person> peopleHandledByFireStation = new ArrayList<>();
 
-        for (Person person: persons){
+        for (Person person: listOfAllPersons){
             if (person.getAddress().equals(addressCovereByFirestation)){
                 peopleHandledByFireStation.add(person);
             }
         }
 
         return peopleHandledByFireStation;
+    }
+
+    public List<Person> sortPeopleByAddress(String address){
+        ArrayList<Person> personsAtSameAddress = new ArrayList<>();
+        for(Person person : listOfAllPersons){
+            if(person.getAddress().equals(address)){
+                personsAtSameAddress.add(person);
+            }
+        }
+        return personsAtSameAddress;
     }
 
 }

@@ -1,6 +1,7 @@
-package com.safetynet.safetynetalerts.model;
+package com.safetynet.safetynetalerts.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.safetynet.safetynetalerts.model.Person;
 
 import java.util.List;
 

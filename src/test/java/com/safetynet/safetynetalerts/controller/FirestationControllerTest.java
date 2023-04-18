@@ -1,25 +1,31 @@
 package com.safetynet.safetynetalerts.controller;
 
+import com.safetynet.safetynetalerts.dto.MinorAndFamily;
+import com.safetynet.safetynetalerts.dto.MinorAndFamilyByAddress;
 import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
 import com.safetynet.safetynetalerts.service.FirestationService;
+import com.safetynet.safetynetalerts.service.PersonService;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(FirestationController.class)
-public class FirestationControllerTest {
+@WebMvcTest(Controller.class)
+ class FirestationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -27,13 +33,30 @@ public class FirestationControllerTest {
     @MockBean
     private FirestationService firestationService;
 
-    @Test
-    public void testGetPeopleByFirestationNumber() throws Exception {
-        //Arrange
-        PeopleByFirestationNumber peopleByFirestationNumber = new PeopleByFirestationNumber(null, 1, 1);
+   @MockBean
+   private PersonService personService;
 
+   private PeopleByFirestationNumber peopleByFirestationNumber;
+   private MinorAndFamilyByAddress minorAndFamilyByAddress;
+
+   private static List<MinorAndFamily> minorAndFamilyList;
+
+   @BeforeAll
+   static void setUp() throws Exception{
+      minorAndFamilyList = new ArrayList<>();
+   }
+
+   @BeforeEach
+   void setUpPerEach() {
+      peopleByFirestationNumber = new PeopleByFirestationNumber(null, 1, 1); // Populate with appropriate data
+      minorAndFamilyByAddress = new MinorAndFamilyByAddress(minorAndFamilyList); // Populate with appropriate data
+   }
+
+    @Test
+     void testGetPeopleByFirestationNumber() throws Exception {
+        //Arrange
         // Stub the service call
-        Mockito.when(firestationService.getListOfAdultsAndMinorsCoveredByFirestation(anyString()))
+        when(firestationService.getListOfAdultsAndMinorsCoveredByFirestation(anyString()))
                 .thenReturn(peopleByFirestationNumber);
 
         //Act
@@ -45,5 +68,18 @@ public class FirestationControllerTest {
                 .getListOfAdultsAndMinorsCoveredByFirestation("1");
     }
 
+   @Test
+   void testGetMinorAndFamilyByAddress() throws Exception {
+      //Arrange
+      when(personService.getListMinorsAndFamilyByAddress(anyString()))
+              .thenReturn(minorAndFamilyByAddress);
+
+      //Act
+      mockMvc.perform(get("/childAlert?address=1 route saint george")).andExpect(status().isOk());
+
+
+      //Assert
+      verify(personService, times(1)).getListMinorsAndFamilyByAddress("1 route saint george");
+   }
 
 }

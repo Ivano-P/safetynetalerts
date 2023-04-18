@@ -11,12 +11,22 @@ import static com.safetynet.safetynetalerts.dao.ExtractObject.extractDataFromJas
 //make repo!
 @Repository
 public class FirestationsRepository {
-    public List<String> sortAdressRelatedToFirestation(String idFirestation){
+    List<Firestation> listOfAllFirestations;
 
-        List<Firestation> firestations = extractDataFromJason().getFirestations();
+    //Dependency injection constructor for productions
+    public FirestationsRepository(){
+        this.listOfAllFirestations = extractDataFromJason().getFirestations();
+    }
+
+    //Dependency injection constructor for test
+    public FirestationsRepository(List<Firestation> listOfAllFirestations){
+        this.listOfAllFirestations = listOfAllFirestations;
+    }
+
+    public List<String> sortAdressRelatedToFirestation(String idFirestation){
         List<String> adressHandledByFirestation =  new ArrayList<>();
 
-        for(Firestation firestation : firestations){
+        for(Firestation firestation : listOfAllFirestations){
             if(firestation.getStation().equals(idFirestation)){
                 adressHandledByFirestation.add(firestation.getAddress());
             }

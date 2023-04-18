@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class FirestationServiceTest {
+class FirestationServiceTest {
 
     @InjectMocks
     private FirestationService firestationService;
@@ -34,7 +34,7 @@ public class FirestationServiceTest {
 
     @Test
     @DisplayName("Verify that repository methods are called once when searching by firestation")
-    public void testRepositoryMethodsCalledWhenSearchingByFirestation() {
+    void testRepositoryMethodsCalledWhenSearchingByFirestation() {
         // Arrange
         List<String> addressesHandlesByFirestation1 = Arrays.asList("1234 rue jean", "5678 route jacque");
 

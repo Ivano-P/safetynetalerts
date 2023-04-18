@@ -1,50 +1,69 @@
 package com.safetynet.safetynetalerts.repository;
 
-import com.safetynet.safetynetalerts.dao.ExtractObject;
 import com.safetynet.safetynetalerts.model.Person;
-import com.safetynet.safetynetalerts.model.SafetyNet;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PersonRepositoryTest {
+class PersonRepositoryTest {
+    private static List<Person> mockListOfAllPersons;
+    private PersonRepository personRepository;
+
+    @BeforeAll
+    static void setUp() throws Exception {
+        mockListOfAllPersons = new ArrayList<>();
+        mockListOfAllPersons.add(new Person("John", "Doe", "1 route saint george", null, null, null, null));
+        mockListOfAllPersons.add(new Person("Jane", "Doe", "1 route dupont", null, null, null, null));
+        mockListOfAllPersons.add(new Person("Jack", "Doe", "1 route saint george", null, null, null, null));
+        mockListOfAllPersons.add(new Person("Jaky", "Chan", "2 rue jean", null, null, null, null));
+    }
+
+    @BeforeEach()
+    void setUpPerEach() {
+        personRepository = new PersonRepository(mockListOfAllPersons);
+
+    }
 
     @Test
-    @DisplayName("test that list of Persons covered by firestation is being returned " +
-            "correctly")
-    public void testSortPeopleByFireStation() {
+    @DisplayName("test that list of Persons covered by firestation is being returned correctly")
+    void testSortPeopleByFireStation() {
         // Arrange
         String addressCoveredByFirestation = "1 route saint george";
-        PersonRepository personRepository = new PersonRepository();
 
+        // Act
+        List<Person> sortedPersons = personRepository.sortPeopleByFireStation(addressCoveredByFirestation);
 
-        List<Person> persons = new ArrayList<>();
-        persons.add(new Person("John", "Doe", addressCoveredByFirestation, null, null
-                , null, null));
-        persons.add(new Person("Jane", "Doe", "1 route dupont", null, null
-                , null, null));
-        persons.add(new Person("Jack", "Doe", addressCoveredByFirestation, null, null
-                , null, null));
+        // Assert
+        assertThat(sortedPersons).hasSize(2);
+        assertThat(sortedPersons.get(0).getAddress()).isEqualTo(addressCoveredByFirestation);
+        assertThat(sortedPersons.get(1).getAddress()).isEqualTo(addressCoveredByFirestation);
 
-        SafetyNet safetyNet = new SafetyNet(persons, null, null);
+    }
 
-        //ExtracObject returns a static SafetyNet object, hence the use pf MockStatic
-        try (MockedStatic<ExtractObject> mockedStaticClass = Mockito.mockStatic(ExtractObject.class)) {
-            mockedStaticClass.when(ExtractObject::extractDataFromJason).thenReturn(safetyNet);
+    @Test
+    @DisplayName("test")
+    void testSortPeopleByAddress() {
+        //Arrange
+        String Address = "1 route saint george";
 
-            // Act
-            ArrayList<Person> sortedPersons = personRepository.sortPeopleByFireStation(addressCoveredByFirestation);
+        // Act
+        List<Person> actualPersonsAtSameAddress = personRepository.sortPeopleByAddress(Address);
 
-            // Assert
-            assertThat(sortedPersons).hasSize(2);
-            assertThat(sortedPersons.get(0).getAddress()).isEqualTo(addressCoveredByFirestation);
-            assertThat(sortedPersons.get(1).getAddress()).isEqualTo(addressCoveredByFirestation);
-        }
+        // Assert
+        assertThat(actualPersonsAtSameAddress).hasSize(2);
+
+        assertThat(actualPersonsAtSameAddress.get(0).getFirstName()).isEqualTo("John");
+        assertThat(actualPersonsAtSameAddress.get(0).getLastName()).isEqualTo("Doe");
+        assertThat(actualPersonsAtSameAddress.get(0).getAddress()).isEqualTo("1 route saint george");
+
+        assertThat(actualPersonsAtSameAddress.get(1).getFirstName()).isEqualTo("Jack");
+        assertThat(actualPersonsAtSameAddress.get(1).getLastName()).isEqualTo("Doe");
+        assertThat(actualPersonsAtSameAddress.get(1).getAddress()).isEqualTo("1 route saint george");
     }
 }

@@ -11,12 +11,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ExtractObjectTest {
+class ExtractObjectTest {
 
     @Test
     @DisplayName("test that json is being deserialized, SafetyNet shoud have at the least" +
             "one list of Firestations, one list of Person and one list of MedicalRecords")
-    public void testExtractDateFromJason(){
+    void testExtractDateFromJason(){
         // Arrange: SafetyNet object should have a minimum of one of each list
             //(Firestations, Persons, MedicalRecords)
         int minNumberOfFirestations = 1;
@@ -25,19 +25,13 @@ public class ExtractObjectTest {
 
         // Act:
         SafetyNet extractedSafetyNet = ExtractObject.extractDataFromJason();
-
-        // Assert:
         List<Firestation> firestations = extractedSafetyNet.getFirestations();
         List<Person> persons = extractedSafetyNet.getPersons();
         List<MedicalRecord> medicalRecords = extractedSafetyNet.getMedicalRecords();
 
-        assertThat(firestations).isNotNull();
-        assertThat(firestations.size()).isGreaterThanOrEqualTo(minNumberOfFirestations);
-
-        assertThat(persons).isNotNull();
-        assertThat(persons.size()).isGreaterThanOrEqualTo(minNumberOfPersons);
-
-        assertThat(medicalRecords).isNotNull();
-        assertThat(medicalRecords.size()).isGreaterThanOrEqualTo(minNumberOfMedicalRecords);
+        // Assert:
+        assertThat(firestations).hasSizeGreaterThanOrEqualTo(minNumberOfFirestations);
+        assertThat(persons).hasSizeGreaterThanOrEqualTo(minNumberOfPersons);
+        assertThat(medicalRecords).hasSizeGreaterThanOrEqualTo(minNumberOfMedicalRecords);
     }
 }
