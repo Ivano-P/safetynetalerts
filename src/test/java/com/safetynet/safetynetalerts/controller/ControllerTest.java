@@ -118,4 +118,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 .getListOfPeopleMedicalRecordsAndFirestation("1509 Culver St");
     }
 
+    @Test
+    void testGetHousholdsByListOfFirestationNumber() throws Exception {
+        // Arrange
+        List<String> stationNumbers = Arrays.asList("1", "2", "3");
+        List<Houshold> mockHousholds = new ArrayList<>(); // Populate with appropriate test data
+
+        when(firestationService.getListOfHousholdsByListOfFirestationNumber(stationNumbers))
+                .thenReturn(mockHousholds);
+
+        // Act
+        mockMvc.perform(get("/flood/stations")
+                        .param("stations", "1")
+                        .param("stations", "2")
+                        .param("stations", "3"))
+                .andExpect(status().isOk());
+
+        // Assert
+        verify(firestationService, times(1))
+                .getListOfHousholdsByListOfFirestationNumber(stationNumbers);
+    }
+
 }

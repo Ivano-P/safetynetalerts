@@ -1,15 +1,14 @@
 package com.safetynet.safetynetalerts.controller;
 
-import com.safetynet.safetynetalerts.dto.MinorAndFamilyByAddress;
-import com.safetynet.safetynetalerts.dto.PeopleMedicalRecordsAndFirestationByAddress;
-import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
+import com.safetynet.safetynetalerts.dto.*;
 import com.safetynet.safetynetalerts.service.FirestationService;
 import com.safetynet.safetynetalerts.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class Controller {
@@ -39,6 +38,12 @@ public class Controller {
     public PeopleMedicalRecordsAndFirestationByAddress getPersonMedicalRecordAndFirestation(@RequestParam("address") String address){
         return personService.getListOfPeopleMedicalRecordsAndFirestation(address);
     }
+    
+    @GetMapping("/flood/stations")
+    public List<Houshold> getHousholds(@RequestParam("stations") List<String> stationNumbers) {
+        return firestationService.getListOfHousholdsByListOfFirestationNumber(stationNumbers);
+    }
+
 
     // add methode for URL: http://localhost:8080/flood/stations?stations=<a list of station_numbers>
 

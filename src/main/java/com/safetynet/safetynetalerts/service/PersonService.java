@@ -1,9 +1,6 @@
 package com.safetynet.safetynetalerts.service;
 
-import com.safetynet.safetynetalerts.dto.MinorAndFamilyByAddress;
-import com.safetynet.safetynetalerts.dto.MinorAndFamily;
-import com.safetynet.safetynetalerts.dto.PeopleMedicalRecordsAndFirestationByAddress;
-import com.safetynet.safetynetalerts.dto.PersonAndMedicalRecord;
+import com.safetynet.safetynetalerts.dto.*;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.FirestationsRepository;
@@ -86,5 +83,6 @@ public class PersonService {
         return new PeopleMedicalRecordsAndFirestationByAddress(listOfPersonsMedicalRecordAndFireStation
                 , firestationsRepository.checkFireStationNumberWithAdress(personsAtSameAddress.get(0).getAddress()));
     }
+
 
 }
