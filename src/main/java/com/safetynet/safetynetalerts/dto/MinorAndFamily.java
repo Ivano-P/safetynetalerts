@@ -8,22 +8,22 @@ import java.util.List;
 @JsonPropertyOrder({"minor", "age", "familyMember"})
 public class MinorAndFamily {
 
-    private Person Minor;
+    private Person minor;
     private int age;
     private List<Person> familyMember;
 
     public MinorAndFamily(Person minor, int age, List<Person> familyMember) {
-        Minor = minor;
+        this.minor = minor;
         this.age = age;
         this.familyMember = familyMember;
     }
 
     public Person getMinor() {
-        return Minor;
+        return minor;
     }
 
     public void setMinor(Person minor) {
-        Minor = minor;
+        this.minor = minor;
     }
 
     public int getAge() {

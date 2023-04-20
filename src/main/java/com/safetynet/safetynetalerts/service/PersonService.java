@@ -2,13 +2,16 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.dto.MinorAndFamilyByAddress;
 import com.safetynet.safetynetalerts.dto.MinorAndFamily;
+import com.safetynet.safetynetalerts.dto.PeopleMedicalRecordsAndFirestationByAddress;
+import com.safetynet.safetynetalerts.dto.PersonAndMedicalRecord;
+import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
+import com.safetynet.safetynetalerts.repository.FirestationsRepository;
 import com.safetynet.safetynetalerts.repository.MedicalRecordsRepository;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +24,9 @@ public class PersonService {
     //to get dob to calculate age
     @Autowired
     MedicalRecordsRepository medicalRecordsRepository;
+
+    @Autowired
+    FirestationsRepository firestationsRepository;
 
     public MinorAndFamilyByAddress getListMinorsAndFamilyByAddress(String address){
         List<MinorAndFamily> minorsAgeAndFamily = new ArrayList<>();
@@ -49,6 +55,36 @@ public class PersonService {
             }
         }
         return new MinorAndFamilyByAddress(minorsAgeAndFamily);
+    }
+
+    //TODO: Unit Test
+    public PeopleMedicalRecordsAndFirestationByAddress getListOfPeopleMedicalRecordsAndFirestation(String address){
+        List<PersonAndMedicalRecord> listOfPersonsMedicalRecordAndFireStation = new ArrayList<>();
+
+        //List off people at inputted address
+        List<Person> personsAtSameAddress = personRepository.sortPeopleByAddress(address);
+
+        //List of MedicalRecords of the people at that address
+        List<MedicalRecord> medicalRecordsOfPeopleAtSameAddress = medicalRecordsRepository
+                .findMedicalRecordsOfPersons(personsAtSameAddress);
+
+        //list of dates of people of the people in personsAtSameAddress
+        List<String> datesOfBirths = medicalRecordsRepository.checkAgesInMedicalRecords(personsAtSameAddress);
+
+        /*
+        goes through list of people at same address and for each person adds creats a
+        PeopleMedicalRecordAndFirestation object that is added to listOfPersonsMedicalRecordAndFireStation
+        and then returned for creation of dto object
+        */
+        for (int i=0; i < personsAtSameAddress.size(); i++){
+            listOfPersonsMedicalRecordAndFireStation
+                    .add(i, new PersonAndMedicalRecord(personsAtSameAddress.get(i).getFirstName()
+                            ,personsAtSameAddress.get(i).getLastName(), personsAtSameAddress.get(i).getPhone()
+                            ,datesOfBirths.get(i), medicalRecordsOfPeopleAtSameAddress.get(i).getMedications()
+                            ,medicalRecordsOfPeopleAtSameAddress.get(i).getAllergies()));
+        }
+        return new PeopleMedicalRecordsAndFirestationByAddress(listOfPersonsMedicalRecordAndFireStation
+                , firestationsRepository.checkFireStationNumberWithAdress(personsAtSameAddress.get(0).getAddress()));
     }
 
 }

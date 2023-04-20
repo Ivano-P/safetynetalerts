@@ -68,9 +68,9 @@ class PersonServiceTest {
         MinorAndFamilyByAddress minorAndFamilyByAddress = personService.getListMinorsAndFamilyByAddress(address);
 
         //Assert
-        assertThat(minorAndFamilyByAddress.getMinorsAgesAndFamilyMembers()).hasSize(2);
-        assertThat(minorAndFamilyByAddress.getMinorsAgesAndFamilyMembers().get(0).getAge()).isEqualTo(13);
-        assertThat(minorAndFamilyByAddress.getMinorsAgesAndFamilyMembers().get(1).getAge()).isEqualTo(8);
+        assertThat(minorAndFamilyByAddress.getMinorAndFamilies()).hasSize(2);
+        assertThat(minorAndFamilyByAddress.getMinorAndFamilies().get(0).getAge()).isEqualTo(13);
+        assertThat(minorAndFamilyByAddress.getMinorAndFamilies().get(1).getAge()).isEqualTo(8);
     }
 
 }

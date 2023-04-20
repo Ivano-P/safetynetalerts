@@ -3,17 +3,17 @@ package com.safetynet.safetynetalerts.dto;
 import java.util.List;
 
 public class MinorAndFamilyByAddress {
-    private List<MinorAndFamily> MinorsAgesAndFamilyMembers;
+    private List<MinorAndFamily> minorAndFamilies;
 
     public MinorAndFamilyByAddress(List<MinorAndFamily> minorsAgesAndFamilyMembers) {
-        MinorsAgesAndFamilyMembers = minorsAgesAndFamilyMembers;
+        this.minorAndFamilies = minorsAgesAndFamilyMembers;
     }
 
-    public List<MinorAndFamily> getMinorsAgesAndFamilyMembers() {
-        return MinorsAgesAndFamilyMembers;
+    public List<MinorAndFamily> getMinorAndFamilies() {
+        return minorAndFamilies;
     }
 
-    public void setMinorsAgesAndFamilyMembers(List<MinorAndFamily> minorsAgesAndFamilyMembers) {
-        MinorsAgesAndFamilyMembers = minorsAgesAndFamilyMembers;
+    public void setMinorAndFamilies(List<MinorAndFamily> minorAndFamilies) {
+        this.minorAndFamilies = minorAndFamilies;
     }
 }

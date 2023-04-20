@@ -88,7 +88,7 @@ class FirestationServiceTest {
         PhoneNumbersByFirestation result = firestationService.getListOfPhoneNumbersByFirestation(firestationNumber);
 
         // Assert
-        assertThat(result.getPhoneNumber()).containsExactlyInAnyOrder("111-222-3333", "444-555-6666");
+        assertThat(result.getPhoneNumbers()).containsExactlyInAnyOrder("111-222-3333", "444-555-6666");
     }
 
 

@@ -1,9 +1,6 @@
 package com.safetynet.safetynetalerts.controller;
 
-import com.safetynet.safetynetalerts.dto.MinorAndFamily;
-import com.safetynet.safetynetalerts.dto.MinorAndFamilyByAddress;
-import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
-import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
+import com.safetynet.safetynetalerts.dto.*;
 import com.safetynet.safetynetalerts.service.FirestationService;
 import com.safetynet.safetynetalerts.service.PersonService;
 import org.junit.jupiter.api.BeforeAll;
@@ -101,5 +98,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
        verify(firestationService, times(1))
                .getListOfPhoneNumbersByFirestation("1");
    }
+
+    @Test
+    void testGetPersonMedicalRecordAndFirestation() throws Exception {
+        // Arrange
+        String address = "1509 Culver St";
+        PeopleMedicalRecordsAndFirestationByAddress mockPeopleMedicalRecordsAndFirestationByAddress =
+                new PeopleMedicalRecordsAndFirestationByAddress(null
+                        , "3");
+        when(personService.getListOfPeopleMedicalRecordsAndFirestation(address))
+                .thenReturn(mockPeopleMedicalRecordsAndFirestationByAddress);
+
+        // Act
+        mockMvc.perform(get("/fire?address=1509 Culver St"))
+                .andExpect(status().isOk());
+
+        // Assert
+        verify(personService, times(1))
+                .getListOfPeopleMedicalRecordsAndFirestation("1509 Culver St");
+    }
 
 }

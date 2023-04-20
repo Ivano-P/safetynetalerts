@@ -33,4 +33,15 @@ public class FirestationsRepository {
         }
         return adressHandledByFirestation;
     }
+
+    //TODO: unit test
+    public String checkFireStationNumberWithAdress(String address){
+        String firestationNumber = null;
+        for (Firestation firestation : listOfAllFirestations){
+            if (firestation.getAddress().equals(address)){
+               firestationNumber = firestation.getStation();
+            }
+        }
+        return firestationNumber;
+    }
 }
