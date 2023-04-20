@@ -1,6 +1,6 @@
 package com.safetynet.safetynetalerts.service;
 
-import com.safetynet.safetynetalerts.dto.MinorAndFamilyByAddress;
+import com.safetynet.safetynetalerts.dto.MinorAndFamily;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.MedicalRecordsRepository;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
@@ -65,12 +65,12 @@ class PersonServiceTest {
         when(medicalRecordsRepository.calculateAges(dobList)).thenReturn(ages);
 
         //Act
-        MinorAndFamilyByAddress minorAndFamilyByAddress = personService.getListMinorsAndFamilyByAddress(address);
+        List<MinorAndFamily> minorAndFamilyByAddress = personService.getListMinorsAndFamilyByAddress(address);
 
         //Assert
-        assertThat(minorAndFamilyByAddress.getMinorAndFamilies()).hasSize(2);
-        assertThat(minorAndFamilyByAddress.getMinorAndFamilies().get(0).getAge()).isEqualTo(13);
-        assertThat(minorAndFamilyByAddress.getMinorAndFamilies().get(1).getAge()).isEqualTo(8);
+        assertThat(minorAndFamilyByAddress).hasSize(2);
+        assertThat(minorAndFamilyByAddress.get(0).getAge()).isEqualTo(13);
+        assertThat(minorAndFamilyByAddress.get(1).getAge()).isEqualTo(8);
     }
 
 }

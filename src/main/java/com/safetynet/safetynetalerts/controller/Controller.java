@@ -25,7 +25,7 @@ public class Controller {
     }
 
     @GetMapping("/childAlert")
-    public MinorAndFamilyByAddress getMinorAndFamilyByAddress(@RequestParam("address") String address) {
+    public List<MinorAndFamily> getMinorAndFamilyByAddress(@RequestParam("address") String address) {
         return personService.getListMinorsAndFamilyByAddress(address);
     }
 
@@ -38,14 +38,11 @@ public class Controller {
     public PeopleMedicalRecordsAndFirestationByAddress getPersonMedicalRecordAndFirestation(@RequestParam("address") String address){
         return personService.getListOfPeopleMedicalRecordsAndFirestation(address);
     }
-    
+
     @GetMapping("/flood/stations")
     public List<Houshold> getHousholds(@RequestParam("stations") List<String> stationNumbers) {
         return firestationService.getListOfHousholdsByListOfFirestationNumber(stationNumbers);
     }
-
-
-    // add methode for URL: http://localhost:8080/flood/stations?stations=<a list of station_numbers>
 
     // add Methode for URL: http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>
 

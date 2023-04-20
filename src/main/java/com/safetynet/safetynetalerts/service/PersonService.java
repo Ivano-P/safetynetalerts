@@ -25,15 +25,15 @@ public class PersonService {
     @Autowired
     FirestationsRepository firestationsRepository;
 
-    public MinorAndFamilyByAddress getListMinorsAndFamilyByAddress(String address){
-        List<MinorAndFamily> minorsAgeAndFamily = new ArrayList<>();
+    public List<MinorAndFamily> getListMinorsAndFamilyByAddress(String address){
         List<Person> personsAtSameAddress = personRepository.sortPeopleByAddress(address);
-
 
         //List with age for each person from list 'personAtSameAddress'
         List<Integer> ages = medicalRecordsRepository.calculateAges( medicalRecordsRepository
                 .convertListOfStringsToListOfDateOfBirth(medicalRecordsRepository
                         .checkAgesInMedicalRecords(personsAtSameAddress)));
+
+        List<MinorAndFamily> minorsAgeAndFamily = new ArrayList<>();
 
         // Iterate over all ages and create MinorAndFamily instances for minors
         for (int i = 0; i < ages.size(); i++) {
@@ -51,7 +51,7 @@ public class PersonService {
                 );
             }
         }
-        return new MinorAndFamilyByAddress(minorsAgeAndFamily);
+        return minorsAgeAndFamily;
     }
 
     //TODO: Unit Test
@@ -83,6 +83,8 @@ public class PersonService {
         return new PeopleMedicalRecordsAndFirestationByAddress(listOfPersonsMedicalRecordAndFireStation
                 , firestationsRepository.checkFireStationNumberWithAdress(personsAtSameAddress.get(0).getAddress()));
     }
+
+
 
 
 }

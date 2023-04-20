@@ -36,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
    private PersonService personService;
 
    private PeopleByFirestationNumber peopleByFirestationNumber;
-   private MinorAndFamilyByAddress minorAndFamilyByAddress;
 
    private PhoneNumbersByFirestation phoneNumbersByFirestation;
 
@@ -49,8 +48,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
    @BeforeEach
    void setUpPerEach() {
-      peopleByFirestationNumber = new PeopleByFirestationNumber(null, 1, 1); // Populate with appropriate data
-      minorAndFamilyByAddress = new MinorAndFamilyByAddress(minorAndFamilyList); // Populate with appropriate data
+      peopleByFirestationNumber = new PeopleByFirestationNumber(null, 1, 1); 
+
    }
 
     @Test
@@ -73,7 +72,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
    void testGetMinorAndFamilyByAddress() throws Exception {
       //Arrange
       when(personService.getListMinorsAndFamilyByAddress(anyString()))
-              .thenReturn(minorAndFamilyByAddress);
+              .thenReturn(minorAndFamilyList);
 
       //Act
       mockMvc.perform(get("/childAlert?address=1 route saint george")).andExpect(status().isOk());

@@ -78,7 +78,7 @@ public class FirestationService {
     }
 
     //TODO: Unit Test
-    public List<Houshold> getListOfHousholdsByFirestationNumber(String firestationNumber){
+    private List<Houshold> getListOfHousholdsByFirestationNumber(String firestationNumber){
         List<Person> peopleByFirestation = getPersonsLinkedToFireStation(firestationNumber);
 
         List<MedicalRecord> medicalRecordsOfPeopleByFirestation = medicalRecordsRepository
