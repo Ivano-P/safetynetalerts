@@ -47,4 +47,26 @@ public class PersonRepository {
         return personsAtSameAddress;
     }
 
+    //TODO: unit test
+    public List<Person> findPeopleByName(String firstName, String lastName){
+        ArrayList<Person> personsWithThatName= new ArrayList<>();
+        for (Person person : listOfAllPersons){
+            if(person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)){
+                personsWithThatName.add(person);
+            }
+        }
+        return personsWithThatName;
+    }
+
+    //TODO: unit test
+    //returns a list of all persons that lives a city
+    public List<Person> findPeopleByCity(String city){
+        List<Person> peopleFromCity = new ArrayList<>();
+        for (Person person : listOfAllPersons){
+            if (person.getCity().equals(city)){
+                peopleFromCity.add(person);
+            }
+        }
+        return peopleFromCity;
+    }
 }

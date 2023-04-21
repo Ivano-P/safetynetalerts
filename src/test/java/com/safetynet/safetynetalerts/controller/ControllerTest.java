@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -102,11 +103,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void testGetPersonMedicalRecordAndFirestation() throws Exception {
         // Arrange
         String address = "1509 Culver St";
-        PeopleMedicalRecordsAndFirestationByAddress mockPeopleMedicalRecordsAndFirestationByAddress =
-                new PeopleMedicalRecordsAndFirestationByAddress(null
+        PeopleMedicalRecordsAndFirestation mockPeopleMedicalRecordsAndFirestation =
+                new PeopleMedicalRecordsAndFirestation(null
                         , "3");
         when(personService.getListOfPeopleMedicalRecordsAndFirestation(address))
-                .thenReturn(mockPeopleMedicalRecordsAndFirestationByAddress);
+                .thenReturn(mockPeopleMedicalRecordsAndFirestation);
 
         // Act
         mockMvc.perform(get("/fire?address=1509 Culver St"))
@@ -118,7 +119,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-    void testGetHousholdsByListOfFirestationNumber() throws Exception {
+    void testGetHousholds() throws Exception {
         // Arrange
         List<String> stationNumbers = Arrays.asList("1", "2", "3");
         List<Houshold> mockHousholds = new ArrayList<>(); // Populate with appropriate test data
@@ -137,5 +138,46 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         verify(firestationService, times(1))
                 .getListOfHousholdsByListOfFirestationNumber(stationNumbers);
     }
+
+    @Test
+    void testGetPersonInfoAndMedicalRecords() throws Exception {
+        // Arrange
+        String firstName = "John";
+        String lastName = "Doe";
+        List<PersonInfoAndMedicalRecord> mockPersonInfoAndMedicalRecords =
+                Collections.singletonList(new PersonInfoAndMedicalRecord(firstName, lastName, null, null
+                        ,null, 21 , null, null, null));
+
+        when(personService.getPersonInfoAndMedicalRecord(firstName, lastName))
+                .thenReturn(mockPersonInfoAndMedicalRecords);
+
+        // Act
+        mockMvc.perform(get("/personInfo")
+                        .param("firstName", firstName)
+                        .param("lastName", lastName))
+                .andExpect(status().isOk());
+
+        // Assert
+        verify(personService, times(1))
+                .getPersonInfoAndMedicalRecord(firstName, lastName);
+    }
+
+    @Test
+    void testGetEmailsOfPeopleFromCity() throws Exception {
+        // Arrange
+        String city = "New York";
+        List<String> mockEmails = Arrays.asList("john@example.com", "jane@example.com");
+        when(personService.getListOfEmails(city)).thenReturn(mockEmails);
+
+        // Act
+        mockMvc.perform(get("/communityEmail")
+                        .param("city", city))
+                .andExpect(status().isOk());
+
+        // Assert
+        verify(personService, times(1))
+                .getListOfEmails(city);
+    }
+
 
 }

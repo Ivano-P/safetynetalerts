@@ -6,12 +6,12 @@ public class PersonAndMedicalRecord {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String age;
+    private int age;
     private List<String> medications;
     private List<String> allergies;
 
 
-    public PersonAndMedicalRecord(String firstName, String lastName, String phoneNumber, String age, List<String> medications, List<String> allergies) {
+    public PersonAndMedicalRecord(String firstName, String lastName, String phoneNumber, int age, List<String> medications, List<String> allergies) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -44,11 +44,11 @@ public class PersonAndMedicalRecord {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

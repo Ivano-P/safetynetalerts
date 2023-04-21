@@ -35,7 +35,7 @@ public class Controller {
     }
 
     @GetMapping("/fire")
-    public PeopleMedicalRecordsAndFirestationByAddress getPersonMedicalRecordAndFirestation(@RequestParam("address") String address){
+    public PeopleMedicalRecordsAndFirestation getPersonMedicalRecordAndFirestation(@RequestParam("address") String address){
         return personService.getListOfPeopleMedicalRecordsAndFirestation(address);
     }
 
@@ -44,8 +44,18 @@ public class Controller {
         return firestationService.getListOfHousholdsByListOfFirestationNumber(stationNumbers);
     }
 
-    // add Methode for URL: http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>
+    @GetMapping("/personInfo")
+    public List<PersonInfoAndMedicalRecord> getPersonInfoAndMedicalRecords(
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName){
 
-    // add methode for ULR: http://localhost:8080/communityEmail?city=<city>
+        return personService.getPersonInfoAndMedicalRecord(firstName, lastName);
+    }
+
+    //TODO: unit test
+    @GetMapping("/communityEmail")
+    public List<String> getEmailsOfPeopleFromCity(@RequestParam("city") String city){
+        return personService.getListOfEmails(city);
+    }
 
 }

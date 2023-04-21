@@ -2,11 +2,11 @@ package com.safetynet.safetynetalerts.dto;
 
 import java.util.List;
 
-public class PeopleMedicalRecordsAndFirestationByAddress {
+public class PeopleMedicalRecordsAndFirestation {
     private List<PersonAndMedicalRecord> listOfPeopleMedicalRecordsAndFirestationByAddress;
     private String fireStationNumber;
 
-    public PeopleMedicalRecordsAndFirestationByAddress(List<PersonAndMedicalRecord> listOfPersonsMedicalRecordsAndFirestationByAddress, String fireStationNumber) {
+    public PeopleMedicalRecordsAndFirestation(List<PersonAndMedicalRecord> listOfPersonsMedicalRecordsAndFirestationByAddress, String fireStationNumber) {
         this.listOfPeopleMedicalRecordsAndFirestationByAddress = listOfPersonsMedicalRecordsAndFirestationByAddress;
         this.fireStationNumber = fireStationNumber;
     }

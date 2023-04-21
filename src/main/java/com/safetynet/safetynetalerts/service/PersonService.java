@@ -55,7 +55,7 @@ public class PersonService {
     }
 
     //TODO: Unit Test
-    public PeopleMedicalRecordsAndFirestationByAddress getListOfPeopleMedicalRecordsAndFirestation(String address){
+    public PeopleMedicalRecordsAndFirestation getListOfPeopleMedicalRecordsAndFirestation(String address){
         List<PersonAndMedicalRecord> listOfPersonsMedicalRecordAndFireStation = new ArrayList<>();
 
         //List off people at inputted address
@@ -66,7 +66,9 @@ public class PersonService {
                 .findMedicalRecordsOfPersons(personsAtSameAddress);
 
         //list of dates of people of the people in personsAtSameAddress
-        List<String> datesOfBirths = medicalRecordsRepository.checkAgesInMedicalRecords(personsAtSameAddress);
+        List<Integer> ages =medicalRecordsRepository.calculateAges(medicalRecordsRepository
+                .convertListOfStringsToListOfDateOfBirth(medicalRecordsRepository
+                        .checkAgesInMedicalRecords(personsAtSameAddress)));
 
         /*
         goes through list of people at same address and for each person adds creats a
@@ -77,14 +79,57 @@ public class PersonService {
             listOfPersonsMedicalRecordAndFireStation
                     .add(i, new PersonAndMedicalRecord(personsAtSameAddress.get(i).getFirstName()
                             ,personsAtSameAddress.get(i).getLastName(), personsAtSameAddress.get(i).getPhone()
-                            ,datesOfBirths.get(i), medicalRecordsOfPeopleAtSameAddress.get(i).getMedications()
+                            ,ages.get(i), medicalRecordsOfPeopleAtSameAddress.get(i).getMedications()
                             ,medicalRecordsOfPeopleAtSameAddress.get(i).getAllergies()));
         }
-        return new PeopleMedicalRecordsAndFirestationByAddress(listOfPersonsMedicalRecordAndFireStation
+        return new PeopleMedicalRecordsAndFirestation(listOfPersonsMedicalRecordAndFireStation
                 , firestationsRepository.checkFireStationNumberWithAdress(personsAtSameAddress.get(0).getAddress()));
     }
 
+    //TODO: unit test
+    public List<PersonInfoAndMedicalRecord> getPersonInfoAndMedicalRecord(String firstName, String lastName){
+        //stores list of people found  with that first and lsat name.
+        List<Person> personByName = personRepository.findPeopleByName(firstName, lastName);
+        //stores their medical records
+        List<MedicalRecord> medicalRecordsOfPersonByName =medicalRecordsRepository
+                .findMedicalRecordsOfPersons(personByName);
+        //stores their ages
+        List<Integer> ages =medicalRecordsRepository.calculateAges(medicalRecordsRepository
+                .convertListOfStringsToListOfDateOfBirth(medicalRecordsRepository
+                        .checkAgesInMedicalRecords(personByName)));
 
+        //for method return
+        List<PersonInfoAndMedicalRecord> personInfoAndMedicalRecords = new ArrayList<>();
 
+        /*
+        go through list of person, age and medical records and use the same index of each list to fetch information
+        needed to creat personInfoAndMedicalRecords object. this object is added to as list of the same type in case
+        there are multiple people with the same name
+         */
+        for (int i= 0; i < personByName.size(); i++){
+            Person person = personByName.get(i);
+            MedicalRecord medicalRecord = medicalRecordsOfPersonByName.get(i);
+            int age = ages.get(i);
+
+        personInfoAndMedicalRecords.add(new PersonInfoAndMedicalRecord(person.getFirstName(), person.getLastName()
+                , person.getAddress(), person.getCity(), person.getZip(), age ,person.getEmail()
+                , medicalRecord.getMedications(), medicalRecord.getAllergies()));
+        }
+        return personInfoAndMedicalRecords;
+    }
+
+    //TODO: unit test
+    public List<String> getListOfEmails(String city){
+        List<Person> personsFromCity = personRepository.findPeopleByCity(city);
+
+        //retrieves the email from each person in that list of people from that city
+        List<String> personsEmailFromCity = new ArrayList<>();
+        for (Person person : personsFromCity){
+            if (person.getCity().equals(city)){
+            personsEmailFromCity.add(person.getEmail());
+            }
+        }
+        return personsEmailFromCity;
+    }
 
 }
