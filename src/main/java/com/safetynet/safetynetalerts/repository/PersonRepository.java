@@ -1,15 +1,20 @@
 package com.safetynet.safetynetalerts.repository;
 
+import com.safetynet.safetynetalerts.dao.ExtractObject;
 import com.safetynet.safetynetalerts.model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.safetynet.safetynetalerts.dao.ExtractObject.extractDataFromJason;
+import static com.safetynet.safetynetalerts.dao.ExtractObject.safetyNet;
 
 @Repository
 public class PersonRepository {
+
     List<Person> listOfAllPersons;
 
     //constructor for productions
@@ -68,5 +73,10 @@ public class PersonRepository {
             }
         }
         return peopleFromCity;
+    }
+
+    //TODO: unit test
+    public void addPersonToSafetyNet(Person personToAdd){
+        listOfAllPersons.add(personToAdd);
     }
 }

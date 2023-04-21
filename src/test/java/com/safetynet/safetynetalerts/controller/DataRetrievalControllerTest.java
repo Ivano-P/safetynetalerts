@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(DataRetrievalController.class)
- class ControllerTest {
+ class DataRetrievalControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
