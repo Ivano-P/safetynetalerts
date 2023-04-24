@@ -148,4 +148,7 @@ public class PersonService {
         return personToEdit;
     }
 
+    public Person deletePerson(String firstName, String lastName) {
+        return personRepository.deletePerson(firstName, lastName);
+    }
 }

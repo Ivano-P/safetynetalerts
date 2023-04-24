@@ -91,7 +91,31 @@ public class PersonRepository {
                 person.setCity(personToEdit.getCity());
                 person.setPhone(personToEdit.getPhone());
                 person.setEmail(personToEdit.getEmail());
+                break;
             }
         }
+    }
+
+    /*
+    cycling through the listOfAllPeople and stops iterating through the list once the person with the same first and
+    last name has been removed
+     */
+    //TODO: unit test
+    public Person deletePerson(String firstName, String lastName) {
+        Person deletedPerson = null;
+        for(int i = 0; i < listOfAllPersons.size(); i++){
+            Person person = listOfAllPersons.get(i);
+            if(person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)){
+
+                //use this to return the information of deleted person to body of delete request
+                deletedPerson = new Person(person.getFirstName(), person.getLastName(), person.getAddress()
+                        , person.getCity(), person.getZip(), person.getPhone(), person.getEmail()
+                );
+
+                listOfAllPersons.remove(i);
+                break;
+            }
+        }
+        return deletedPerson;
     }
 }

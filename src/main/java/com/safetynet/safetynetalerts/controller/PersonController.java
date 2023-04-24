@@ -63,4 +63,17 @@ public class PersonController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    //TODO: add unit test
+    @DeleteMapping("/person")
+    public ResponseEntity<String> deletePerson(@RequestParam("firstName") String firstName,
+                                               @RequestParam("lastName") String lastName){
+        Person deletedPerson = personService.deletePerson(firstName, lastName);
+
+        if (deletedPerson != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(firstName + " " + lastName + " has been deleted");
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 }
