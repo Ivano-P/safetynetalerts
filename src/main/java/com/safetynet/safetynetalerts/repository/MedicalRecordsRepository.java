@@ -111,24 +111,36 @@ public class MedicalRecordsRepository {
         return amountOfMinors;
     }
 
-
-    //TODO: delete if not needed after creation of all URLS
-    /*
-    not used, i created List<MedicalRecord> findMedicalRecordsOfPersons(List<Person> listOfPersons)
-    that takes in a list of persons and give back a list of medical records directly.
-    //reruns medicalRecord of person using first and last name.
-    public MedicalRecord findMedicalRecordOf(String firstName, String lastName){
-        MedicalRecord medicalRecordOfPersonByName = null;
-
-        //Loop through list of medical records, when medicalRecord is found with same first and last name, return it
-        for(MedicalRecord medicalRecord : listOfAllMedicalRecords){
-           if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)){
-               medicalRecordOfPersonByName = new MedicalRecord(medicalRecord.getFirstName()
-                       ,medicalRecord.getLastName(),medicalRecord.getBirthdate(),medicalRecord.getMedications()
-                       ,medicalRecord.getAllergies());
-           }
-        }
-        return medicalRecordOfPersonByName;
+    //TODO: unit test
+    public void addNewMedicalRecord(MedicalRecord medicalRecordToAdd) {
+        listOfAllMedicalRecords.add(medicalRecordToAdd);
     }
-    */
+
+    /*
+    checks for a MedicalRecord with same first and last name and if found sets all the informations to the value of
+    the MedicalRecord imputed as arguement
+     */
+    public void updateMedicalRecord(MedicalRecord updatedMedicalRecord) {
+        for(MedicalRecord medicalRecord : listOfAllMedicalRecords){
+            if (medicalRecord.getLastName().equals(updatedMedicalRecord.getLastName()) && medicalRecord.getFirstName()
+                    .equals(updatedMedicalRecord.getFirstName())) {
+
+                medicalRecord.setBirthdate(updatedMedicalRecord.getBirthdate());
+                medicalRecord.setMedications(updatedMedicalRecord.getMedications());
+                medicalRecord.setAllergies(updatedMedicalRecord.getAllergies());
+                break;
+            }
+        }
+    }
+
+    //checks for a MedicalRecord with same first and last name and if found deletes it
+    public void deleteMedicalRecord(String firstName, String lastName) {
+        for(int i = 0 ; i < listOfAllMedicalRecords.size(); i++){
+            MedicalRecord medicalRecord = listOfAllMedicalRecords.get(i);
+            if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)){
+                listOfAllMedicalRecords.remove(i);
+                break;
+            }
+        }
+    }
 }

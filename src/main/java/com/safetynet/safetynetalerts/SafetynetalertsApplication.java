@@ -14,5 +14,4 @@ public class SafetynetalertsApplication {
         ExtractObject.extractDataFromJason();
 
     }
-
 }

@@ -92,11 +92,11 @@ public class PersonRepository {
         }
     }
 
+    //TODO: unit test
     /*
     cycling through the listOfAllPeople and stops iterating through the list once the person with the same first and
     last name has been removed
-     */
-    //TODO: unit test
+    */
     public Person deletePerson(String firstName, String lastName) {
         Person deletedPerson = null;
         for(int i = 0; i < listOfAllPersons.size(); i++){

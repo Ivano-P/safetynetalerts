@@ -42,23 +42,6 @@ public class FirestationController {
         }
     }
 
-    /*
-    //to add FireStation with parameters in post request
-    @PostMapping("/firestation")
-    public ResponseEntity<Firestation> postFirestationAndAddressCoverage(@RequestParam String stationNumber
-                                                                         , @RequestParam String addressToCover){
-
-        Firestation addedFirestation = firestationService
-                .postFiresationAndAddressCoverage(stationNumber, addressToCover);
-
-        if (addedFirestation != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(addedFirestation);
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
-    */
-
     //TODO: unit test
     @PutMapping("/firestation")
     public ResponseEntity<String> putFirestationNumber(@RequestBody Firestation firestationToEdit){

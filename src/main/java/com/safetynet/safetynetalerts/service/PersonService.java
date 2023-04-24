@@ -16,14 +16,14 @@ import java.util.List;
 public class PersonService {
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     //to get dob to calculate age
     @Autowired
-    MedicalRecordsRepository medicalRecordsRepository;
+    private MedicalRecordsRepository medicalRecordsRepository;
 
     @Autowired
-    FirestationsRepository firestationsRepository;
+    private FirestationsRepository firestationsRepository;
 
     public List<MinorAndFamily> getListMinorsAndFamilyByAddress(String address){
         List<Person> personsAtSameAddress = personRepository.sortPeopleByAddress(address);
