@@ -44,7 +44,7 @@ public class PersonController {
     //TODO: add unit test
     @PostMapping("/person")
     public ResponseEntity<Person> addNewPerson(@RequestBody Person person){
-        Person addedPerson = personService.addNewPerson(person);
+        Person addedPerson = personService.postNewPerson(person);
         if (addedPerson != null){
             return ResponseEntity.status(HttpStatus.CREATED).body(addedPerson);
         }else{
@@ -54,14 +54,9 @@ public class PersonController {
 
     //TODO: add unit test
     @PutMapping("/person")
-    public ResponseEntity<Person> editPerson(@RequestBody Person person){
-        Person editPerson = personService.editPerson(person);
-
-        if (editPerson != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(editPerson);
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<String> editPerson(@RequestBody Person person){
+        personService.putPerson(person);
+        return ResponseEntity.ok(person.getFirstName() + person.getLastName() + " information has been updated");
     }
 
     //TODO: add unit test

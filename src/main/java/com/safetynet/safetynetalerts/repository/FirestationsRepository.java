@@ -44,4 +44,35 @@ public class FirestationsRepository {
         }
         return firestationNumber;
     }
+
+    //TODO: unit test
+    public Firestation addFirestation(Firestation firestationToAdd) {
+        listOfAllFirestations.add(firestationToAdd);
+        return firestationToAdd;
+    }
+
+    //TODO: unit test
+    public void updateFirestation(Firestation updatedFirestation) {
+        for (Firestation firestation : listOfAllFirestations) {
+            if (firestation.getAddress().equals(updatedFirestation.getAddress())) {
+                firestation.setStation(updatedFirestation.getStation());
+                break;
+            }
+        }
+    }
+
+    /*
+    cycles through the listOfAllFirestations and stops iterating through the list once on the index of the firestation
+    covering that address, remove that firestation from the list and break out of the loop.
+     */
+    //TODO: unit test
+    public void removeCoverageOfFirestation(Firestation firestationToDelete) {
+        for(int i = 0; i < listOfAllFirestations.size(); i++){
+            Firestation firestation = listOfAllFirestations.get(i);
+            if(firestation.getAddress().equals(firestationToDelete.getAddress())){
+                listOfAllFirestations.remove(i);
+                break;
+            }
+        }
+    }
 }

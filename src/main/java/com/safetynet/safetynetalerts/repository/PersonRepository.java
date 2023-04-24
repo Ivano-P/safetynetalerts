@@ -1,16 +1,12 @@
 package com.safetynet.safetynetalerts.repository;
 
-import com.safetynet.safetynetalerts.dao.ExtractObject;
 import com.safetynet.safetynetalerts.model.Person;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.safetynet.safetynetalerts.dao.ExtractObject.extractDataFromJason;
-import static com.safetynet.safetynetalerts.dao.ExtractObject.safetyNet;
 
 @Repository
 public class PersonRepository {
@@ -82,7 +78,7 @@ public class PersonRepository {
 
     //edits Person with same first and last name as person in parsed in as argument.
     //TODO: unit test
-    public void editPerson(Person personToEdit) {
+    public void updatePerson(Person personToEdit) {
         for (Person person : listOfAllPersons) {
             if (personToEdit.getFirstName().equals(person.getFirstName()) && personToEdit.getLastName().equals(person
                     .getLastName())) {

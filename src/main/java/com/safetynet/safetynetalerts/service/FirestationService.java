@@ -4,6 +4,7 @@ import com.safetynet.safetynetalerts.dto.Houshold;
 import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
 import com.safetynet.safetynetalerts.dto.PersonWithMedicalInfo;
 import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
+import com.safetynet.safetynetalerts.model.Firestation;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.FirestationsRepository;
@@ -120,6 +121,28 @@ public class FirestationService {
         return households;
     }
 
+    //TODO: add unit test<
+    //add firestation from request boddy to listOfAllFirestations
+    public Firestation postFireStation(Firestation firestation) {
+        return firestationsRepository.addFirestation(firestation);
+    }
 
+    /*
+    Creates a new Firestations with the informations from the parameters in the request and add that new Firestation
+    to listOfAllFirestations
 
+    public Firestation postFiresationAndAddressCoverage(String stationNumber, String addressToCover) {
+        return firestationsRepository.addFirestation(new Firestation(addressToCover, stationNumber));
+    }
+    */
+
+    //TODO: add unit test
+    public void putFireStaion(Firestation firestationToUpdate) {
+        firestationsRepository.updateFirestation(firestationToUpdate);
+    }
+
+    //TODO: add unit test
+    public void deleteFirestation(Firestation firestationToDelete) {
+        firestationsRepository.removeCoverageOfFirestation(firestationToDelete);
+    }
 }
