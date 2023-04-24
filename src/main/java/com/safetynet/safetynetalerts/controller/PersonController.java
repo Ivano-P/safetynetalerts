@@ -5,12 +5,10 @@ import com.safetynet.safetynetalerts.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class PostController {
+public class PersonController {
     
     @Autowired
     private PersonService personService;
@@ -21,6 +19,18 @@ public class PostController {
         Person addedPerson = personService.addNewPerson(person);
         if (addedPerson != null){
             return ResponseEntity.status(HttpStatus.CREATED).body(addedPerson);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    //TODO: add unit test
+    @PutMapping("/person")
+    public ResponseEntity<Person> editPerson(@RequestBody Person person){
+        Person editPerson = personService.editPerson(person);
+
+        if (editPerson != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(editPerson);
         }else{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

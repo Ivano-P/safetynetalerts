@@ -30,11 +30,11 @@ public class PersonRepository {
     }
 
 
-    public List<Person> sortPeopleByFireStation(String addressCovereByFirestation){
+    public List<Person> sortPeopleByFireStation(String addressCovereByFirestation) {
         ArrayList<Person> peopleHandledByFireStation = new ArrayList<>();
 
-        for (Person person: listOfAllPersons){
-            if (person.getAddress().equals(addressCovereByFirestation)){
+        for (Person person : listOfAllPersons) {
+            if (person.getAddress().equals(addressCovereByFirestation)) {
                 peopleHandledByFireStation.add(person);
             }
         }
@@ -42,10 +42,10 @@ public class PersonRepository {
         return peopleHandledByFireStation;
     }
 
-    public List<Person> sortPeopleByAddress(String address){
+    public List<Person> sortPeopleByAddress(String address) {
         ArrayList<Person> personsAtSameAddress = new ArrayList<>();
-        for(Person person : listOfAllPersons){
-            if(person.getAddress().equals(address)){
+        for (Person person : listOfAllPersons) {
+            if (person.getAddress().equals(address)) {
                 personsAtSameAddress.add(person);
             }
         }
@@ -53,10 +53,10 @@ public class PersonRepository {
     }
 
     //TODO: unit test
-    public List<Person> findPeopleByName(String firstName, String lastName){
-        ArrayList<Person> personsWithThatName= new ArrayList<>();
-        for (Person person : listOfAllPersons){
-            if(person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)){
+    public List<Person> findPeopleByName(String firstName, String lastName) {
+        ArrayList<Person> personsWithThatName = new ArrayList<>();
+        for (Person person : listOfAllPersons) {
+            if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
                 personsWithThatName.add(person);
             }
         }
@@ -65,10 +65,10 @@ public class PersonRepository {
 
     //TODO: unit test
     //returns a list of all persons that lives a city
-    public List<Person> findPeopleByCity(String city){
+    public List<Person> findPeopleByCity(String city) {
         List<Person> peopleFromCity = new ArrayList<>();
-        for (Person person : listOfAllPersons){
-            if (person.getCity().equals(city)){
+        for (Person person : listOfAllPersons) {
+            if (person.getCity().equals(city)) {
                 peopleFromCity.add(person);
             }
         }
@@ -76,7 +76,22 @@ public class PersonRepository {
     }
 
     //TODO: unit test
-    public void addPersonToSafetyNet(Person personToAdd){
+    public void addPersonToSafetyNet(Person personToAdd) {
         listOfAllPersons.add(personToAdd);
+    }
+
+    //edits Person with same first and last name as person in parsed in as argument.
+    //TODO: unit test
+    public void editPerson(Person personToEdit) {
+        for (Person person : listOfAllPersons) {
+            if (personToEdit.getFirstName().equals(person.getFirstName()) && personToEdit.getLastName().equals(person
+                    .getLastName())) {
+                person.setAddress(personToEdit.getAddress());
+                person.setCity(personToEdit.getCity());
+                person.setCity(personToEdit.getCity());
+                person.setPhone(personToEdit.getPhone());
+                person.setEmail(personToEdit.getEmail());
+            }
+        }
     }
 }

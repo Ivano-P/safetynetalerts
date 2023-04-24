@@ -142,4 +142,10 @@ public class PersonService {
         return newPersonToAd;
     }
 
+    //TODO: unit test
+    public Person editPerson(Person personToEdit){
+        personRepository.editPerson(personToEdit);
+        return personToEdit;
+    }
+
 }
