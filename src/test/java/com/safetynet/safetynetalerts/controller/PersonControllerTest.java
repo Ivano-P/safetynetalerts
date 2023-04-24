@@ -1,10 +1,10 @@
 package com.safetynet.safetynetalerts.controller;
 
-import com.safetynet.safetynetalerts.dto.*;
-import com.safetynet.safetynetalerts.service.FirestationService;
+import com.safetynet.safetynetalerts.dto.MinorAndFamily;
+import com.safetynet.safetynetalerts.dto.PeopleMedicalRecordsAndFirestation;
+import com.safetynet.safetynetalerts.dto.PersonInfoAndMedicalRecord;
 import com.safetynet.safetynetalerts.service.PersonService;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,80 +24,32 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(DataRetrievalController.class)
- class DataRetrievalControllerTest {
-
+@WebMvcTest(PersonController.class)
+ class PersonControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private FirestationService firestationService;
+    private PersonService personService;
 
-   @MockBean
-   private PersonService personService;
-
-   private PeopleByFirestationNumber peopleByFirestationNumber;
-
-   private PhoneNumbersByFirestation phoneNumbersByFirestation;
-
-   private static List<MinorAndFamily> minorAndFamilyList;
-
-   @BeforeAll
-   static void setUp() throws Exception{
-      minorAndFamilyList = new ArrayList<>();
-   }
-
-   @BeforeEach
-   void setUpPerEach() {
-      peopleByFirestationNumber = new PeopleByFirestationNumber(null, 1, 1); 
-
-   }
-
+    private static List<MinorAndFamily> minorAndFamilyList;
+    @BeforeAll
+    static void setUp() throws Exception{
+        minorAndFamilyList = new ArrayList<>();
+    }
     @Test
-     void testGetPeopleByFirestationNumber() throws Exception {
+    void testGetMinorAndFamilyByAddress() throws Exception {
         //Arrange
-        // Stub the service call
-        when(firestationService.getListOfAdultsAndMinorsCoveredByFirestation(anyString()))
-                .thenReturn(peopleByFirestationNumber);
+        when(personService.getListMinorsAndFamilyByAddress(anyString()))
+                .thenReturn(minorAndFamilyList);
 
         //Act
-        mockMvc.perform(get("/firestation?stationNumber=1"))
-                .andExpect(status().isOk());
+        mockMvc.perform(get("/childAlert?address=1 route saint george")).andExpect(status().isOk());
 
-        //Assert: Verify that the service was called once
-        verify(firestationService, times(1))
-                .getListOfAdultsAndMinorsCoveredByFirestation("1");
+
+        //Assert
+        verify(personService, times(1)).getListMinorsAndFamilyByAddress("1 route saint george");
     }
-
-   @Test
-   void testGetMinorAndFamilyByAddress() throws Exception {
-      //Arrange
-      when(personService.getListMinorsAndFamilyByAddress(anyString()))
-              .thenReturn(minorAndFamilyList);
-
-      //Act
-      mockMvc.perform(get("/childAlert?address=1 route saint george")).andExpect(status().isOk());
-
-
-      //Assert
-      verify(personService, times(1)).getListMinorsAndFamilyByAddress("1 route saint george");
-   }
-
-   @Test
-    void testGetPhoneNumbersOfPeopleByFirestation() throws Exception {
-       // Arrange
-       String firestationNumber = "1";
-       List<String> phoneNumbers = Arrays.asList("123-456-7890", "098-765-4321");
-       PhoneNumbersByFirestation mockPhoneNumbersByFirestation = new PhoneNumbersByFirestation(phoneNumbers);
-       when(firestationService.getListOfPhoneNumbersByFirestation(firestationNumber)).thenReturn(mockPhoneNumbersByFirestation);
-
-       // Act
-       mockMvc.perform(get("/phoneAlert?firestation=1")).andExpect(status().isOk());
-
-       //Assert
-       verify(firestationService, times(1))
-               .getListOfPhoneNumbersByFirestation("1");
-   }
 
     @Test
     void testGetPersonMedicalRecordAndFirestation() throws Exception {
@@ -116,27 +68,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         // Assert
         verify(personService, times(1))
                 .getListOfPeopleMedicalRecordsAndFirestation("1509 Culver St");
-    }
-
-    @Test
-    void testGetHousholds() throws Exception {
-        // Arrange
-        List<String> stationNumbers = Arrays.asList("1", "2", "3");
-        List<Houshold> mockHousholds = new ArrayList<>(); // Populate with appropriate test data
-
-        when(firestationService.getListOfHousholdsByListOfFirestationNumber(stationNumbers))
-                .thenReturn(mockHousholds);
-
-        // Act
-        mockMvc.perform(get("/flood/stations")
-                        .param("stations", "1")
-                        .param("stations", "2")
-                        .param("stations", "3"))
-                .andExpect(status().isOk());
-
-        // Assert
-        verify(firestationService, times(1))
-                .getListOfHousholdsByListOfFirestationNumber(stationNumbers);
     }
 
     @Test
@@ -178,6 +109,4 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         verify(personService, times(1))
                 .getListOfEmails(city);
     }
-
-
 }
