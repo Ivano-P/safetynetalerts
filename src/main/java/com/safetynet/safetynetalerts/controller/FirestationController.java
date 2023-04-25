@@ -17,16 +17,16 @@ public class FirestationController {
 
     @GetMapping("/firestation")
     public PeopleByFirestationNumber getPeopleByFirestationNumber(@RequestParam("stationNumber") String stationNumber) {
-        return firestationService.getListOfAdultsAndMinorsCoveredByFirestation(stationNumber);
+        return firestationService.getAdultsAndMinorsCoveredByFirestationNumber(stationNumber);
     }
     @GetMapping("/phoneAlert")
     public PhoneNumbersByFirestation getPhoneNumbersOfPeopleByFirestation(@RequestParam("firestation") String stationNumber) {
-        return firestationService.getListOfPhoneNumbersByFirestation(stationNumber);
+        return firestationService.getPhoneNumbersByFirestationNumber(stationNumber);
     }
 
     @GetMapping("/flood/stations")
     public List<Houshold> getHousholds(@RequestParam("stations") List<String> stationNumbers) {
-        return firestationService.getListOfHousholdsByListOfFirestationNumber(stationNumbers);
+        return firestationService.getHousholdsByFirestationNumbers(stationNumbers);
     }
 
     //to add FireStation in body of post request

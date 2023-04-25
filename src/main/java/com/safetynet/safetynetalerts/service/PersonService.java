@@ -25,13 +25,13 @@ public class PersonService {
     @Autowired
     private FirestationsRepository firestationsRepository;
 
-    public List<MinorAndFamily> getListMinorsAndFamilyByAddress(String address){
-        List<Person> personsAtSameAddress = personRepository.sortPeopleByAddress(address);
+    public List<MinorAndFamily> getMinorsAndFamilyByAddress(String address){
+        List<Person> personsAtSameAddress = personRepository.findPeopleByAddress(address);
 
         //List with age for each person from list 'personAtSameAddress'
-        List<Integer> ages = medicalRecordsRepository.calculateAges( medicalRecordsRepository
-                .convertListOfStringsToListOfDateOfBirth(medicalRecordsRepository
-                        .checkAgesInMedicalRecords(personsAtSameAddress)));
+        List<Integer> ages = medicalRecordsRepository.calculateAgesByDatesOfBirth( medicalRecordsRepository
+                .convertListDateStringsToListOfDatesOfBirth(medicalRecordsRepository
+                        .findDatesOfBirthInMedicalRecordsByPersons(personsAtSameAddress)));
 
         List<MinorAndFamily> minorsAgeAndFamily = new ArrayList<>();
 
@@ -55,20 +55,20 @@ public class PersonService {
     }
 
     //TODO: Unit Test
-    public PeopleMedicalRecordsAndFirestation getListOfPeopleMedicalRecordsAndFirestation(String address){
+    public PeopleMedicalRecordsAndFirestation getPeopleMedicalRecordsAndFirestationByAddress(String address){
         List<PersonAndMedicalRecord> listOfPersonsMedicalRecordAndFireStation = new ArrayList<>();
 
         //List off people at inputted address
-        List<Person> personsAtSameAddress = personRepository.sortPeopleByAddress(address);
+        List<Person> personsAtSameAddress = personRepository.findPeopleByAddress(address);
 
         //List of MedicalRecords of the people at that address
         List<MedicalRecord> medicalRecordsOfPeopleAtSameAddress = medicalRecordsRepository
-                .findMedicalRecordsOfPersons(personsAtSameAddress);
+                .findMedicalRecordsByPersons(personsAtSameAddress);
 
         //list of dates of people of the people in personsAtSameAddress
-        List<Integer> ages =medicalRecordsRepository.calculateAges(medicalRecordsRepository
-                .convertListOfStringsToListOfDateOfBirth(medicalRecordsRepository
-                        .checkAgesInMedicalRecords(personsAtSameAddress)));
+        List<Integer> ages =medicalRecordsRepository.calculateAgesByDatesOfBirth(medicalRecordsRepository
+                .convertListDateStringsToListOfDatesOfBirth(medicalRecordsRepository
+                        .findDatesOfBirthInMedicalRecordsByPersons(personsAtSameAddress)));
 
         /*
         goes through list of people at same address and for each person adds creats a
@@ -83,20 +83,20 @@ public class PersonService {
                             ,medicalRecordsOfPeopleAtSameAddress.get(i).getAllergies()));
         }
         return new PeopleMedicalRecordsAndFirestation(listOfPersonsMedicalRecordAndFireStation
-                , firestationsRepository.checkFireStationNumberWithAdress(personsAtSameAddress.get(0).getAddress()));
+                , firestationsRepository.findFirestationNumberByAddress(personsAtSameAddress.get(0).getAddress()));
     }
 
     //TODO: unit test
-    public List<PersonInfoAndMedicalRecord> getPersonInfoAndMedicalRecord(String firstName, String lastName){
+    public List<PersonInfoAndMedicalRecord> getPersonInfoAndMedicalRecordByName(String firstName, String lastName){
         //stores list of people found  with that first and lsat name.
         List<Person> personByName = personRepository.findPeopleByName(firstName, lastName);
         //stores their medical records
         List<MedicalRecord> medicalRecordsOfPersonByName =medicalRecordsRepository
-                .findMedicalRecordsOfPersons(personByName);
+                .findMedicalRecordsByPersons(personByName);
         //stores their ages
-        List<Integer> ages =medicalRecordsRepository.calculateAges(medicalRecordsRepository
-                .convertListOfStringsToListOfDateOfBirth(medicalRecordsRepository
-                        .checkAgesInMedicalRecords(personByName)));
+        List<Integer> ages =medicalRecordsRepository.calculateAgesByDatesOfBirth(medicalRecordsRepository
+                .convertListDateStringsToListOfDatesOfBirth(medicalRecordsRepository
+                        .findDatesOfBirthInMedicalRecordsByPersons(personByName)));
 
         //for method return
         List<PersonInfoAndMedicalRecord> personInfoAndMedicalRecords = new ArrayList<>();
@@ -119,7 +119,7 @@ public class PersonService {
     }
 
     //TODO: unit test
-    public List<String> getListOfEmails(String city){
+    public List<String> getEmailsByCity(String city){
         List<Person> personsFromCity = personRepository.findPeopleByCity(city);
 
         //retrieves the email from each person in that list of people from that city
@@ -135,7 +135,7 @@ public class PersonService {
     //adds newPersonToAd as a list of one newPersonToAd, since safetyNet take a list of Persons
     //TODO: unit test
     public Person postNewPerson(Person newPersonToAd){
-        personRepository.addPersonToSafetyNet(newPersonToAd);
+        personRepository.addPerson(newPersonToAd);
 
         return newPersonToAd;
     }
@@ -146,6 +146,6 @@ public class PersonService {
     }
 
     public Person deletePerson(String firstName, String lastName) {
-        return personRepository.deletePerson(firstName, lastName);
+        return personRepository.removePerson(firstName, lastName);
     }
 }

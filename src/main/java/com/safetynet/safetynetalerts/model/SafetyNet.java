@@ -7,11 +7,12 @@ public class SafetyNet{
     private List<Firestation> firestations;
     private List<MedicalRecord> medicalrecords;
 
+
     public SafetyNet(List<Person> persons, List<Firestation> firestations,
-                     List<MedicalRecord> medicalrecords) {
+                     List<MedicalRecord> medicalRecords) {
         this.persons = persons;
         this.firestations = firestations;
-        this.medicalrecords = medicalrecords;
+        this.medicalrecords = medicalRecords;
     }
 
     public List<Person> getPersons() {
@@ -34,7 +35,7 @@ public class SafetyNet{
         return medicalrecords;
     }
 
-    public void setMedicalrecords(List<MedicalRecord> medicalrecords) {
-        this.medicalrecords = medicalrecords;
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalrecords = medicalRecords;
     }
 }

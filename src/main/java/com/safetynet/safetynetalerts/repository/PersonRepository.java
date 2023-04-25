@@ -26,7 +26,7 @@ public class PersonRepository {
     }
 
 
-    public List<Person> sortPeopleByFireStation(String addressCovereByFirestation) {
+    public List<Person> findPeopleByFireStationAddress(String addressCovereByFirestation) {
         ArrayList<Person> peopleHandledByFireStation = new ArrayList<>();
 
         for (Person person : listOfAllPersons) {
@@ -38,7 +38,7 @@ public class PersonRepository {
         return peopleHandledByFireStation;
     }
 
-    public List<Person> sortPeopleByAddress(String address) {
+    public List<Person> findPeopleByAddress(String address) {
         ArrayList<Person> personsAtSameAddress = new ArrayList<>();
         for (Person person : listOfAllPersons) {
             if (person.getAddress().equals(address)) {
@@ -72,7 +72,7 @@ public class PersonRepository {
     }
 
     //TODO: unit test
-    public void addPersonToSafetyNet(Person personToAdd) {
+    public void addPerson(Person personToAdd) {
         listOfAllPersons.add(personToAdd);
     }
 
@@ -97,7 +97,7 @@ public class PersonRepository {
     cycling through the listOfAllPeople and stops iterating through the list once the person with the same first and
     last name has been removed
     */
-    public Person deletePerson(String firstName, String lastName) {
+    public Person removePerson(String firstName, String lastName) {
         Person deletedPerson = null;
         for(int i = 0; i < listOfAllPersons.size(); i++){
             Person person = listOfAllPersons.get(i);

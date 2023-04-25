@@ -37,7 +37,7 @@ class PersonRepositoryTest {
         String addressCoveredByFirestation = "1 route saint george";
 
         // Act
-        List<Person> sortedPersons = personRepository.sortPeopleByFireStation(addressCoveredByFirestation);
+        List<Person> sortedPersons = personRepository.findPeopleByFireStationAddress(addressCoveredByFirestation);
 
         // Assert
         assertThat(sortedPersons).hasSize(2);
@@ -53,7 +53,7 @@ class PersonRepositoryTest {
         String Address = "1 route saint george";
 
         // Act
-        List<Person> actualPersonsAtSameAddress = personRepository.sortPeopleByAddress(Address);
+        List<Person> actualPersonsAtSameAddress = personRepository.findPeopleByAddress(Address);
 
         // Assert
         assertThat(actualPersonsAtSameAddress).hasSize(2);

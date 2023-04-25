@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Test
     void testGetMinorAndFamilyByAddress() throws Exception {
         //Arrange
-        when(personService.getListMinorsAndFamilyByAddress(anyString()))
+        when(personService.getMinorsAndFamilyByAddress(anyString()))
                 .thenReturn(minorAndFamilyList);
 
         //Act
@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
         //Assert
-        verify(personService, times(1)).getListMinorsAndFamilyByAddress("1 route saint george");
+        verify(personService, times(1)).getMinorsAndFamilyByAddress("1 route saint george");
     }
 
     @Test
@@ -58,7 +58,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         PeopleMedicalRecordsAndFirestation mockPeopleMedicalRecordsAndFirestation =
                 new PeopleMedicalRecordsAndFirestation(null
                         , "3");
-        when(personService.getListOfPeopleMedicalRecordsAndFirestation(address))
+        when(personService.getPeopleMedicalRecordsAndFirestationByAddress(address))
                 .thenReturn(mockPeopleMedicalRecordsAndFirestation);
 
         // Act
@@ -67,7 +67,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         // Assert
         verify(personService, times(1))
-                .getListOfPeopleMedicalRecordsAndFirestation("1509 Culver St");
+                .getPeopleMedicalRecordsAndFirestationByAddress("1509 Culver St");
     }
 
     @Test
@@ -79,7 +79,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 Collections.singletonList(new PersonInfoAndMedicalRecord(firstName, lastName, null, null
                         ,null, 21 , null, null, null));
 
-        when(personService.getPersonInfoAndMedicalRecord(firstName, lastName))
+        when(personService.getPersonInfoAndMedicalRecordByName(firstName, lastName))
                 .thenReturn(mockPersonInfoAndMedicalRecords);
 
         // Act
@@ -90,7 +90,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         // Assert
         verify(personService, times(1))
-                .getPersonInfoAndMedicalRecord(firstName, lastName);
+                .getPersonInfoAndMedicalRecordByName(firstName, lastName);
     }
 
     @Test
@@ -98,7 +98,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         // Arrange
         String city = "New York";
         List<String> mockEmails = Arrays.asList("john@example.com", "jane@example.com");
-        when(personService.getListOfEmails(city)).thenReturn(mockEmails);
+        when(personService.getEmailsByCity(city)).thenReturn(mockEmails);
 
         // Act
         mockMvc.perform(get("/communityEmail")
@@ -107,6 +107,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         // Assert
         verify(personService, times(1))
-                .getListOfEmails(city);
+                .getEmailsByCity(city);
     }
 }

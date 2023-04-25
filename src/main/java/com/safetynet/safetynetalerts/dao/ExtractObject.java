@@ -6,7 +6,6 @@ import com.safetynet.safetynetalerts.model.Firestation;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.SafetyNet;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;

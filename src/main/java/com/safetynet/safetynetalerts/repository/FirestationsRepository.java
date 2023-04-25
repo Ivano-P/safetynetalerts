@@ -23,11 +23,11 @@ public class FirestationsRepository {
         this.listOfAllFirestations = listOfAllFirestations;
     }
 
-    public List<String> sortAdressRelatedToFirestation(String idFirestation){
+    public List<String> findAddressByFirestationNumber(String firestationNumber){
         List<String> adressHandledByFirestation =  new ArrayList<>();
 
         for(Firestation firestation : listOfAllFirestations){
-            if(firestation.getStation().equals(idFirestation)){
+            if(firestation.getStation().equals(firestationNumber)){
                 adressHandledByFirestation.add(firestation.getAddress());
             }
         }
@@ -35,7 +35,7 @@ public class FirestationsRepository {
     }
 
     //TODO: unit test
-    public String checkFireStationNumberWithAdress(String address){
+    public String findFirestationNumberByAddress(String address){
         String firestationNumber = null;
         for (Firestation firestation : listOfAllFirestations){
             if (firestation.getAddress().equals(address)){
@@ -51,11 +51,12 @@ public class FirestationsRepository {
         return firestationToAdd;
     }
 
+    //changes the station number of the firestation the imputed address
     //TODO: unit test
-    public void updateFirestation(Firestation updatedFirestation) {
+    public void updateFirestationByAddress(String addressCoveredByFirestation, String firestationNumberToUpdate) {
         for (Firestation firestation : listOfAllFirestations) {
-            if (firestation.getAddress().equals(updatedFirestation.getAddress())) {
-                firestation.setStation(updatedFirestation.getStation());
+            if (firestation.getAddress().equals(addressCoveredByFirestation)) {
+                firestation.setStation(firestationNumberToUpdate);
                 break;
             }
         }
@@ -66,10 +67,10 @@ public class FirestationsRepository {
     covering that address, remove that firestation from the list and break out of the loop.
      */
     //TODO: unit test
-    public void removeCoverageOfFirestation(Firestation firestationToDelete) {
+    public void removeFirestationByAddress(String firestationCoveredAddress) {
         for(int i = 0; i < listOfAllFirestations.size(); i++){
             Firestation firestation = listOfAllFirestations.get(i);
-            if(firestation.getAddress().equals(firestationToDelete.getAddress())){
+            if(firestation.getAddress().equals(firestationCoveredAddress)){
                 listOfAllFirestations.remove(i);
                 break;
             }

@@ -59,13 +59,13 @@ class PersonServiceTest {
         //Arrange
         String address = "1 route saint george";
 
-        when(personRepository.sortPeopleByAddress(address)).thenReturn(personsAtSameAddress);
-        when(medicalRecordsRepository.checkAgesInMedicalRecords(personsAtSameAddress)).thenReturn(dobListString);
-        when(medicalRecordsRepository.convertListOfStringsToListOfDateOfBirth(dobListString)).thenReturn(dobList);
-        when(medicalRecordsRepository.calculateAges(dobList)).thenReturn(ages);
+        when(personRepository.findPeopleByAddress(address)).thenReturn(personsAtSameAddress);
+        when(medicalRecordsRepository.findDatesOfBirthInMedicalRecordsByPersons(personsAtSameAddress)).thenReturn(dobListString);
+        when(medicalRecordsRepository.convertListDateStringsToListOfDatesOfBirth(dobListString)).thenReturn(dobList);
+        when(medicalRecordsRepository.calculateAgesByDatesOfBirth(dobList)).thenReturn(ages);
 
         //Act
-        List<MinorAndFamily> minorAndFamilyByAddress = personService.getListMinorsAndFamilyByAddress(address);
+        List<MinorAndFamily> minorAndFamilyByAddress = personService.getMinorsAndFamilyByAddress(address);
 
         //Assert
         assertThat(minorAndFamilyByAddress).hasSize(2);

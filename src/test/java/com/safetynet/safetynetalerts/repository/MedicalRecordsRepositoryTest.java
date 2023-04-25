@@ -1,16 +1,11 @@
 package com.safetynet.safetynetalerts.repository;
 
-import com.safetynet.safetynetalerts.dao.ExtractObject;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
-import com.safetynet.safetynetalerts.model.SafetyNet;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtensionConfigurationException;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -55,7 +50,7 @@ class MedicalRecordsRepositoryTest {
 
         //Act
         List<String> actualDatesOfBirths = medicalRecordsRepository
-                .checkAgesInMedicalRecords(persons);
+                .findDatesOfBirthInMedicalRecordsByPersons(persons);
 
         //Assert
         assertThat(actualDatesOfBirths.get(0)).isEqualTo(expextedDatesOfBirth.get(0));
@@ -74,7 +69,7 @@ class MedicalRecordsRepositoryTest {
 
         //Act
         List<LocalDate> actualDatesOfBirth = medicalRecordsRepository
-                .convertListOfStringsToListOfDateOfBirth(testDates);
+                .convertListDateStringsToListOfDatesOfBirth(testDates);
 
         //Assert
         assertThat(actualDatesOfBirth).isEqualTo(expectedDatesOfBirth);

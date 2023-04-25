@@ -20,12 +20,12 @@ public class PersonController {
 
     @GetMapping("/childAlert")
     public List<MinorAndFamily> getMinorAndFamilyByAddress(@RequestParam("address") String address) {
-        return personService.getListMinorsAndFamilyByAddress(address);
+        return personService.getMinorsAndFamilyByAddress(address);
     }
 
     @GetMapping("/fire")
     public PeopleMedicalRecordsAndFirestation getPersonMedicalRecordAndFirestation(@RequestParam("address") String address){
-        return personService.getListOfPeopleMedicalRecordsAndFirestation(address);
+        return personService.getPeopleMedicalRecordsAndFirestationByAddress(address);
     }
 
     @GetMapping("/personInfo")
@@ -33,12 +33,12 @@ public class PersonController {
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName){
 
-        return personService.getPersonInfoAndMedicalRecord(firstName, lastName);
+        return personService.getPersonInfoAndMedicalRecordByName(firstName, lastName);
     }
 
     @GetMapping("/communityEmail")
     public List<String> getEmailsOfPeopleFromCity(@RequestParam("city") String city){
-        return personService.getListOfEmails(city);
+        return personService.getEmailsByCity(city);
     }
 
     //TODO: add unit test

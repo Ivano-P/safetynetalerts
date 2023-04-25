@@ -54,21 +54,21 @@ class FirestationServiceTest {
     void testGetListOfAdultsAndMinorsCoveredByFirestation() {
         // Arrange
         String firestationNumber = "1";
-        when(firestationsRepository.sortAdressRelatedToFirestation(anyString())).thenReturn(Arrays.asList("1 route saint george"));
-        when(personRepository.sortPeopleByFireStation(anyString())).thenReturn(mockPersons);
+        when(firestationsRepository.findAddressByFirestationNumber(anyString())).thenReturn(Arrays.asList("1 route saint george"));
+        when(personRepository.findPeopleByFireStationAddress(anyString())).thenReturn(mockPersons);
 
         List<LocalDate> mockDatesOfBirth = Arrays.asList(
                 LocalDate.of(1990, 1, 1), // Adult (33 years old)
                 LocalDate.of(2010, 1, 1)  // Minor (13 years old)
         );
 
-        when(medicalRecordsRepository.checkAgesInMedicalRecords(anyList())).thenReturn(Arrays.asList("01/01/1990", "01/01/2010"));
-        when(medicalRecordsRepository.convertListOfStringsToListOfDateOfBirth(anyList())).thenReturn(mockDatesOfBirth);
-        when(medicalRecordsRepository.calculateAges(anyList())).thenReturn(Arrays.asList(33, 13));
+        when(medicalRecordsRepository.findDatesOfBirthInMedicalRecordsByPersons(anyList())).thenReturn(Arrays.asList("01/01/1990", "01/01/2010"));
+        when(medicalRecordsRepository.convertListDateStringsToListOfDatesOfBirth(anyList())).thenReturn(mockDatesOfBirth);
+        when(medicalRecordsRepository.calculateAgesByDatesOfBirth(anyList())).thenReturn(Arrays.asList(33, 13));
         when(medicalRecordsRepository.countAmountOfAdults(anyList())).thenReturn(1);
 
         // Act
-        PeopleByFirestationNumber result = firestationService.getListOfAdultsAndMinorsCoveredByFirestation(firestationNumber);
+        PeopleByFirestationNumber result = firestationService.getAdultsAndMinorsCoveredByFirestationNumber(firestationNumber);
 
         // Assert
         assertThat(result.getPerson()).hasSize(2);
@@ -80,12 +80,12 @@ class FirestationServiceTest {
     void testGetListOfPhoneNumbersByFirestation(){
         // Arrange
         String firestationNumber = "1";
-        when(firestationsRepository.sortAdressRelatedToFirestation(anyString()))
+        when(firestationsRepository.findAddressByFirestationNumber(anyString()))
                 .thenReturn(List.of("1 route saint george"));
-        when(personRepository.sortPeopleByFireStation(anyString())).thenReturn(mockPersons);
+        when(personRepository.findPeopleByFireStationAddress(anyString())).thenReturn(mockPersons);
 
         // Act
-        PhoneNumbersByFirestation result = firestationService.getListOfPhoneNumbersByFirestation(firestationNumber);
+        PhoneNumbersByFirestation result = firestationService.getPhoneNumbersByFirestationNumber(firestationNumber);
 
         // Assert
         assertThat(result.getPhoneNumbers()).containsExactlyInAnyOrder("111-222-3333", "444-555-6666");

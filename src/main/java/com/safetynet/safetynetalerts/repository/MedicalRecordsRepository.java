@@ -31,7 +31,7 @@ public class MedicalRecordsRepository {
 
     //TODO: Unit Test
     //returns list of medicalRecords of persons using list of persons
-    public List<MedicalRecord> findMedicalRecordsOfPersons(List<Person> listOfPersons) {
+    public List<MedicalRecord> findMedicalRecordsByPersons(List<Person> listOfPersons) {
         List<MedicalRecord> medicalRecordsOfPersons = new ArrayList<>();
 
         for (Person person : listOfPersons) {
@@ -48,8 +48,8 @@ public class MedicalRecordsRepository {
 
 
     //to get the dob of a list of people from medical records using their first and last name.
-    public List<String> checkAgesInMedicalRecords(List<Person> listOfPeopleToCheck) {
-        ArrayList<String> dateOfBirths = new ArrayList<>();
+    public List<String> findDatesOfBirthInMedicalRecordsByPersons(List<Person> listOfPeopleToCheck) {
+        ArrayList<String> datesOfBirth = new ArrayList<>();
 
         for (Person person : listOfPeopleToCheck) {
             String lastName = person.getLastName();
@@ -57,31 +57,35 @@ public class MedicalRecordsRepository {
 
             for (MedicalRecord medicalRecord : listOfAllMedicalRecords) {
                 if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)) {
-                    dateOfBirths.add(medicalRecord.getBirthdate());
+                    datesOfBirth.add(medicalRecord.getBirthdate());
                 }
             }
         }
-        return dateOfBirths;
+        return datesOfBirth;
     }
 
-    public List<LocalDate> convertListOfStringsToListOfDateOfBirth(List<String> datesOfBirthStrings) {
+    /*
+    Iterates through list of String dates of biths and uses "convertDateStringToLocalDate()" to convert each dob
+    in the list
+     */
+    public List<LocalDate> convertListDateStringsToListOfDatesOfBirth(List<String> datesOfBirthStrings) {
         ArrayList<LocalDate> datesOfBirthLocalDateFormat = new ArrayList<>();
 
         for (String dateOfBirth : datesOfBirthStrings) {
-            datesOfBirthLocalDateFormat.add(parseDateOfBirth(dateOfBirth));
+            datesOfBirthLocalDateFormat.add(convertDateStringToLocalDate(dateOfBirth));
         }
         return datesOfBirthLocalDateFormat;
     }
 
-    //converts date of birth in string format to date of birth in local date time format
-    private LocalDate parseDateOfBirth(String dateOfBirthString) {
+    //converts single date of birth in string format to date of birth in local date time format
+    private LocalDate convertDateStringToLocalDate(String dateOfBirthString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         return LocalDate.parse(dateOfBirthString, formatter);
     }
 
 
     //converts list of date of births into a list of ages
-    public List<Integer> calculateAges(List<LocalDate> datesOfBirth) {
+    public List<Integer> calculateAgesByDatesOfBirth(List<LocalDate> datesOfBirth) {
         ArrayList<Integer> ages = new ArrayList<>();
         for (LocalDate dateOfBirth : datesOfBirth) {
             LocalDate now = LocalDate.now();
@@ -120,7 +124,7 @@ public class MedicalRecordsRepository {
     checks for a MedicalRecord with same first and last name and if found sets all the informations to the value of
     the MedicalRecord imputed as arguement
      */
-    public void updateMedicalRecord(MedicalRecord updatedMedicalRecord) {
+    public void updateMedicalRecordByFirstAndLastName(MedicalRecord updatedMedicalRecord) {
         for(MedicalRecord medicalRecord : listOfAllMedicalRecords){
             if (medicalRecord.getLastName().equals(updatedMedicalRecord.getLastName()) && medicalRecord.getFirstName()
                     .equals(updatedMedicalRecord.getFirstName())) {
@@ -134,7 +138,7 @@ public class MedicalRecordsRepository {
     }
 
     //checks for a MedicalRecord with same first and last name and if found deletes it
-    public void deleteMedicalRecord(String firstName, String lastName) {
+    public void removeMedicalRecordByName(String firstName, String lastName) {
         for(int i = 0 ; i < listOfAllMedicalRecords.size(); i++){
             MedicalRecord medicalRecord = listOfAllMedicalRecords.get(i);
             if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)){

@@ -16,10 +16,10 @@ public class MedicalRecordService {
     }
 
     public void putMedicalRecord(MedicalRecord updatedMedicalRecord) {
-        medicalRecordsRepository.updateMedicalRecord(updatedMedicalRecord);
+        medicalRecordsRepository.updateMedicalRecordByFirstAndLastName(updatedMedicalRecord);
     }
 
     public void deleteMedicalRecord(String firstName, String lastName) {
-        medicalRecordsRepository.deleteMedicalRecord(firstName, lastName);
+        medicalRecordsRepository.removeMedicalRecordByName(firstName, lastName);
     }
 }

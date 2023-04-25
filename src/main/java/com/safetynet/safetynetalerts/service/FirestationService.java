@@ -30,25 +30,25 @@ public class FirestationService {
     @Autowired
     MedicalRecordsRepository medicalRecordsRepository;
 
-    public List<Person> getPersonsLinkedToFireStation(String firestationNumber){
+    public List<Person> getPersonsByFireStationNumber(String firestationNumber){
         List<String> addressesHandledByFirestation = firestationsRepository
-                .sortAdressRelatedToFirestation(firestationNumber);
+                .findAddressByFirestationNumber(firestationNumber);
 
         List<Person> peopleByFirestation = new ArrayList<>();
 
         for(String address: addressesHandledByFirestation){
-            peopleByFirestation.addAll(personRepository.sortPeopleByFireStation(address));
+            peopleByFirestation.addAll(personRepository.findPeopleByFireStationAddress(address));
         }
         return peopleByFirestation;
     }
 
-    public PeopleByFirestationNumber getListOfAdultsAndMinorsCoveredByFirestation(String firestationNumber){
-      List<Person> peopleByFirestation = getPersonsLinkedToFireStation(firestationNumber);
+    public PeopleByFirestationNumber getAdultsAndMinorsCoveredByFirestationNumber(String firestationNumber){
+      List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
 
       int amountOfPersons = peopleByFirestation.size();
       int amountOfAdults = medicalRecordsRepository.countAmountOfAdults(medicalRecordsRepository
-              .calculateAges(medicalRecordsRepository.convertListOfStringsToListOfDateOfBirth(medicalRecordsRepository
-                      .checkAgesInMedicalRecords(peopleByFirestation))));
+              .calculateAgesByDatesOfBirth(medicalRecordsRepository.convertListDateStringsToListOfDatesOfBirth(medicalRecordsRepository
+                      .findDatesOfBirthInMedicalRecordsByPersons(peopleByFirestation))));
 
       int amountOfMinors = amountOfPersons - amountOfAdults;
 
@@ -56,8 +56,8 @@ public class FirestationService {
     }
 
 
-    public PhoneNumbersByFirestation getListOfPhoneNumbersByFirestation(String firestationNumber){
-        List<Person> peopleByFirestation = getPersonsLinkedToFireStation(firestationNumber);
+    public PhoneNumbersByFirestation getPhoneNumbersByFirestationNumber(String firestationNumber){
+        List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
 
         List<String> phoneNumberOfPeopleRelatedToFirestation = new ArrayList<>();
 
@@ -70,24 +70,24 @@ public class FirestationService {
 
 
     //TODO: Unit Test
-    public List<Houshold> getListOfHousholdsByListOfFirestationNumber(List<String> firestationNumbers){
+    public List<Houshold> getHousholdsByFirestationNumbers(List<String> firestationNumbers){
         List<Houshold> housholdsLinkedToFirestations = new ArrayList<>();
         for (String firestationNumber : firestationNumbers){
-            housholdsLinkedToFirestations.addAll(getListOfHousholdsByFirestationNumber(firestationNumber));
+            housholdsLinkedToFirestations.addAll(getHousholdsByFirestationNumber(firestationNumber));
         }
         return housholdsLinkedToFirestations;
     }
 
     //TODO: Unit Test
-    private List<Houshold> getListOfHousholdsByFirestationNumber(String firestationNumber){
-        List<Person> peopleByFirestation = getPersonsLinkedToFireStation(firestationNumber);
+    private List<Houshold> getHousholdsByFirestationNumber(String firestationNumber){
+        List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
 
         List<MedicalRecord> medicalRecordsOfPeopleByFirestation = medicalRecordsRepository
-                .findMedicalRecordsOfPersons(peopleByFirestation);
+                .findMedicalRecordsByPersons(peopleByFirestation);
 
-        List<Integer> ages = medicalRecordsRepository.calculateAges(medicalRecordsRepository
-                .convertListOfStringsToListOfDateOfBirth(medicalRecordsRepository
-                        .checkAgesInMedicalRecords(peopleByFirestation)));
+        List<Integer> ages = medicalRecordsRepository.calculateAgesByDatesOfBirth(medicalRecordsRepository
+                .convertListDateStringsToListOfDatesOfBirth(medicalRecordsRepository
+                        .findDatesOfBirthInMedicalRecordsByPersons(peopleByFirestation)));
 
         Map<String, List<PersonWithMedicalInfo>> addressToResidentsMap = new HashMap<>();
         /*
@@ -138,11 +138,11 @@ public class FirestationService {
 
     //TODO: add unit test
     public void putFireStaion(Firestation firestationToUpdate) {
-        firestationsRepository.updateFirestation(firestationToUpdate);
+        firestationsRepository.updateFirestationByAddress(firestationToUpdate.getAddress(), firestationToUpdate.getStation());
     }
 
     //TODO: add unit test
     public void deleteFirestation(Firestation firestationToDelete) {
-        firestationsRepository.removeCoverageOfFirestation(firestationToDelete);
+        firestationsRepository.removeFirestationByAddress(firestationToDelete.getAddress());
     }
 }

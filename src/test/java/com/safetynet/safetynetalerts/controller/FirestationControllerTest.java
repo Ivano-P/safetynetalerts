@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
      void testGetPeopleByFirestationNumber() throws Exception {
         //Arrange
         // Stub the service call
-        when(firestationService.getListOfAdultsAndMinorsCoveredByFirestation(anyString()))
+        when(firestationService.getAdultsAndMinorsCoveredByFirestationNumber(anyString()))
                 .thenReturn(peopleByFirestationNumber);
 
         //Act
@@ -57,7 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         //Assert: Verify that the service was called once
         verify(firestationService, times(1))
-                .getListOfAdultsAndMinorsCoveredByFirestation("1");
+                .getAdultsAndMinorsCoveredByFirestationNumber("1");
     }
 
    @Test
@@ -66,14 +66,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
        String firestationNumber = "1";
        List<String> phoneNumbers = Arrays.asList("123-456-7890", "098-765-4321");
        PhoneNumbersByFirestation mockPhoneNumbersByFirestation = new PhoneNumbersByFirestation(phoneNumbers);
-       when(firestationService.getListOfPhoneNumbersByFirestation(firestationNumber)).thenReturn(mockPhoneNumbersByFirestation);
+       when(firestationService.getPhoneNumbersByFirestationNumber(firestationNumber)).thenReturn(mockPhoneNumbersByFirestation);
 
        // Act
        mockMvc.perform(get("/phoneAlert?firestation=1")).andExpect(status().isOk());
 
        //Assert
        verify(firestationService, times(1))
-               .getListOfPhoneNumbersByFirestation("1");
+               .getPhoneNumbersByFirestationNumber("1");
    }
 
     @Test
@@ -82,7 +82,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         List<String> stationNumbers = Arrays.asList("1", "2", "3");
         List<Houshold> mockHousholds = new ArrayList<>(); // Populate with appropriate test data
 
-        when(firestationService.getListOfHousholdsByListOfFirestationNumber(stationNumbers))
+        when(firestationService.getHousholdsByFirestationNumbers(stationNumbers))
                 .thenReturn(mockHousholds);
 
         // Act
@@ -94,6 +94,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         // Assert
         verify(firestationService, times(1))
-                .getListOfHousholdsByListOfFirestationNumber(stationNumbers);
+                .getHousholdsByFirestationNumbers(stationNumbers);
     }
 }

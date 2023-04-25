@@ -38,7 +38,7 @@ class FirestationsRepositoryTest {
         String idFirestation = "1";
 
         // Act
-        List<String> actualAddresses = firesationRepository.sortAdressRelatedToFirestation(idFirestation);
+        List<String> actualAddresses = firesationRepository.findAddressByFirestationNumber(idFirestation);
 
         // Assert
         assertThat(actualAddresses).hasSize(2);
