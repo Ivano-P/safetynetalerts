@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class FirestationController {
@@ -16,12 +17,23 @@ public class FirestationController {
     private FirestationService firestationService;
 
     @GetMapping("/firestation")
-    public PeopleByFirestationNumber getPeopleByFirestationNumber(@RequestParam("stationNumber") String stationNumber) {
-        return firestationService.getAdultsAndMinorsCoveredByFirestationNumber(stationNumber);
+    public ResponseEntity<PeopleByFirestationNumber> getPeopleByFirestationNumber(@RequestParam("stationNumber") String stationNumber) {
+        try {
+            PeopleByFirestationNumber result = firestationService
+                    .getAdultsAndMinorsCoveredByFirestationNumber(stationNumber);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     @GetMapping("/phoneAlert")
-    public PhoneNumbersByFirestation getPhoneNumbersOfPeopleByFirestation(@RequestParam("firestation") String stationNumber) {
-        return firestationService.getPhoneNumbersByFirestationNumber(stationNumber);
+    public ResponseEntity<PhoneNumbersByFirestation>  getPhoneNumbersOfPeopleByFirestation(@RequestParam("firestation") String stationNumber) {
+        try{
+            PhoneNumbersByFirestation result = firestationService.getPhoneNumbersByFirestationNumber(stationNumber);
+            return ResponseEntity.ok(result);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/flood/stations")
