@@ -3,9 +3,7 @@ package com.safetynet.safetynetalerts.service;
 import com.safetynet.safetynetalerts.dto.*;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
-import com.safetynet.safetynetalerts.repository.FirestationsRepository;
-import com.safetynet.safetynetalerts.repository.MedicalRecordsRepository;
-import com.safetynet.safetynetalerts.repository.PersonRepository;
+import com.safetynet.safetynetalerts.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,23 +12,26 @@ import java.util.List;
 
 @Service
 public class PersonService {
+    private final FirestationRepository firestationRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
+    private final PersonRepository personRepository;
 
     @Autowired
-    private PersonRepository personRepository;
+    public PersonService(FirestationRepository firestationRepository,
+                              MedicalRecordRepository medicalRecordRepository,
+                              PersonRepository personRepository){
 
-    //to get dob to calculate age
-    @Autowired
-    private MedicalRecordsRepository medicalRecordsRepository;
-
-    @Autowired
-    private FirestationsRepository firestationsRepository;
+        this.firestationRepository = firestationRepository;
+        this.medicalRecordRepository = medicalRecordRepository;
+        this.personRepository = personRepository;
+    }
 
     public List<MinorAndFamily> getMinorsAndFamilyByAddress(String address){
         List<Person> personsAtSameAddress = personRepository.findPeopleByAddress(address);
 
         //List with age for each person from list 'personAtSameAddress'
-        List<Integer> ages = medicalRecordsRepository.calculateAgesByDatesOfBirth( medicalRecordsRepository
-                .convertListDateStringsToListOfDatesOfBirth(medicalRecordsRepository
+        List<Integer> ages = medicalRecordRepository.calculateAgesByDatesOfBirth( medicalRecordRepository
+                .convertListDateStringsToListOfDatesOfBirth(medicalRecordRepository
                         .findDatesOfBirthInMedicalRecordsByPersons(personsAtSameAddress)));
 
         List<MinorAndFamily> minorsAgeAndFamily = new ArrayList<>();
@@ -62,12 +63,12 @@ public class PersonService {
         List<Person> personsAtSameAddress = personRepository.findPeopleByAddress(address);
 
         //List of MedicalRecords of the people at that address
-        List<MedicalRecord> medicalRecordsOfPeopleAtSameAddress = medicalRecordsRepository
+        List<MedicalRecord> medicalRecordsOfPeopleAtSameAddress = medicalRecordRepository
                 .findMedicalRecordsByPersons(personsAtSameAddress);
 
         //list of dates of people of the people in personsAtSameAddress
-        List<Integer> ages =medicalRecordsRepository.calculateAgesByDatesOfBirth(medicalRecordsRepository
-                .convertListDateStringsToListOfDatesOfBirth(medicalRecordsRepository
+        List<Integer> ages = medicalRecordRepository.calculateAgesByDatesOfBirth(medicalRecordRepository
+                .convertListDateStringsToListOfDatesOfBirth(medicalRecordRepository
                         .findDatesOfBirthInMedicalRecordsByPersons(personsAtSameAddress)));
 
         /*
@@ -83,7 +84,7 @@ public class PersonService {
                             ,medicalRecordsOfPeopleAtSameAddress.get(i).getAllergies()));
         }
         return new PeopleMedicalRecordsAndFirestation(listOfPersonsMedicalRecordAndFireStation
-                , firestationsRepository.findFirestationNumberByAddress(personsAtSameAddress.get(0).getAddress()));
+                , firestationRepository.findFirestationNumberByAddress(personsAtSameAddress.get(0).getAddress()));
     }
 
     //TODO: unit test
@@ -91,11 +92,11 @@ public class PersonService {
         //stores list of people found  with that first and lsat name.
         List<Person> personByName = personRepository.findPeopleByName(firstName, lastName);
         //stores their medical records
-        List<MedicalRecord> medicalRecordsOfPersonByName =medicalRecordsRepository
+        List<MedicalRecord> medicalRecordsOfPersonByName = medicalRecordRepository
                 .findMedicalRecordsByPersons(personByName);
         //stores their ages
-        List<Integer> ages =medicalRecordsRepository.calculateAgesByDatesOfBirth(medicalRecordsRepository
-                .convertListDateStringsToListOfDatesOfBirth(medicalRecordsRepository
+        List<Integer> ages = medicalRecordRepository.calculateAgesByDatesOfBirth(medicalRecordRepository
+                .convertListDateStringsToListOfDatesOfBirth(medicalRecordRepository
                         .findDatesOfBirthInMedicalRecordsByPersons(personByName)));
 
         //for method return

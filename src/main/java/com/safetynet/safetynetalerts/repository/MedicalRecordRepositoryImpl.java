@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.repository;
 
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -14,23 +15,25 @@ import static com.safetynet.safetynetalerts.dao.ExtractObject.extractDataFromJas
 
 
 @Repository
-public class MedicalRecordsRepository {
+@Primary
+public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
 
     List<MedicalRecord> listOfAllMedicalRecords;
 
     //Dependency injection constructor for production
-    public MedicalRecordsRepository() {
+    public MedicalRecordRepositoryImpl() {
         this.listOfAllMedicalRecords = extractDataFromJason().getMedicalRecords();
     }
 
     //Dependency injection consctructor for test
-    public MedicalRecordsRepository(List<MedicalRecord> listOfAllMedicalRecords) {
+    public MedicalRecordRepositoryImpl(List<MedicalRecord> listOfAllMedicalRecords) {
         this.listOfAllMedicalRecords = listOfAllMedicalRecords;
     }
 
 
     //TODO: Unit Test
     //returns list of medicalRecords of persons using list of persons
+    @Override
     public List<MedicalRecord> findMedicalRecordsByPersons(List<Person> listOfPersons) {
         List<MedicalRecord> medicalRecordsOfPersons = new ArrayList<>();
 
@@ -48,6 +51,7 @@ public class MedicalRecordsRepository {
 
 
     //to get the dob of a list of people from medical records using their first and last name.
+    @Override
     public List<String> findDatesOfBirthInMedicalRecordsByPersons(List<Person> listOfPeopleToCheck) {
         ArrayList<String> datesOfBirth = new ArrayList<>();
 
@@ -68,6 +72,7 @@ public class MedicalRecordsRepository {
     Iterates through list of String dates of biths and uses "convertDateStringToLocalDate()" to convert each dob
     in the list
      */
+    @Override
     public List<LocalDate> convertListDateStringsToListOfDatesOfBirth(List<String> datesOfBirthStrings) {
         ArrayList<LocalDate> datesOfBirthLocalDateFormat = new ArrayList<>();
 
@@ -85,6 +90,7 @@ public class MedicalRecordsRepository {
 
 
     //converts list of date of births into a list of ages
+    @Override
     public List<Integer> calculateAgesByDatesOfBirth(List<LocalDate> datesOfBirth) {
         ArrayList<Integer> ages = new ArrayList<>();
         for (LocalDate dateOfBirth : datesOfBirth) {
@@ -95,6 +101,7 @@ public class MedicalRecordsRepository {
         return ages;
     }
 
+    @Override
     public Integer countAmountOfAdults(List<Integer> ages) {
         int amountOfAdults = 0;
         for (int age : ages) {
@@ -105,6 +112,7 @@ public class MedicalRecordsRepository {
         return amountOfAdults;
     }
 
+    @Override
     public int countAmountOfMinors(List<Integer> ages) {
         int amountOfMinors = 0;
         for (int age : ages) {
@@ -116,6 +124,7 @@ public class MedicalRecordsRepository {
     }
 
     //TODO: unit test
+    @Override
     public void addNewMedicalRecord(MedicalRecord medicalRecordToAdd) {
         listOfAllMedicalRecords.add(medicalRecordToAdd);
     }
@@ -124,6 +133,7 @@ public class MedicalRecordsRepository {
     checks for a MedicalRecord with same first and last name and if found sets all the informations to the value of
     the MedicalRecord imputed as arguement
      */
+    @Override
     public void updateMedicalRecordByFirstAndLastName(MedicalRecord updatedMedicalRecord) {
         for(MedicalRecord medicalRecord : listOfAllMedicalRecords){
             if (medicalRecord.getLastName().equals(updatedMedicalRecord.getLastName()) && medicalRecord.getFirstName()
@@ -138,6 +148,7 @@ public class MedicalRecordsRepository {
     }
 
     //checks for a MedicalRecord with same first and last name and if found deletes it
+    @Override
     public void removeMedicalRecordByName(String firstName, String lastName) {
         for(int i = 0 ; i < listOfAllMedicalRecords.size(); i++){
             MedicalRecord medicalRecord = listOfAllMedicalRecords.get(i);

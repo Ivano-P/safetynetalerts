@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MedicalRecordsRepositoryTest {
 
     private static List<MedicalRecord> mockListOfAllMedicalRecords;
-    private MedicalRecordsRepository medicalRecordsRepository;
+    private MedicalRecordRepositoryImpl medicalRecordsRepository;
 
     @BeforeAll
     static void setUp() throws Exception{
@@ -33,7 +33,7 @@ class MedicalRecordsRepositoryTest {
     @BeforeEach
     public void setUpPerEach() {
 
-        medicalRecordsRepository = new MedicalRecordsRepository(mockListOfAllMedicalRecords);
+        medicalRecordsRepository = new MedicalRecordRepositoryImpl(mockListOfAllMedicalRecords);
     }
 
 

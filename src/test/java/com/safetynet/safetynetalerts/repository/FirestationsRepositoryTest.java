@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FirestationsRepositoryTest {
 
     private static List<Firestation> mockListOfAllFirestations;
-    private FirestationsRepository firesationRepository;
+    private FirestationRepositoryImpl firesationRepository;
 
     @BeforeAll
     static void setUp() throws Exception {
@@ -27,7 +27,7 @@ class FirestationsRepositoryTest {
 
     @BeforeEach
     void setUpPerEach() {
-        firesationRepository = new FirestationsRepository(mockListOfAllFirestations);
+        firesationRepository = new FirestationRepositoryImpl(mockListOfAllFirestations);
     }
 
     //

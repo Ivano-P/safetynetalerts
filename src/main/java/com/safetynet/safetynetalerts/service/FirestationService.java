@@ -7,9 +7,10 @@ import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
 import com.safetynet.safetynetalerts.model.Firestation;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
-import com.safetynet.safetynetalerts.repository.FirestationsRepository;
-import com.safetynet.safetynetalerts.repository.MedicalRecordsRepository;
+import com.safetynet.safetynetalerts.repository.FirestationRepository;
+import com.safetynet.safetynetalerts.repository.MedicalRecordRepository;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
+import com.safetynet.safetynetalerts.repository.PersonRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +22,23 @@ import java.util.Map;
 @Service
 public class FirestationService {
 
-    @Autowired
-    FirestationsRepository firestationsRepository;
+    private final FirestationRepository firestationRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
+    private final PersonRepository personRepository;
 
     @Autowired
-    PersonRepository personRepository;
+    public FirestationService(FirestationRepository firestationRepository,
+                              MedicalRecordRepository medicalRecordRepository,
+                              PersonRepository personRepository){
 
-    @Autowired
-    MedicalRecordsRepository medicalRecordsRepository;
+        this.firestationRepository = firestationRepository;
+        this.medicalRecordRepository = medicalRecordRepository;
+        this.personRepository = personRepository;
+    }
+
 
     public List<Person> getPersonsByFireStationNumber(String firestationNumber){
-        List<String> addressesHandledByFirestation = firestationsRepository
+        List<String> addressesHandledByFirestation = firestationRepository
                 .findAddressByFirestationNumber(firestationNumber);
 
         List<Person> peopleByFirestation = new ArrayList<>();
@@ -46,8 +53,8 @@ public class FirestationService {
       List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
 
       int amountOfPersons = peopleByFirestation.size();
-      int amountOfAdults = medicalRecordsRepository.countAmountOfAdults(medicalRecordsRepository
-              .calculateAgesByDatesOfBirth(medicalRecordsRepository.convertListDateStringsToListOfDatesOfBirth(medicalRecordsRepository
+      int amountOfAdults = medicalRecordRepository.countAmountOfAdults(medicalRecordRepository
+              .calculateAgesByDatesOfBirth(medicalRecordRepository.convertListDateStringsToListOfDatesOfBirth(medicalRecordRepository
                       .findDatesOfBirthInMedicalRecordsByPersons(peopleByFirestation))));
 
       int amountOfMinors = amountOfPersons - amountOfAdults;
@@ -82,11 +89,11 @@ public class FirestationService {
     private List<Houshold> getHousholdsByFirestationNumber(String firestationNumber){
         List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
 
-        List<MedicalRecord> medicalRecordsOfPeopleByFirestation = medicalRecordsRepository
+        List<MedicalRecord> medicalRecordsOfPeopleByFirestation = medicalRecordRepository
                 .findMedicalRecordsByPersons(peopleByFirestation);
 
-        List<Integer> ages = medicalRecordsRepository.calculateAgesByDatesOfBirth(medicalRecordsRepository
-                .convertListDateStringsToListOfDatesOfBirth(medicalRecordsRepository
+        List<Integer> ages = medicalRecordRepository.calculateAgesByDatesOfBirth(medicalRecordRepository
+                .convertListDateStringsToListOfDatesOfBirth(medicalRecordRepository
                         .findDatesOfBirthInMedicalRecordsByPersons(peopleByFirestation)));
 
         Map<String, List<PersonWithMedicalInfo>> addressToResidentsMap = new HashMap<>();
@@ -124,25 +131,16 @@ public class FirestationService {
     //TODO: add unit test<
     //add firestation from request boddy to listOfAllFirestations
     public Firestation postFireStation(Firestation firestation) {
-        return firestationsRepository.addFirestation(firestation);
+        return firestationRepository.addFirestation(firestation);
     }
-
-    /*
-    Creates a new Firestations with the informations from the parameters in the request and add that new Firestation
-    to listOfAllFirestations
-
-    public Firestation postFiresationAndAddressCoverage(String stationNumber, String addressToCover) {
-        return firestationsRepository.addFirestation(new Firestation(addressToCover, stationNumber));
-    }
-    */
 
     //TODO: add unit test
     public void putFireStaion(Firestation firestationToUpdate) {
-        firestationsRepository.updateFirestationByAddress(firestationToUpdate.getAddress(), firestationToUpdate.getStation());
+        firestationRepository.updateFirestationByAddress(firestationToUpdate.getAddress(), firestationToUpdate.getStation());
     }
 
     //TODO: add unit test
     public void deleteFirestation(Firestation firestationToDelete) {
-        firestationsRepository.removeFirestationByAddress(firestationToDelete.getAddress());
+        firestationRepository.removeFirestationByAddress(firestationToDelete.getAddress());
     }
 }

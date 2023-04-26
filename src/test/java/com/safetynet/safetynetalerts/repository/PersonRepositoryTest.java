@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class PersonRepositoryTest {
     private static List<Person> mockListOfAllPersons;
-    private PersonRepository personRepository;
+    private PersonRepositoryImpl personRepository;
 
     @BeforeAll
     static void setUp() throws Exception {
@@ -26,7 +26,7 @@ class PersonRepositoryTest {
 
     @BeforeEach()
     void setUpPerEach() {
-        personRepository = new PersonRepository(mockListOfAllPersons);
+        personRepository = new PersonRepositoryImpl(mockListOfAllPersons);
 
     }
 

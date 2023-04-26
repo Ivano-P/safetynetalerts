@@ -3,9 +3,9 @@ package com.safetynet.safetynetalerts.service;
 import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
 import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
 import com.safetynet.safetynetalerts.model.Person;
-import com.safetynet.safetynetalerts.repository.FirestationsRepository;
-import com.safetynet.safetynetalerts.repository.MedicalRecordsRepository;
-import com.safetynet.safetynetalerts.repository.PersonRepository;
+import com.safetynet.safetynetalerts.repository.FirestationRepositoryImpl;
+import com.safetynet.safetynetalerts.repository.MedicalRecordRepositoryImpl;
+import com.safetynet.safetynetalerts.repository.PersonRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,13 +31,13 @@ class FirestationServiceTest {
     private FirestationService firestationService;
 
     @Mock
-    private FirestationsRepository firestationsRepository;
+    private FirestationRepositoryImpl firestationsRepository;
 
     @Mock
-    private PersonRepository personRepository;
+    private PersonRepositoryImpl personRepository;
 
     @Mock
-    private MedicalRecordsRepository medicalRecordsRepository;
+    private MedicalRecordRepositoryImpl medicalRecordsRepository;
 
     private List<Person> mockPersons;
     @BeforeEach

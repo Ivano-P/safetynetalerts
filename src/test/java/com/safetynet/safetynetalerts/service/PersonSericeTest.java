@@ -2,8 +2,8 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.dto.MinorAndFamily;
 import com.safetynet.safetynetalerts.model.Person;
-import com.safetynet.safetynetalerts.repository.MedicalRecordsRepository;
-import com.safetynet.safetynetalerts.repository.PersonRepository;
+import com.safetynet.safetynetalerts.repository.MedicalRecordRepositoryImpl;
+import com.safetynet.safetynetalerts.repository.PersonRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 class PersonServiceTest {
 
     @Mock
-    PersonRepository personRepository;
+    PersonRepositoryImpl personRepository;
 
     @Mock
-    MedicalRecordsRepository medicalRecordsRepository;
+    MedicalRecordRepositoryImpl medicalRecordsRepository;
 
     @InjectMocks
     PersonService personService;

@@ -3,10 +3,14 @@ package com.safetynet.safetynetalerts.controller;
 import com.safetynet.safetynetalerts.dto.MinorAndFamily;
 import com.safetynet.safetynetalerts.dto.PeopleMedicalRecordsAndFirestation;
 import com.safetynet.safetynetalerts.dto.PersonInfoAndMedicalRecord;
+import com.safetynet.safetynetalerts.model.Person;
+import com.safetynet.safetynetalerts.repository.PersonRepositoryImpl;
 import com.safetynet.safetynetalerts.service.PersonService;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,23 +24,36 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(PersonController.class)
- class PersonControllerTest {
+class PersonControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private PersonService personService;
 
+    @Mock
+    private PersonRepositoryImpl personRepository;
+
     private static List<MinorAndFamily> minorAndFamilyList;
+
+    private static Person person;
+
     @BeforeAll
-    static void setUp() throws Exception{
+    static void setUp() throws Exception {
         minorAndFamilyList = new ArrayList<>();
     }
+
+    @BeforeEach
+    void setUpBeforeEach() {
+        person = new Person("John", "Doe", "1 route saint george", "New York", "0123456789", "john.doe@example.com", "1980-01-01");
+    }
+
     @Test
     void testGetMinorAndFamilyByAddress() throws Exception {
         //Arrange
@@ -77,7 +94,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         String lastName = "Doe";
         List<PersonInfoAndMedicalRecord> mockPersonInfoAndMedicalRecords =
                 Collections.singletonList(new PersonInfoAndMedicalRecord(firstName, lastName, null, null
-                        ,null, 21 , null, null, null));
+                        , null, 21, null, null, null));
 
         when(personService.getPersonInfoAndMedicalRecordByName(firstName, lastName))
                 .thenReturn(mockPersonInfoAndMedicalRecords);
@@ -108,5 +125,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         // Assert
         verify(personService, times(1))
                 .getEmailsByCity(city);
+    }
+
+    @Test
+    void testRemovePerson() throws Exception {
+        // Arrange
+        String firstName = "John";
+        String lastName = "Doe";
+        when(personService.deletePerson(firstName, lastName)).thenReturn(person);
+
+        // Act
+        mockMvc.perform(delete("/person")
+                        .param("firstName", firstName)
+                        .param("lastName", lastName))
+                .andExpect(status().isCreated());
+
+        // Assert
+        verify(personService, times(1)).deletePerson(firstName, lastName);
     }
 }

@@ -26,12 +26,13 @@ public class FirestationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
     @GetMapping("/phoneAlert")
-    public ResponseEntity<PhoneNumbersByFirestation>  getPhoneNumbersOfPeopleByFirestation(@RequestParam("firestation") String stationNumber) {
-        try{
+    public ResponseEntity<PhoneNumbersByFirestation> getPhoneNumbersOfPeopleByFirestation(@RequestParam("firestation") String stationNumber) {
+        try {
             PhoneNumbersByFirestation result = firestationService.getPhoneNumbersByFirestationNumber(stationNumber);
             return ResponseEntity.ok(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -42,33 +43,30 @@ public class FirestationController {
     }
 
     //to add FireStation in body of post request
-    //TODO: unit test
     @PostMapping("/firestation")
-    public ResponseEntity<Firestation> postFirestation(@RequestBody Firestation firestation){
+    public ResponseEntity<Firestation> postFirestation(@RequestBody Firestation firestation) {
         Firestation addedFirestation = firestationService.postFireStation(firestation);
 
-        if (addedFirestation != null){
+        if (addedFirestation != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(addedFirestation);
-        }else{
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    //TODO: unit test
     @PutMapping("/firestation")
-    public ResponseEntity<String> putFirestationNumber(@RequestBody Firestation firestationToEdit){
+    public ResponseEntity<String> putFirestationNumber(@RequestBody Firestation firestationToEdit) {
         firestationService.putFireStaion(firestationToEdit);
 
         return ResponseEntity.ok("Firestation number has been updated to: " + firestationToEdit.getStation());
     }
 
-    //TODO: unit test
     @DeleteMapping("/firestation")
-    public ResponseEntity<String> deleteFirestationCoverageofaddress(@RequestBody Firestation firestationToDelete){
+    public ResponseEntity<String> deleteFirestationCoverageofaddress(@RequestBody Firestation firestationToDelete) {
         firestationService.deleteFirestation(firestationToDelete);
 
         return ResponseEntity.ok(" address removed from coverage of firestation " + firestationToDelete
-                .getAddress() );
+                .getAddress());
     }
 
 }
