@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 class FirestationServiceTest {
 
     @InjectMocks
-    private FirestationService firestationService;
+    private FirestationServiceImpl firestationService;
 
     @Mock
     private FirestationRepositoryImpl firestationsRepository;

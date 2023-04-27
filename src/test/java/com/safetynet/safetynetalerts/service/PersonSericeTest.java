@@ -29,7 +29,7 @@ class PersonServiceTest {
     MedicalRecordRepositoryImpl medicalRecordsRepository;
 
     @InjectMocks
-    PersonService personService;
+    PersonServiceImpl personService;
 
     private List<Person> personsAtSameAddress;
     private List<LocalDate> dobList;

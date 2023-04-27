@@ -5,7 +5,7 @@ import com.safetynet.safetynetalerts.dto.PeopleMedicalRecordsAndFirestation;
 import com.safetynet.safetynetalerts.dto.PersonInfoAndMedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.PersonRepositoryImpl;
-import com.safetynet.safetynetalerts.service.PersonService;
+import com.safetynet.safetynetalerts.service.PersonServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class PersonControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PersonService personService;
+    private PersonServiceImpl personService;
 
     @Mock
     private PersonRepositoryImpl personRepository;

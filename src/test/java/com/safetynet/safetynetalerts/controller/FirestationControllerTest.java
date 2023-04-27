@@ -4,8 +4,8 @@ import com.safetynet.safetynetalerts.dto.Houshold;
 import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
 import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
 import com.safetynet.safetynetalerts.model.Firestation;
-import com.safetynet.safetynetalerts.service.FirestationService;
-import com.safetynet.safetynetalerts.service.PersonService;
+import com.safetynet.safetynetalerts.service.FirestationServiceImpl;
+import com.safetynet.safetynetalerts.service.PersonServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,10 +35,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     private MockMvc mockMvc;
 
     @MockBean
-    private FirestationService firestationService;
+    private FirestationServiceImpl firestationService;
 
    @MockBean
-   private PersonService personService;
+   private PersonServiceImpl personService;
 
    private PeopleByFirestationNumber peopleByFirestationNumber;
 

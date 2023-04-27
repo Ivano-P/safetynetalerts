@@ -3,18 +3,22 @@ package com.safetynet.safetynetalerts.controller;
 import com.safetynet.safetynetalerts.dto.*;
 import com.safetynet.safetynetalerts.model.Firestation;
 import com.safetynet.safetynetalerts.service.FirestationService;
+import com.safetynet.safetynetalerts.service.FirestationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 public class FirestationController {
+    private final FirestationService firestationService;
+
     @Autowired
-    private FirestationService firestationService;
+    public FirestationController(FirestationService firestationService){
+        this.firestationService = firestationService;
+    }
 
     @GetMapping("/firestation")
     public ResponseEntity<PeopleByFirestationNumber> getPeopleByFirestationNumber(@RequestParam("stationNumber") String stationNumber) {

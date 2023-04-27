@@ -1,7 +1,9 @@
 package com.safetynet.safetynetalerts.controller;
 
 import com.safetynet.safetynetalerts.model.MedicalRecord;
+import com.safetynet.safetynetalerts.service.FirestationService;
 import com.safetynet.safetynetalerts.service.MedicalRecordService;
+import com.safetynet.safetynetalerts.service.MedicalRecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class MedicalRecordController {
 
+    private final MedicalRecordService medicalRecordService;
+
     @Autowired
-    private MedicalRecordService medicalRecordService;
+    public MedicalRecordController(MedicalRecordService medicalRecordService){
+        this.medicalRecordService = medicalRecordService;
+    }
 
     //adds MedicalRecord in, body of of post request
     //TODO: unit test

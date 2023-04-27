@@ -5,6 +5,7 @@ import com.safetynet.safetynetalerts.dto.PeopleMedicalRecordsAndFirestation;
 import com.safetynet.safetynetalerts.dto.PersonInfoAndMedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.service.PersonService;
+import com.safetynet.safetynetalerts.service.PersonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,13 @@ import java.util.List;
 
 @RestController
 public class PersonController {
-    
+
+    private final PersonService personService;
+
     @Autowired
-    private PersonService personService;
+    public PersonController(PersonService personService){
+        this.personService = personService;
+    }
 
     @GetMapping("/childAlert")
     public List<MinorAndFamily> getMinorAndFamilyByAddress(@RequestParam("address") String address) {
