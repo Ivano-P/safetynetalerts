@@ -16,7 +16,7 @@ public interface FirestationService {
 
     Firestation postFireStation(Firestation firestation);
 
-    void putFireStaion(Firestation firestationToUpdate);
+    Firestation putFireStaion(Firestation firestationToUpdate);
 
-    void deleteFirestation(Firestation firestationToDelete);
+    Firestation deleteFirestation(Firestation firestationToDelete) ;
 }
