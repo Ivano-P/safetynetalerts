@@ -3,9 +3,9 @@ package com.safetynet.safetynetalerts.service;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 
 public interface MedicalRecordService {
-    void postNewMedicalRecord(MedicalRecord newMedicalRecordToPost);
+    MedicalRecord postNewMedicalRecord(MedicalRecord newMedicalRecordToPost);
 
-    void putMedicalRecord(MedicalRecord updatedMedicalRecord);
+    MedicalRecord putMedicalRecord(MedicalRecord updatedMedicalRecord);
 
-    void deleteMedicalRecord(String firstName, String lastName);
+    MedicalRecord deleteMedicalRecord(String firstName, String lastName);
 }

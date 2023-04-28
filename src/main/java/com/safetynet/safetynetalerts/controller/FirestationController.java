@@ -32,7 +32,7 @@ public class FirestationController {
         if ( result != null){
             return ResponseEntity.ok(result);
         }else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -43,7 +43,7 @@ public class FirestationController {
         if (result != null){
             return ResponseEntity.ok(result);
         }else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -54,7 +54,7 @@ public class FirestationController {
         if (result != null && !result.isEmpty()) {
             return ResponseEntity.ok(result);
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 

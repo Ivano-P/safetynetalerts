@@ -1,13 +1,14 @@
 package com.safetynet.safetynetalerts.controller;
 
 import com.safetynet.safetynetalerts.model.MedicalRecord;
-import com.safetynet.safetynetalerts.service.FirestationService;
 import com.safetynet.safetynetalerts.service.MedicalRecordService;
-import com.safetynet.safetynetalerts.service.MedicalRecordServiceImpl;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Log4j2
 @RestController
 public class MedicalRecordController {
 
@@ -21,30 +22,44 @@ public class MedicalRecordController {
     //adds MedicalRecord in, body of of post request
     //TODO: unit test
     @PostMapping("/medicalRecord")
-    public ResponseEntity<String> postNewMedicalRecord(@RequestBody MedicalRecord newMedicalRecordToPost){
-        medicalRecordService.postNewMedicalRecord(newMedicalRecordToPost);
+    public ResponseEntity<MedicalRecord> postNewMedicalRecord(@RequestBody MedicalRecord newMedicalRecordToPost){
+        log.debug("postNewMedicalRecord()");
+        MedicalRecord addedMedicalRecord =  medicalRecordService.postNewMedicalRecord(newMedicalRecordToPost);
 
-        return ResponseEntity.ok("New medical record was added for " + newMedicalRecordToPost
-                .getFirstName() + " " + newMedicalRecordToPost.getLastName());
+        if( addedMedicalRecord != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(addedMedicalRecord);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
     }
 
     //updates MedicalRecord with information of MedicalRecord in body
     //TODO: unit test
     @PutMapping("/medicalRecord")
-    public ResponseEntity<String> putMedicalRecord(@RequestBody MedicalRecord updatedMedicalRecord){
-        medicalRecordService.putMedicalRecord(updatedMedicalRecord);
+    public ResponseEntity<MedicalRecord> putMedicalRecord(@RequestBody MedicalRecord updatedMedicalRecord){
+        log.debug("putMedicalRecord()");
+        MedicalRecord medicalRecord = medicalRecordService.putMedicalRecord(updatedMedicalRecord);
 
-        return ResponseEntity.ok(updatedMedicalRecord.getFirstName() + " " + updatedMedicalRecord
-                .getLastName() + " medical record updated.");
+        if( medicalRecord != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(medicalRecord);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     //deletes MedicalRecord using first and last name imputed as parameter
     //TODO: unit test
     @DeleteMapping("/medicalRecord")
-    public ResponseEntity<String> deleteMedicalRecord(@RequestParam ("firstName") String firstName,
+    public ResponseEntity<MedicalRecord> deleteMedicalRecord(@RequestParam ("firstName") String firstName,
                                                       @RequestParam ("lastName") String lastName){
-        medicalRecordService.deleteMedicalRecord(firstName, lastName);
+        log.debug("deleteMedicalRecord()");
+        MedicalRecord deletedMedicalRecord = medicalRecordService.deleteMedicalRecord(firstName, lastName);
 
-        return ResponseEntity.ok(firstName + " " + lastName + "'s medical record has been deleted");
+        if( deletedMedicalRecord != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(deletedMedicalRecord);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }

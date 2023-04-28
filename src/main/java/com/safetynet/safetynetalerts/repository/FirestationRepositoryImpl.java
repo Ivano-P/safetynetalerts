@@ -65,7 +65,7 @@ public class FirestationRepositoryImpl implements FirestationRepository{
         for (Firestation firestation : listOfAllFirestations){
             if (firestation.getAddress().equals(firestationToAdd.getAddress()) && firestation.getStation()
                     .equals(firestationToAdd.getStation())){
-                log.error("Duplicate firestation found");
+                log.error(" failed addFirestation() - Duplicate firestation found");
                 throw new DuplicateFirestationException();
             }
         }
@@ -89,7 +89,7 @@ public class FirestationRepositoryImpl implements FirestationRepository{
             }
         }
         if (updatedFirestation == null){
-            log.error("no firestation found to update with the specified address");
+            log.error("failed updateFirestationByAddress() - no firestation found to update with the specified address");
             throw new FirestationNotFoundException("No firestation found with the specified address");
         }
         return  updatedFirestation;
@@ -114,7 +114,7 @@ public class FirestationRepositoryImpl implements FirestationRepository{
             }
         }
         if (firestationToDelete == null){
-            log.error("no firestation found to delete with the specified address");
+            log.error("failed - removeFirestationByAddress()- no firestation found to delete with the specified address");
             throw new FirestationNotFoundException("No firestation found with the specified address");
         }
         return firestationToDelete;

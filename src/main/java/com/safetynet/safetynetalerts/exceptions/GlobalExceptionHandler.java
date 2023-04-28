@@ -21,7 +21,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
-
     @ExceptionHandler(FirestationNotFoundException.class)
     public ResponseEntity<Object> handleFirestationNotFoundException(FirestationNotFoundException fnfe){
         Map<String, Object> responseBody = new HashMap<>();
@@ -30,5 +29,42 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
+
+    @ExceptionHandler(DuplicateMedicalRecordException.class)
+    public ResponseEntity<Object> handleDuplicateMedicalRecordException(DuplicateMedicalRecordException dmre){
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", dmre.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
+    @ExceptionHandler(MedicalRecordNotFountException.class)
+    public ResponseEntity<Object> handleMedicalRecordNotFountException(MedicalRecordNotFountException mrnfe){
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", mrnfe.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+    }
+
+    @ExceptionHandler(DuplicatedPersonException.class)
+    public ResponseEntity<Object> handleDuplicatePersonException(DuplicatedPersonException dpe){
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", dpe.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
+    @ExceptionHandler(PersonNotFoundException.class)
+    public ResponseEntity<Object> handlePersonNotFoundException(PersonNotFoundException pnfe){
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", pnfe.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+    }
+
 }
 

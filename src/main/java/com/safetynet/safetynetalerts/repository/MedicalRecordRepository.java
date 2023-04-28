@@ -19,9 +19,9 @@ public interface MedicalRecordRepository {
 
     int countAmountOfMinors(List<Integer> ages);
 
-    void addNewMedicalRecord(MedicalRecord medicalRecordToAdd);
+    MedicalRecord addNewMedicalRecord(MedicalRecord medicalRecordToAdd);
 
-    void updateMedicalRecordByFirstAndLastName(MedicalRecord updatedMedicalRecord);
+    MedicalRecord updateMedicalRecordByFirstAndLastName(MedicalRecord updatedMedicalRecord);
 
-    void removeMedicalRecordByName(String firstName, String lastName);
+    MedicalRecord removeMedicalRecordByName(String firstName, String lastName);
 }

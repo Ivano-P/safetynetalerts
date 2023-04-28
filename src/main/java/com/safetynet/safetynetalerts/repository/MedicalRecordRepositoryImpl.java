@@ -1,7 +1,10 @@
 package com.safetynet.safetynetalerts.repository;
 
+import com.safetynet.safetynetalerts.exceptions.DuplicateMedicalRecordException;
+import com.safetynet.safetynetalerts.exceptions.MedicalRecordNotFountException;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +16,7 @@ import java.util.List;
 
 import static com.safetynet.safetynetalerts.dao.ExtractObject.extractDataFromJason;
 
-
+@Log4j2
 @Repository
 @Primary
 public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
@@ -25,7 +28,7 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
         this.listOfAllMedicalRecords = extractDataFromJason().getMedicalRecords();
     }
 
-    //Dependency injection consctructor for test
+    //Dependency injection constructor for test
     public MedicalRecordRepositoryImpl(List<MedicalRecord> listOfAllMedicalRecords) {
         this.listOfAllMedicalRecords = listOfAllMedicalRecords;
     }
@@ -35,6 +38,7 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
     //returns list of medicalRecords of persons using list of persons
     @Override
     public List<MedicalRecord> findMedicalRecordsByPersons(List<Person> listOfPersons) {
+        log.debug("findMedicalRecordsByPersons()");
         List<MedicalRecord> medicalRecordsOfPersons = new ArrayList<>();
 
         for (Person person : listOfPersons) {
@@ -46,6 +50,7 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
                 }
             }
         }
+        log.debug("completed findMedicalRecordsByPersons()");
         return medicalRecordsOfPersons;
     }
 
@@ -53,6 +58,7 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
     //to get the dob of a list of people from medical records using their first and last name.
     @Override
     public List<String> findDatesOfBirthInMedicalRecordsByPersons(List<Person> listOfPeopleToCheck) {
+        log.debug("findDatesOfBirthInMedicalRecordsByPersons()");
         ArrayList<String> datesOfBirth = new ArrayList<>();
 
         for (Person person : listOfPeopleToCheck) {
@@ -65,6 +71,7 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
                 }
             }
         }
+        log.debug("completed findDatesOfBirthInMedicalRecordsByPersons()");
         return datesOfBirth;
     }
 
@@ -74,11 +81,13 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
      */
     @Override
     public List<LocalDate> convertListDateStringsToListOfDatesOfBirth(List<String> datesOfBirthStrings) {
+        log.debug("convertListDateStringsToListOfDatesOfBirth()");
         ArrayList<LocalDate> datesOfBirthLocalDateFormat = new ArrayList<>();
 
         for (String dateOfBirth : datesOfBirthStrings) {
             datesOfBirthLocalDateFormat.add(convertDateStringToLocalDate(dateOfBirth));
         }
+        log.debug("completed convertListDateStringsToListOfDatesOfBirth()");
         return datesOfBirthLocalDateFormat;
     }
 
@@ -92,41 +101,58 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
     //converts list of date of births into a list of ages
     @Override
     public List<Integer> calculateAgesByDatesOfBirth(List<LocalDate> datesOfBirth) {
+        log.debug("calculateAgesByDatesOfBirth()");
         ArrayList<Integer> ages = new ArrayList<>();
         for (LocalDate dateOfBirth : datesOfBirth) {
             LocalDate now = LocalDate.now();
             Period period = Period.between(dateOfBirth, now);
             ages.add(period.getYears());
         }
+        log.debug("completed calculateAgesByDatesOfBirth()");
         return ages;
     }
 
     @Override
     public Integer countAmountOfAdults(List<Integer> ages) {
+        log.debug("countAmountOfAdults()");
         int amountOfAdults = 0;
         for (int age : ages) {
             if (age >= 19) {
                 amountOfAdults++;
             }
         }
+        log.debug("completed countAmountOfAdults()");
         return amountOfAdults;
     }
 
     @Override
     public int countAmountOfMinors(List<Integer> ages) {
+        log.debug("countAmountOfMinors()");
         int amountOfMinors = 0;
         for (int age : ages) {
             if (age < 19) {
                 amountOfMinors++;
             }
         }
+        log.debug("completed countAmountOfMinors()");
         return amountOfMinors;
     }
 
     //TODO: unit test
     @Override
-    public void addNewMedicalRecord(MedicalRecord medicalRecordToAdd) {
+    public MedicalRecord addNewMedicalRecord(MedicalRecord medicalRecordToAdd) {
+        log.debug("addNewMedicalRecord()");
+        //check if there is already a medical record for this Person and throw exception if duplicate
+        for(MedicalRecord medicalRecord : listOfAllMedicalRecords){
+            if (medicalRecord.getLastName().equals(medicalRecordToAdd.getLastName()) && medicalRecord.getFirstName()
+                    .equals(medicalRecordToAdd.getFirstName())) {
+                log.error("Duplicate Medical Record");
+                throw new DuplicateMedicalRecordException("Medical record already exist for this person");
+            }
+        }
         listOfAllMedicalRecords.add(medicalRecordToAdd);
+        log.info("completed addNewMedicalRecord()");
+        return medicalRecordToAdd;
     }
 
     /*
@@ -134,7 +160,9 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
     the MedicalRecord imputed as arguement
      */
     @Override
-    public void updateMedicalRecordByFirstAndLastName(MedicalRecord updatedMedicalRecord) {
+    public MedicalRecord updateMedicalRecordByFirstAndLastName(MedicalRecord updatedMedicalRecord) {
+        log.debug("updateMedicalRecordByFirstAndLastName()");
+        MedicalRecord updateMedicalRecord = null;
         for(MedicalRecord medicalRecord : listOfAllMedicalRecords){
             if (medicalRecord.getLastName().equals(updatedMedicalRecord.getLastName()) && medicalRecord.getFirstName()
                     .equals(updatedMedicalRecord.getFirstName())) {
@@ -142,20 +170,41 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
                 medicalRecord.setBirthdate(updatedMedicalRecord.getBirthdate());
                 medicalRecord.setMedications(updatedMedicalRecord.getMedications());
                 medicalRecord.setAllergies(updatedMedicalRecord.getAllergies());
+
+                updateMedicalRecord = new MedicalRecord(medicalRecord.getFirstName(), medicalRecord.getLastName(),
+                        medicalRecord.getBirthdate(), medicalRecord.getMedications() , medicalRecord.getAllergies());
                 break;
             }
         }
+        if (updateMedicalRecord == null){
+            log.debug("failed updateMedicalRecordByFirstAndLastName() - Medical Record not found");
+            throw new MedicalRecordNotFountException();
+
+        }
+        log.info("completed updateMedicalRecordByFirstAndLastName()");
+        return updateMedicalRecord;
     }
 
     //checks for a MedicalRecord with same first and last name and if found deletes it
     @Override
-    public void removeMedicalRecordByName(String firstName, String lastName) {
+    public MedicalRecord removeMedicalRecordByName(String firstName, String lastName) {
+        log.debug("removeMedicalRecordByName()");
+        MedicalRecord deletedMedicalRecord = null;
         for(int i = 0 ; i < listOfAllMedicalRecords.size(); i++){
             MedicalRecord medicalRecord = listOfAllMedicalRecords.get(i);
             if (medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)){
+
+                deletedMedicalRecord = new MedicalRecord(medicalRecord.getFirstName(), medicalRecord.getLastName(),
+                        medicalRecord.getBirthdate(), medicalRecord.getMedications(), medicalRecord. getAllergies());
                 listOfAllMedicalRecords.remove(i);
                 break;
             }
         }
+        if (deletedMedicalRecord == null){
+            throw new MedicalRecordNotFountException("No Medical record found with specified first and last name");
+        }
+
+        log.info("completed removeMedicalRecordByName()");
+        return deletedMedicalRecord;
     }
 }
