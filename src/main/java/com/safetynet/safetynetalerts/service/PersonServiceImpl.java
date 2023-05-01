@@ -63,7 +63,6 @@ public class PersonServiceImpl implements PersonService{
         return minorsAgeAndFamily;
     }
 
-    //TODO: Unit Test
     @Override
     public PeopleMedicalRecordsAndFirestation getPeopleMedicalRecordsAndFirestationByAddress(String address){
 
@@ -100,7 +99,6 @@ public class PersonServiceImpl implements PersonService{
                 , firestationRepository.findFirestationNumberByAddress(personsAtSameAddress.get(0).getAddress()));
     }
 
-    //TODO: unit test
     @Override
     public List<PersonInfoAndMedicalRecord> getPersonInfoAndMedicalRecordByName(String firstName, String lastName){
 
@@ -136,7 +134,6 @@ public class PersonServiceImpl implements PersonService{
         return personInfoAndMedicalRecords;
     }
 
-    //TODO: unit test
     @Override
     public List<String> getEmailsByCity(String city){
 
@@ -155,7 +152,6 @@ public class PersonServiceImpl implements PersonService{
     }
 
     //adds newPersonToAd as a list of one newPersonToAd, since safetyNet take a list of Persons
-    //TODO: unit test
     @Override
     public Person postNewPerson(Person newPersonToAd){
 
@@ -163,7 +159,6 @@ public class PersonServiceImpl implements PersonService{
         return personRepository.addPerson(newPersonToAd);
     }
 
-    //TODO: unit test
     @Override
     public Person putPerson(Person personToEdit){
 

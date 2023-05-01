@@ -143,7 +143,6 @@ public class FirestationServiceImpl implements FirestationService{
         return households;
     }
 
-    //TODO: add unit test<
     //add firestation from request boddy to listOfAllFirestations
     @Override
     public Firestation postFireStation(Firestation firestation)  {
@@ -152,7 +151,6 @@ public class FirestationServiceImpl implements FirestationService{
         return firestationRepository.addFirestation(firestation);
     }
 
-    //TODO: add unit test
     @Override
     public Firestation putFireStaion(Firestation firestationToUpdate) {
 
@@ -161,7 +159,6 @@ public class FirestationServiceImpl implements FirestationService{
                 .getStation());
     }
 
-    //TODO: add unit test
     @Override
     public Firestation deleteFirestation(Firestation firestationToDelete)  {
 

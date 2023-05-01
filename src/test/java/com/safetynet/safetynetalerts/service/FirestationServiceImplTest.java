@@ -24,8 +24,12 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+import com.safetynet.safetynetalerts.model.Firestation;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+
 @ExtendWith(MockitoExtension.class)
-class FirestationServiceTest {
+class FirestationServiceImplTest {
 
     @InjectMocks
     private FirestationServiceImpl firestationService;
@@ -51,7 +55,7 @@ class FirestationServiceTest {
 
     @Test
     @DisplayName("Verify that repository methods are called once when searching by firestation")
-    void testGetListOfAdultsAndMinorsCoveredByFirestation() {
+    void testGetAdultsAndMinorsCoveredByFirestationNumber() {
         // Arrange
         String firestationNumber = "1";
         when(firestationsRepository.findAddressByFirestationNumber(anyString())).thenReturn(Arrays.asList("1 route saint george"));
@@ -77,7 +81,7 @@ class FirestationServiceTest {
     }
 
     @Test
-    void testGetListOfPhoneNumbersByFirestation(){
+    void testGetPhoneNumbersByFirestationNumber(){
         // Arrange
         String firestationNumber = "1";
         when(firestationsRepository.findAddressByFirestationNumber(anyString()))
@@ -91,5 +95,63 @@ class FirestationServiceTest {
         assertThat(result.getPhoneNumbers()).containsExactlyInAnyOrder("111-222-3333", "444-555-6666");
     }
 
+    @Test
+    @DisplayName("Test getPersonsByFireStationNumber")
+    void testGetPersonsByFireStationNumber() {
+        // Arrange
+        String firestationNumber = "1";
+        when(firestationsRepository.findAddressByFirestationNumber(anyString()))
+                .thenReturn(List.of("1 route saint george"));
+        when(personRepository.findPeopleByFireStationAddress(anyString())).thenReturn(mockPersons);
+
+        // Act
+        List<Person> result = firestationService.getPersonsByFireStationNumber(firestationNumber);
+
+        // Assert
+        assertThat(result).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("Test postFireStation")
+    void testPostFireStation() {
+        // Arrange
+        Firestation expectedFirestation = new Firestation("1 route saint george", "1");
+        when(firestationsRepository.addFirestation(any(Firestation.class))).thenReturn(expectedFirestation);
+
+        // Act
+        Firestation actualFirestation = firestationService.postFireStation(expectedFirestation);
+
+        // Assert
+        assertThat(actualFirestation).isEqualTo(expectedFirestation);
+    }
+
+    @Test
+    @DisplayName("Test putFireStaion")
+    void testPutFireStaion() {
+        // Arrange
+        Firestation firestationToUpdate = new Firestation("1 route saint george", "1");
+        when(firestationsRepository.updateFirestationByAddress(anyString(), anyString())).thenReturn(firestationToUpdate);
+
+        // Act
+        Firestation firestation = firestationService.putFireStaion(firestationToUpdate);
+
+        // Assert
+        assertThat(firestation).isEqualTo(firestationToUpdate);
+    }
+
+    @Test
+    @DisplayName("Test deleteFirestation")
+    void testDeleteFirestation() {
+        // Arrange
+        Firestation firestationToDelete = new Firestation("1 route saint george", "1");
+        when(firestationsRepository.removeFirestationByAddress(anyString())).thenReturn(firestationToDelete);
+
+        // Act
+        Firestation firestation = firestationService.deleteFirestation(firestationToDelete);
+
+        // Assert
+        assertThat(firestation).isEqualTo(firestationToDelete);
+        verify(firestationsRepository, times(1)).removeFirestationByAddress(firestationToDelete.getAddress());
+    }
 
 }
