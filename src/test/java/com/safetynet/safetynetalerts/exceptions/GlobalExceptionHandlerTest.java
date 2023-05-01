@@ -13,16 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
+
 import static org.mockito.Mockito.when;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -33,22 +29,24 @@ class GlobalExceptionHandlerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PersonRepositoryImpl personRepository;
+    private PersonRepositoryImpl personRepositoryImpl;
 
     @MockBean
-    private FirestationRepositoryImpl firestationRepository;
+    private FirestationRepositoryImpl firestationRepositoryImpl;
 
     @MockBean
-    private MedicalRecordRepositoryImpl medicalRecordRepository;
-
+    private MedicalRecordRepositoryImpl medicalRecordRepositoryImpl;
 
     @Test
     void testGetPersonInfoAndMedicalRecords_personNotFound() throws Exception {
+
+        // Arrange
         String firstName = "NonExistentFirstName";
         String lastName = "NonExistentLastName";
+        when(personRepositoryImpl.findPeopleByName(firstName, lastName))
+                .thenThrow(new PersonNotFoundException("Person not found"));
 
-        when(personRepository.findPeopleByName(firstName, lastName)).thenThrow(new PersonNotFoundException("Person not found"));
-
+        // Act & Assert
         mockMvc.perform(get("/personInfo")
                         .param("firstName", firstName)
                         .param("lastName", lastName))
@@ -58,25 +56,29 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void testFindAddressByFirestationNumber_firestationNotFound() throws Exception {
-        String firestationNumber = "999"; // an invalid firestation number
 
-        when(firestationRepository.findAddressByFirestationNumber(firestationNumber))
+        // Arrange
+        String firestationNumber = "999"; // an invalid firestation number
+        when(firestationRepositoryImpl.findAddressByFirestationNumber(firestationNumber))
                 .thenThrow(new FirestationNotFoundException("No fire station found with the specified station number"));
 
+        // Act & Assert
         mockMvc.perform(get("/firestation")
                         .param("stationNumber", firestationNumber))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("No fire station found with the specified station number"));
+                .andExpect(jsonPath("$.message")
+                        .value("No fire station found with the specified station number"));
     }
 
     @Test
     void testAddFirestation_duplicateFirestation() throws Exception {
-        // create a new firestation with an existing address and station number
-        Firestation firestation = new Firestation("1509 Culver St", "3");
 
-        when(firestationRepository.addFirestation(firestation))
+        // Arrange
+        Firestation firestation = new Firestation("1509 Culver St", "3");
+        when(firestationRepositoryImpl.addFirestation(firestation))
                 .thenThrow(new DuplicateFirestationException("Firestation already exists"));
 
+        // Act & Assert
         mockMvc.perform(post("/firestation")
                         .contentType("application/json")
                         .content("{\"address\":\"1509 Culver St\",\"station\":\"3\"}"))
@@ -86,11 +88,14 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void testAddMedicalRecord_duplicateMedicalRecord() throws Exception {
-        MedicalRecord medicalRecord = new MedicalRecord("John", "Doe", "01/01/2000", null, null);
 
-        when(medicalRecordRepository.addNewMedicalRecord(medicalRecord))
+        // Arrange
+        MedicalRecord medicalRecord = new MedicalRecord("John", "Doe", "01/01/2000",
+                null, null);
+        when(medicalRecordRepositoryImpl.addNewMedicalRecord(medicalRecord))
                 .thenThrow(new DuplicateMedicalRecordException("Medical record already exists"));
 
+        // Act & Assert
         mockMvc.perform(post("/medicalRecord")
                         .contentType("application/json")
                         .content("{\"firstName\":\"John\",\"lastName\":\"Doe\",\"birthdate\":\"01/01/2000\"}"))
@@ -100,32 +105,39 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void testUpdateMedicalRecord_medicalRecordNotFound() throws Exception {
-        MedicalRecord medicalRecord = new MedicalRecord("NonExistentFirstName", "NonExistentLastName", "01/01/2000", null, null);
 
-        when(medicalRecordRepository.updateMedicalRecordByFirstAndLastName(medicalRecord))
+        // Arrange
+        MedicalRecord medicalRecord = new MedicalRecord("NonExistentFirstName", "NonExistentLastName",
+                "01/01/2000", null, null);
+        when(medicalRecordRepositoryImpl.updateMedicalRecordByFirstAndLastName(medicalRecord))
                 .thenThrow(new MedicalRecordNotFoundException("Medical record not found"));
 
+        // Act & Assert
         mockMvc.perform(put("/medicalRecord")
                         .contentType("application/json")
-                        .content("{\"firstName\":\"NonExistentFirstName\",\"lastName\":\"NonExistentLastName\",\"birthdate\":\"01/01/2000\"}"))
+                        .content("{\"firstName\":\"NonExistentFirstName\",\"lastName\":\"NonExistentLastName\"," +
+                                "\"birthdate\":\"01/01/2000\"}"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Medical record not found"));
     }
 
     @Test
     void testAddPerson_duplicatePerson() throws Exception {
-        Person person = new Person("John", "Doe", "1509 Culver St", "Culver", "97451", "841-874-6512", "john.doe@example.com");
 
-        when(personRepository.addPerson(person))
+        // Arrange
+        Person person = new Person("John", "Doe", "1509 Culver St", "Culver",
+                "97451", "841-874-6512", "john.doe@example.com");
+        when(personRepositoryImpl.addPerson(person))
                 .thenThrow(new DuplicatedPersonException("Person already exists"));
 
+        // Act & Assert
         mockMvc.perform(post("/person")
                         .contentType("application/json")
-                        .content("{\"firstName\":\"John\",\"lastName\":\"Doe\",\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6512\",\"email\":\"john.doe@example.com\"}"))
+                        .content("{\"firstName\":\"John\",\"lastName\":\"Doe\",\"address\":\"1509 Culver St\"," +
+                                "\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6512\"," +
+                                "\"email\":\"john.doe@example.com\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Person already exists"))
                 .andExpect(jsonPath("$.timestamp").exists());
     }
-
 }
-
