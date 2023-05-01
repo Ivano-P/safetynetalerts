@@ -2,7 +2,7 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.dto.MinorAndFamily;
 import com.safetynet.safetynetalerts.model.Person;
-import com.safetynet.safetynetalerts.repository.MedicalRecordRepositoryImpl;
+import com.safetynet.safetynetalerts.repository.MedicalRecordRepository;
 import com.safetynet.safetynetalerts.repository.PersonRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class PersonServiceTest {
     PersonRepositoryImpl personRepository;
 
     @Mock
-    MedicalRecordRepositoryImpl medicalRecordsRepository;
+    MedicalRecordRepository medicalRecordsRepository;
 
     @InjectMocks
     PersonServiceImpl personService;

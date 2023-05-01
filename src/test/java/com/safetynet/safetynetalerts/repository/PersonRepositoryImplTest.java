@@ -2,7 +2,6 @@ package com.safetynet.safetynetalerts.repository;
 
 import com.safetynet.safetynetalerts.exceptions.PersonNotFoundException;
 import com.safetynet.safetynetalerts.model.Person;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,13 +12,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class PersonRepositoryTest {
-    private static List<Person> mockListOfAllPersons;
+class PersonRepositoryImplTest {
     private PersonRepositoryImpl personRepository;
 
-    @BeforeAll
-    static void setUp() throws Exception {
-        mockListOfAllPersons = new ArrayList<>();
+    @BeforeEach()
+    void setUpPerEach() {
+        List<Person> mockListOfAllPersons = new ArrayList<>();
         mockListOfAllPersons.add(new Person("John", "Doe", "1 route saint george",
                 "City1", "12345", "111-111-1111", "john@example.com"));
         mockListOfAllPersons.add(new Person("Jane", "Doe", "1 route dupont",
@@ -28,12 +26,8 @@ class PersonRepositoryTest {
                 "City1", "12345", "333-333-3333", "jack@example.com"));
         mockListOfAllPersons.add(new Person("Jaky", "Chan", "2 rue jean",
                 "City3", "12347", "444-444-4444", "jaky@example.com"));
-    }
 
-    @BeforeEach()
-    void setUpPerEach() {
         personRepository = new PersonRepositoryImpl(mockListOfAllPersons);
-
     }
 
     @Test

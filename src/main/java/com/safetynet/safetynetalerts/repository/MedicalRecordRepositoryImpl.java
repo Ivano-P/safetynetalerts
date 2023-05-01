@@ -34,7 +34,6 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
     }
 
 
-    //TODO: Unit Test
     //returns list of medicalRecords of persons using list of persons
     @Override
     public List<MedicalRecord> findMedicalRecordsByPersons(List<Person> listOfPersons) {
@@ -145,7 +144,6 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
         return amountOfMinors;
     }
 
-    //TODO: unit test
     @Override
     public MedicalRecord addNewMedicalRecord(MedicalRecord medicalRecordToAdd) {
 

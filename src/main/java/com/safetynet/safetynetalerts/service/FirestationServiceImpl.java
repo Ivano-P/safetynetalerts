@@ -1,11 +1,9 @@
 package com.safetynet.safetynetalerts.service;
 
-import com.safetynet.safetynetalerts.exceptions.DuplicateFirestationException;
 import com.safetynet.safetynetalerts.dto.Houshold;
 import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
 import com.safetynet.safetynetalerts.dto.PersonWithMedicalInfo;
 import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
-import com.safetynet.safetynetalerts.exceptions.FirestationNotFoundException;
 import com.safetynet.safetynetalerts.model.Firestation;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;

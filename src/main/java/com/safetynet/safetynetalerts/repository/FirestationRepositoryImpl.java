@@ -49,7 +49,6 @@ public class FirestationRepositoryImpl implements FirestationRepository{
         return adressHandledByFirestation;
     }
 
-    //TODO: unit test
     @Override
     public String findFirestationNumberByAddress(String address){
         log.debug("findFirestationNumberByAddress() " + address);
@@ -67,7 +66,6 @@ public class FirestationRepositoryImpl implements FirestationRepository{
         return firestationNumber;
     }
 
-    //TODO: unit test
     @Override
     public Firestation addFirestation(Firestation firestationToAdd) {
 
@@ -86,7 +84,6 @@ public class FirestationRepositoryImpl implements FirestationRepository{
     }
 
     //changes the station number of the firestation the imputed address
-    //TODO: unit test
     @Override
     public Firestation updateFirestationByAddress(String addressCoveredByFirestation, String firestationNumberToUpdate)  {
 
@@ -111,7 +108,6 @@ public class FirestationRepositoryImpl implements FirestationRepository{
     cycles through the listOfAllFirestations and stops iterating through the list once on the index of the firestation
     covering that address, remove that firestation from the list and break out of the loop.
      */
-    //TODO: unit test
     @Override
     public Firestation removeFirestationByAddress(String firestationCoveredAddress){
 

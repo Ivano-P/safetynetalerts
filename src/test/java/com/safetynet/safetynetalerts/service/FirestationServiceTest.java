@@ -4,7 +4,7 @@ import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
 import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.FirestationRepositoryImpl;
-import com.safetynet.safetynetalerts.repository.MedicalRecordRepositoryImpl;
+import com.safetynet.safetynetalerts.repository.MedicalRecordRepository;
 import com.safetynet.safetynetalerts.repository.PersonRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +37,7 @@ class FirestationServiceTest {
     private PersonRepositoryImpl personRepository;
 
     @Mock
-    private MedicalRecordRepositoryImpl medicalRecordsRepository;
+    private MedicalRecordRepository medicalRecordsRepository;
 
     private List<Person> mockPersons;
     @BeforeEach
