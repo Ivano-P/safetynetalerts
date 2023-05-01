@@ -1,8 +1,10 @@
 package com.safetynet.safetynetalerts.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @ToString
+@EqualsAndHashCode
 public class Person {
     private String firstName;
     private String lastName;

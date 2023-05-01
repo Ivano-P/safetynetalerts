@@ -1,10 +1,12 @@
 package com.safetynet.safetynetalerts.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.List;
 
 @ToString
+@EqualsAndHashCode
 public class MedicalRecord {
     private String firstName;
     private String lastName;

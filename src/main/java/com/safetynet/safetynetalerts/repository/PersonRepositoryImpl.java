@@ -62,7 +62,6 @@ public class PersonRepositoryImpl implements PersonRepository{
         return personsAtSameAddress;
     }
 
-    //TODO: unit test
     @Override
     public List<Person> findPeopleByName(String firstName, String lastName) {
 
@@ -81,7 +80,6 @@ public class PersonRepositoryImpl implements PersonRepository{
         return personsWithThatName;
     }
 
-    //TODO: unit test
     @Override
     //returns a list of all persons that lives a city
     public List<Person> findPeopleByCity(String city) {
@@ -97,7 +95,6 @@ public class PersonRepositoryImpl implements PersonRepository{
         return peopleFromCity;
     }
 
-    //TODO: unit test
     @Override
     public Person addPerson(Person personToAdd) {
 
@@ -127,7 +124,7 @@ public class PersonRepositoryImpl implements PersonRepository{
                 foundPersonToUpdate = true;
                 person.setAddress(personToEdit.getAddress());
                 person.setCity(personToEdit.getCity());
-                person.setCity(personToEdit.getCity());
+                person.setZip(personToEdit.getZip());
                 person.setPhone(personToEdit.getPhone());
                 person.setEmail(personToEdit.getEmail());
             }
