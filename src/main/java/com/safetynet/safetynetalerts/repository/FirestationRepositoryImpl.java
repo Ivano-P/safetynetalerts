@@ -31,7 +31,8 @@ public class FirestationRepositoryImpl implements FirestationRepository{
 
     @Override
     public List<String> findAddressByFirestationNumber(String firestationNumber){
-        log.debug("findAddressByFirestationNumber()");
+
+        log.debug("findAddressByFirestationNumber() " + firestationNumber);
         List<String> adressHandledByFirestation =  new ArrayList<>();
 
         for(Firestation firestation : listOfAllFirestations){
@@ -39,38 +40,48 @@ public class FirestationRepositoryImpl implements FirestationRepository{
                 adressHandledByFirestation.add(firestation.getAddress());
             }
         }
-        log.debug("completed findAddressByFirestationNumber()");
+        if (adressHandledByFirestation.isEmpty()){
+            log.error(" Fire station not found exception");
+            throw new FirestationNotFoundException("No fire station found with the specified station number");
+        }
+
+        log.debug("completed findAddressByFirestationNumber() " + firestationNumber);
         return adressHandledByFirestation;
     }
 
     //TODO: unit test
     @Override
     public String findFirestationNumberByAddress(String address){
-        log.debug("findFirestationNumberByAddress()");
+        log.debug("findFirestationNumberByAddress() " + address);
         String firestationNumber = null;
         for (Firestation firestation : listOfAllFirestations){
             if (firestation.getAddress().equals(address)){
                firestationNumber = firestation.getStation();
             }
         }
-        log.debug("Completed findFirestationNumberByAddress()");
+        if (firestationNumber == null){
+            log.error(" Fire station not found exception");
+            throw new FirestationNotFoundException("No fire station found covering the specified Address");
+        }
+        log.debug("Completed findFirestationNumberByAddress() " + address);
         return firestationNumber;
     }
 
     //TODO: unit test
     @Override
     public Firestation addFirestation(Firestation firestationToAdd) {
+
         //check if there is any duplicate firestation and throw DuplicateFirestationExeption if there is
-        log.debug("addFirestation()");
+        log.debug("addFirestation() " + firestationToAdd);
         for (Firestation firestation : listOfAllFirestations){
             if (firestation.getAddress().equals(firestationToAdd.getAddress()) && firestation.getStation()
                     .equals(firestationToAdd.getStation())){
-                log.error(" failed addFirestation() - Duplicate firestation found");
+                log.error("Duplicate Firestation Exception");
                 throw new DuplicateFirestationException();
             }
         }
         listOfAllFirestations.add(firestationToAdd);
-        log.info("completed addFirestation()");
+        log.info("completed addFirestation() " + firestationToAdd);
         return firestationToAdd;
     }
 
@@ -78,20 +89,21 @@ public class FirestationRepositoryImpl implements FirestationRepository{
     //TODO: unit test
     @Override
     public Firestation updateFirestationByAddress(String addressCoveredByFirestation, String firestationNumberToUpdate)  {
-        log.debug("updateFirestationByAddress()");
+
+        log.debug("updateFirestationByAddress() " + addressCoveredByFirestation + " " + firestationNumberToUpdate);
         Firestation updatedFirestation = null;
         for (Firestation firestation : listOfAllFirestations) {
             if (firestation.getAddress().equals(addressCoveredByFirestation)) {
                 firestation.setStation(firestationNumberToUpdate);
-                log.info("completed updateFirestationByAddress()");
                 updatedFirestation = new Firestation(firestation.getAddress(), firestation.getStation());
                 break;
             }
         }
         if (updatedFirestation == null){
-            log.error("failed updateFirestationByAddress() - no firestation found to update with the specified address");
+            log.error("Firestation Not Found Exception");
             throw new FirestationNotFoundException("No firestation found with the specified address");
         }
+        log.info("completed updateFirestationByAddress() " + addressCoveredByFirestation + " " + firestationNumberToUpdate);
         return  updatedFirestation;
     }
 
@@ -102,21 +114,22 @@ public class FirestationRepositoryImpl implements FirestationRepository{
     //TODO: unit test
     @Override
     public Firestation removeFirestationByAddress(String firestationCoveredAddress){
-        log.debug("removeFirestationByAddress()");
+
+        log.debug("removeFirestationByAddress() " + firestationCoveredAddress);
         Firestation firestationToDelete = null;
         for(int i = 0; i < listOfAllFirestations.size(); i++){
             Firestation firestation = listOfAllFirestations.get(i);
             if(firestation.getAddress().equals(firestationCoveredAddress)){
                 firestationToDelete = new Firestation(firestation.getAddress(),firestation.getStation());
                 listOfAllFirestations.remove(i);
-                log.info("completed removeFirestationByAddress()");
                 break;
             }
         }
         if (firestationToDelete == null){
-            log.error("failed - removeFirestationByAddress()- no firestation found to delete with the specified address");
+            log.error("Firestation Not Found Exception ");
             throw new FirestationNotFoundException("No firestation found with the specified address");
         }
+        log.info("completed removeFirestationByAddress() " + firestationCoveredAddress);
         return firestationToDelete;
     }
 }

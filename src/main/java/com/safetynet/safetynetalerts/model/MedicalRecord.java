@@ -1,7 +1,10 @@
 package com.safetynet.safetynetalerts.model;
 
+import lombok.ToString;
+
 import java.util.List;
 
+@ToString
 public class MedicalRecord {
     private String firstName;
     private String lastName;

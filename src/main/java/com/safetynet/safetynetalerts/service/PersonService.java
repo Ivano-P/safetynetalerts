@@ -13,6 +13,6 @@ public interface PersonService {
     List<PersonInfoAndMedicalRecord> getPersonInfoAndMedicalRecordByName(String firstName, String lastName);
     List<String> getEmailsByCity(String city);
     Person postNewPerson(Person newPersonToAd);
-    void putPerson(Person personToEdit);
+    Person putPerson(Person personToEdit);
     Person deletePerson(String firstName, String lastName);
 }

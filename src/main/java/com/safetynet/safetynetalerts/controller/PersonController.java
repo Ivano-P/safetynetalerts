@@ -6,6 +6,7 @@ import com.safetynet.safetynetalerts.dto.PersonInfoAndMedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.service.PersonService;
 import com.safetynet.safetynetalerts.service.PersonServiceImpl;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Log4j2
 @RestController
 public class PersonController {
 
@@ -25,11 +27,15 @@ public class PersonController {
 
     @GetMapping("/childAlert")
     public List<MinorAndFamily> getMinorAndFamilyByAddress(@RequestParam("address") String address) {
+
+        log.debug("getMinorAndFamilyByAddress()" + address);
         return personService.getMinorsAndFamilyByAddress(address);
     }
 
     @GetMapping("/fire")
     public PeopleMedicalRecordsAndFirestation getPersonMedicalRecordAndFirestation(@RequestParam("address") String address){
+
+        log.debug("getPersonMedicalRecordAndFirestation()" + address);
         return personService.getPeopleMedicalRecordsAndFirestationByAddress(address);
     }
 
@@ -38,42 +44,40 @@ public class PersonController {
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName){
 
+        log.debug("getPersonInfoAndMedicalRecords()" + firstName + " " + lastName);
         return personService.getPersonInfoAndMedicalRecordByName(firstName, lastName);
     }
 
     @GetMapping("/communityEmail")
     public List<String> getEmailsOfPeopleFromCity(@RequestParam("city") String city){
+
+        log.debug("getEmailsOfPeopleFromCity()" + city);
         return personService.getEmailsByCity(city);
     }
 
-    //TODO: add unit test
     @PostMapping("/person")
     public ResponseEntity<Person> addNewPerson(@RequestBody Person person){
+
+        log.debug("addNewPerson()" + person);
         Person addedPerson = personService.postNewPerson(person);
-        if (addedPerson != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(addedPerson);
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedPerson);
     }
 
-    //TODO: add unit test
     @PutMapping("/person")
-    public ResponseEntity<String> editPerson(@RequestBody Person person){
-        personService.putPerson(person);
-        return ResponseEntity.ok(person.getFirstName() + person.getLastName() + " information has been updated");
+    public ResponseEntity<Person> editPerson(@RequestBody Person person){
+
+        log.debug("editPerson()" + person);
+        Person updatedPerson = personService.putPerson(person);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedPerson);
     }
 
-    //TODO: add unit test
-    @DeleteMapping("/person")
-    public ResponseEntity<String> deletePerson(@RequestParam("firstName") String firstName,
-                                               @RequestParam("lastName") String lastName){
-        Person deletedPerson = personService.deletePerson(firstName, lastName);
 
-        if (deletedPerson != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(firstName + " " + lastName + " has been deleted");
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @DeleteMapping("/person")
+    public ResponseEntity<Void> deletePerson(@RequestParam("firstName") String firstName,
+                                               @RequestParam("lastName") String lastName){
+
+        log.debug("deletePerson()" + firstName + lastName);
+        personService.deletePerson(firstName, lastName);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

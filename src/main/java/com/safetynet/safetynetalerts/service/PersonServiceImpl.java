@@ -4,6 +4,7 @@ import com.safetynet.safetynetalerts.dto.*;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.*;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 @Service
 @Primary
 public class PersonServiceImpl implements PersonService{
@@ -30,6 +32,8 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public List<MinorAndFamily> getMinorsAndFamilyByAddress(String address){
+
+        log.debug("getMinorsAndFamilyByAddress()" + address);
         List<Person> personsAtSameAddress = personRepository.findPeopleByAddress(address);
 
         //List with age for each person from list 'personAtSameAddress'
@@ -55,12 +59,15 @@ public class PersonServiceImpl implements PersonService{
                 );
             }
         }
+        log.info("Completed getMinorsAndFamilyByAddress()" + address);
         return minorsAgeAndFamily;
     }
 
     //TODO: Unit Test
     @Override
     public PeopleMedicalRecordsAndFirestation getPeopleMedicalRecordsAndFirestationByAddress(String address){
+
+        log.debug("getPeopleMedicalRecordsAndFirestationByAddress()" + address);
         List<PersonAndMedicalRecord> listOfPersonsMedicalRecordAndFireStation = new ArrayList<>();
 
         //List off people at inputted address
@@ -87,6 +94,8 @@ public class PersonServiceImpl implements PersonService{
                             ,ages.get(i), medicalRecordsOfPeopleAtSameAddress.get(i).getMedications()
                             ,medicalRecordsOfPeopleAtSameAddress.get(i).getAllergies()));
         }
+
+        log.info("Completed getPeopleMedicalRecordsAndFirestationByAddress()" + address);
         return new PeopleMedicalRecordsAndFirestation(listOfPersonsMedicalRecordAndFireStation
                 , firestationRepository.findFirestationNumberByAddress(personsAtSameAddress.get(0).getAddress()));
     }
@@ -94,6 +103,8 @@ public class PersonServiceImpl implements PersonService{
     //TODO: unit test
     @Override
     public List<PersonInfoAndMedicalRecord> getPersonInfoAndMedicalRecordByName(String firstName, String lastName){
+
+        log.debug("getPersonInfoAndMedicalRecordByName()" + firstName + " " + lastName);
         //stores list of people found  with that first and lsat name.
         List<Person> personByName = personRepository.findPeopleByName(firstName, lastName);
         //stores their medical records
@@ -121,12 +132,15 @@ public class PersonServiceImpl implements PersonService{
                 , person.getAddress(), person.getCity(), person.getZip(), age ,person.getEmail()
                 , medicalRecord.getMedications(), medicalRecord.getAllergies()));
         }
+        log.info("Completed getPersonInfoAndMedicalRecordByName()" + firstName + " " + lastName);
         return personInfoAndMedicalRecords;
     }
 
     //TODO: unit test
     @Override
     public List<String> getEmailsByCity(String city){
+
+        log.debug("getEmailsByCity()" + city);
         List<Person> personsFromCity = personRepository.findPeopleByCity(city);
 
         //retrieves the email from each person in that list of people from that city
@@ -136,6 +150,7 @@ public class PersonServiceImpl implements PersonService{
             personsEmailFromCity.add(person.getEmail());
             }
         }
+        log.info("Completed getEmailsByCity()" + city);
         return personsEmailFromCity;
     }
 
@@ -143,19 +158,23 @@ public class PersonServiceImpl implements PersonService{
     //TODO: unit test
     @Override
     public Person postNewPerson(Person newPersonToAd){
-        personRepository.addPerson(newPersonToAd);
 
-        return newPersonToAd;
+        log.debug("postNewPerson()" + newPersonToAd);
+        return personRepository.addPerson(newPersonToAd);
     }
 
     //TODO: unit test
     @Override
-    public void putPerson(Person personToEdit){
-        personRepository.updatePerson(personToEdit);
+    public Person putPerson(Person personToEdit){
+
+        log.debug("putPerson()" + personToEdit);
+       return personRepository.updatePerson(personToEdit);
     }
 
     @Override
     public Person deletePerson(String firstName, String lastName) {
+
+        log.debug("deletePerson()" + firstName + " " + lastName);
         return personRepository.removePerson(firstName, lastName);
     }
 }

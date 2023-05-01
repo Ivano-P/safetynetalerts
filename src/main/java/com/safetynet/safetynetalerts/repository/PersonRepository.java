@@ -14,9 +14,9 @@ public interface PersonRepository {
 
     List<Person> findPeopleByCity(String city);
 
-    void addPerson(Person personToAdd);
+    Person addPerson(Person personToAdd);
 
-    void updatePerson(Person personToEdit);
+    Person updatePerson(Person personToEdit);
 
     Person removePerson(String firstName, String lastName);
 }

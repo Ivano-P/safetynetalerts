@@ -20,46 +20,31 @@ public class MedicalRecordController {
     }
 
     //adds MedicalRecord in, body of of post request
-    //TODO: unit test
     @PostMapping("/medicalRecord")
     public ResponseEntity<MedicalRecord> postNewMedicalRecord(@RequestBody MedicalRecord newMedicalRecordToPost){
-        log.debug("postNewMedicalRecord()");
-        MedicalRecord addedMedicalRecord =  medicalRecordService.postNewMedicalRecord(newMedicalRecordToPost);
 
-        if( addedMedicalRecord != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(addedMedicalRecord);
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        log.debug("postNewMedicalRecord()" + newMedicalRecordToPost);
+        MedicalRecord addedMedicalRecord =  medicalRecordService.postNewMedicalRecord(newMedicalRecordToPost);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedMedicalRecord);
 
     }
 
     //updates MedicalRecord with information of MedicalRecord in body
-    //TODO: unit test
     @PutMapping("/medicalRecord")
     public ResponseEntity<MedicalRecord> putMedicalRecord(@RequestBody MedicalRecord updatedMedicalRecord){
-        log.debug("putMedicalRecord()");
-        MedicalRecord medicalRecord = medicalRecordService.putMedicalRecord(updatedMedicalRecord);
 
-        if( medicalRecord != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(medicalRecord);
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        log.debug("putMedicalRecord()" + updatedMedicalRecord);
+        MedicalRecord medicalRecord = medicalRecordService.putMedicalRecord(updatedMedicalRecord);
+        return ResponseEntity.status(HttpStatus.OK).body(medicalRecord);
     }
 
     //deletes MedicalRecord using first and last name imputed as parameter
-    //TODO: unit test
     @DeleteMapping("/medicalRecord")
-    public ResponseEntity<MedicalRecord> deleteMedicalRecord(@RequestParam ("firstName") String firstName,
+    public ResponseEntity<Void> deleteMedicalRecord(@RequestParam ("firstName") String firstName,
                                                       @RequestParam ("lastName") String lastName){
-        log.debug("deleteMedicalRecord()");
-        MedicalRecord deletedMedicalRecord = medicalRecordService.deleteMedicalRecord(firstName, lastName);
 
-        if( deletedMedicalRecord != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(deletedMedicalRecord);
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        log.debug("deleteMedicalRecord()" + firstName + " " + lastName);
+        medicalRecordService.deleteMedicalRecord(firstName, lastName);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

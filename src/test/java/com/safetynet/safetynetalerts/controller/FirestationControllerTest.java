@@ -122,7 +122,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void testPutFirestationNumber() throws Exception {
         // Arrange
         Firestation firestationToEdit = new Firestation("1 rue de paris", "1");
-        doNothing().when(firestationService).putFireStaion(any(Firestation.class));
+        when(firestationService.putFireStaion(any(Firestation.class))).thenReturn(firestationToEdit);
 
         // Act
         mockMvc.perform(put("/firestation")
@@ -139,13 +139,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void testDeleteFirestationCoverageOfAddress() throws Exception {
         // Arrange
         Firestation firestationToDelete = new Firestation("1 rue de paris", "1");
-        doNothing().when(firestationService).deleteFirestation(any(Firestation.class));
+        when(firestationService.deleteFirestation(any(Firestation.class))).thenReturn(firestationToDelete);;
 
         // Act
         mockMvc.perform(delete("/firestation")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"address\":\"1 rue de paris\", \"station\":\"1\"}"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         // Assert
         verify(firestationService, times(1)).deleteFirestation(any(Firestation.class));

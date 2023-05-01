@@ -39,8 +39,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
-    @ExceptionHandler(MedicalRecordNotFountException.class)
-    public ResponseEntity<Object> handleMedicalRecordNotFountException(MedicalRecordNotFountException mrnfe){
+    @ExceptionHandler(MedicalRecordNotFoundException.class)
+    public ResponseEntity<Object> handleMedicalRecordNotFountException(MedicalRecordNotFoundException mrnfe){
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("message", mrnfe.getMessage());
         responseBody.put("timestamp", LocalDateTime.now());

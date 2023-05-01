@@ -43,6 +43,8 @@ public class FirestationServiceImpl implements FirestationService{
 
     @Override
     public List<Person> getPersonsByFireStationNumber(String firestationNumber){
+
+        log.debug("getPersonsByFireStationNumber() " + firestationNumber);
         List<String> addressesHandledByFirestation = firestationRepository
                 .findAddressByFirestationNumber(firestationNumber);
 
@@ -51,28 +53,32 @@ public class FirestationServiceImpl implements FirestationService{
         for(String address: addressesHandledByFirestation){
             peopleByFirestation.addAll(personRepository.findPeopleByFireStationAddress(address));
         }
+        log.info("Completed getPersonsByFireStationNumber() " + firestationNumber);
         return peopleByFirestation;
     }
 
     @Override
     public PeopleByFirestationNumber getAdultsAndMinorsCoveredByFirestationNumber(String firestationNumber){
-        log.debug("getAdultsAndMinorsCoveredByFirestationNumber()");
+
+        log.debug("getAdultsAndMinorsCoveredByFirestationNumber() " + firestationNumber);
         List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
 
         int amountOfPersons = peopleByFirestation.size();
         int amountOfAdults = medicalRecordRepository.countAmountOfAdults(medicalRecordRepository
-              .calculateAgesByDatesOfBirth(medicalRecordRepository.convertListDateStringsToListOfDatesOfBirth(medicalRecordRepository
+              .calculateAgesByDatesOfBirth(medicalRecordRepository
+                      .convertListDateStringsToListOfDatesOfBirth(medicalRecordRepository
                       .findDatesOfBirthInMedicalRecordsByPersons(peopleByFirestation))));
 
         int amountOfMinors = amountOfPersons - amountOfAdults;
-        log.debug("completed getAdultsAndMinorsCoveredByFirestationNumber()");
+        log.info("completed getAdultsAndMinorsCoveredByFirestationNumber() " + firestationNumber);
         return new PeopleByFirestationNumber(peopleByFirestation, amountOfAdults, amountOfMinors);
     }
 
 
     @Override
     public PhoneNumbersByFirestation getPhoneNumbersByFirestationNumber(String firestationNumber){
-        log.debug("getPhoneNumbersByFirestationNumber()");
+
+        log.debug("getPhoneNumbersByFirestationNumber() " + firestationNumber);
         List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
 
         List<String> phoneNumberOfPeopleRelatedToFirestation = new ArrayList<>();
@@ -80,7 +86,7 @@ public class FirestationServiceImpl implements FirestationService{
         for (Person person : peopleByFirestation) {
             phoneNumberOfPeopleRelatedToFirestation.add(person.getPhone());
         }
-        log.debug("Compelted getPhoneNumbersByFirestationNumber()");
+        log.info("Compelted getPhoneNumbersByFirestationNumber() " + firestationNumber);
         return new PhoneNumbersByFirestation(phoneNumberOfPeopleRelatedToFirestation);
     }
 
@@ -88,19 +94,19 @@ public class FirestationServiceImpl implements FirestationService{
     //TODO: Unit Test
     @Override
     public List<Houshold> getHousholdsByFirestationNumbers(List<String> firestationNumbers){
-        log.debug("getHousholdsByFirestationNumbers()");
+
+        log.debug("getHousholdsByFirestationNumbers() " + firestationNumbers);
         List<Houshold> housholdsLinkedToFirestations = new ArrayList<>();
         for (String firestationNumber : firestationNumbers){
             housholdsLinkedToFirestations.addAll(getHousholdsByFirestationNumber(firestationNumber));
         }
-        log.debug("completed getHousholdsByFirestationNumbers()");
+        log.info("completed getHousholdsByFirestationNumbers() " + firestationNumbers);
         return housholdsLinkedToFirestations;
     }
 
     private List<Houshold> getHousholdsByFirestationNumber(String firestationNumber){
-        log.debug("getHousholdsByFirestationNumber()");
-        List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
 
+        List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
         List<MedicalRecord> medicalRecordsOfPeopleByFirestation = medicalRecordRepository
                 .findMedicalRecordsByPersons(peopleByFirestation);
 
@@ -136,7 +142,6 @@ public class FirestationServiceImpl implements FirestationService{
         for (Map.Entry<String, List<PersonWithMedicalInfo>> entry : addressToResidentsMap.entrySet()) {
             households.add(new Houshold(entry.getKey(), entry.getValue()));
         }
-        log.debug("completed getHousholdsByFirestationNumber()");
         return households;
     }
 
@@ -144,14 +149,16 @@ public class FirestationServiceImpl implements FirestationService{
     //add firestation from request boddy to listOfAllFirestations
     @Override
     public Firestation postFireStation(Firestation firestation)  {
-        log.debug("postFireStation()");
+
+        log.debug("postFireStation() " + firestation);
         return firestationRepository.addFirestation(firestation);
     }
 
     //TODO: add unit test
     @Override
     public Firestation putFireStaion(Firestation firestationToUpdate) {
-        log.debug("putFireStaion()");
+
+        log.debug("putFireStaion() " + firestationToUpdate);
        return firestationRepository.updateFirestationByAddress(firestationToUpdate.getAddress(), firestationToUpdate
                 .getStation());
     }
@@ -159,7 +166,8 @@ public class FirestationServiceImpl implements FirestationService{
     //TODO: add unit test
     @Override
     public Firestation deleteFirestation(Firestation firestationToDelete)  {
-        log.debug("deleteFirestation()");
+
+        log.debug("deleteFirestation() " + firestationToDelete);
        return firestationRepository.removeFirestationByAddress(firestationToDelete.getAddress());
     }
 }

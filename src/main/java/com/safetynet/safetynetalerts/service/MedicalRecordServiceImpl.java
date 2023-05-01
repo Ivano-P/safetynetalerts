@@ -19,22 +19,24 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
         this.medicalRecordRepository = medicalRecordRepository;
     }
 
-
     @Override
     public MedicalRecord postNewMedicalRecord(MedicalRecord newMedicalRecordToPost) {
-        log.debug("postNewMedicalRecord()");
+
+        log.debug("postNewMedicalRecord()" + newMedicalRecordToPost);
         return medicalRecordRepository.addNewMedicalRecord(newMedicalRecordToPost);
     }
 
     @Override
     public MedicalRecord putMedicalRecord(MedicalRecord updatedMedicalRecord) {
-        log.debug("putMedicalRecord()");
+
+        log.debug("putMedicalRecord()" + updatedMedicalRecord);
         return medicalRecordRepository.updateMedicalRecordByFirstAndLastName(updatedMedicalRecord);
     }
 
     @Override
     public MedicalRecord deleteMedicalRecord(String firstName, String lastName) {
-        log.debug("deleteMedicalRecord()");
+
+        log.debug("deleteMedicalRecord()" + firstName + " " + lastName);
         return medicalRecordRepository.removeMedicalRecordByName(firstName, lastName);
     }
 }

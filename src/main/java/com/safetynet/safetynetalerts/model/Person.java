@@ -1,5 +1,8 @@
 package com.safetynet.safetynetalerts.model;
 
+import lombok.ToString;
+
+@ToString
 public class Person {
     private String firstName;
     private String lastName;

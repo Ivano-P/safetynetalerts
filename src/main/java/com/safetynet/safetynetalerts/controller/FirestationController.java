@@ -25,71 +25,52 @@ public class FirestationController {
 
     @GetMapping("/firestation")
     public ResponseEntity<PeopleByFirestationNumber> getPeopleByFirestationNumber(@RequestParam("stationNumber") String stationNumber) {
-        log.debug("getPeopleByFirestationNumber() with" + stationNumber);
+
+        log.debug("getPeopleByFirestationNumber()" + stationNumber);
         PeopleByFirestationNumber result = firestationService
                 .getAdultsAndMinorsCoveredByFirestationNumber(stationNumber);
-
-        if ( result != null){
-            return ResponseEntity.ok(result);
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/phoneAlert")
     public ResponseEntity<PhoneNumbersByFirestation> getPhoneNumbersOfPeopleByFirestation(@RequestParam("firestation") String stationNumber) {
-        log.debug("getPhoneNumbersOfPeopleByFirestation() with " + stationNumber);
+
+        log.debug("getPhoneNumbersOfPeopleByFirestation()" + stationNumber);
         PhoneNumbersByFirestation result = firestationService.getPhoneNumbersByFirestationNumber(stationNumber);
-        if (result != null){
-            return ResponseEntity.ok(result);
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/flood/stations")
     public ResponseEntity<List<Houshold>> getHousholds(@RequestParam("stations") List<String> stationNumbers) {
-        log.debug("getHousholds() with" + stationNumbers);
+
+        log.debug("getHousholds()" + stationNumbers);
         List<Houshold> result = firestationService.getHousholdsByFirestationNumbers(stationNumbers);
-        if (result != null && !result.isEmpty()) {
-            return ResponseEntity.ok(result);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.ok(result);
     }
 
     //to add FireStation in body of post request
     @PostMapping("/firestation")
     public ResponseEntity<Firestation> postFirestation(@RequestBody Firestation firestation) {
-        log.debug("postFirestation()");
+
+        log.debug("postFirestation()" + firestation);
         Firestation addedFirestation = firestationService.postFireStation(firestation);
-        if (addedFirestation != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(addedFirestation);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedFirestation);
     }
 
     @PutMapping("/firestation")
     public ResponseEntity<Firestation> putFirestationNumber(@RequestBody Firestation firestationToEdit) {
-        log.debug("putFirestationNumber()");
+
+        log.debug("putFirestationNumber()" + firestationToEdit);
         Firestation updatedFirestation = firestationService.putFireStaion(firestationToEdit);
-        if (updatedFirestation != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(updatedFirestation);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(updatedFirestation);
     }
 
     @DeleteMapping("/firestation")
-    public ResponseEntity<Firestation> deleteFirestationCoverageofaddress(@RequestBody Firestation firestationToDelete) {
-        log.debug("deleteFirestationCoverageofaddress()");
-        Firestation deletedFirestation = firestationService.deleteFirestation(firestationToDelete);
-        if (deletedFirestation != null) {
+    public ResponseEntity<Void> deleteFirestationCoverageofaddress(@RequestBody Firestation firestationToDelete) {
+
+        log.debug("deleteFirestationCoverageofaddress()" + firestationToDelete);
+        firestationService.deleteFirestation(firestationToDelete);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
     }
 
 }
