@@ -1,7 +1,10 @@
 package com.safetynet.safetynetalerts.service;
 
+import com.safetynet.safetynetalerts.dto.Houshold;
 import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
+import com.safetynet.safetynetalerts.dto.PersonWithMedicalInfo;
 import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
+import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.FirestationRepositoryImpl;
 import com.safetynet.safetynetalerts.repository.MedicalRecordRepository;
@@ -17,10 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -51,6 +56,7 @@ class FirestationServiceImplTest {
                 , "12345", "111-222-3333", "johndoe@mail.com"));
         mockPersons.add(new Person("Jane", "Doe", "5678 route jacque", "City"
                 , "12345", "444-555-6666", "janedoe@mail.ciom"));
+
     }
 
     @Test
@@ -130,7 +136,8 @@ class FirestationServiceImplTest {
     void testPutFireStaion() {
         // Arrange
         Firestation firestationToUpdate = new Firestation("1 route saint george", "1");
-        when(firestationsRepository.updateFirestationByAddress(anyString(), anyString())).thenReturn(firestationToUpdate);
+        when(firestationsRepository.updateFirestationByAddress(anyString(), anyString()))
+                .thenReturn(firestationToUpdate);
 
         // Act
         Firestation firestation = firestationService.putFireStaion(firestationToUpdate);
@@ -151,7 +158,8 @@ class FirestationServiceImplTest {
 
         // Assert
         assertThat(firestation).isEqualTo(firestationToDelete);
-        verify(firestationsRepository, times(1)).removeFirestationByAddress(firestationToDelete.getAddress());
+        verify(firestationsRepository, times(1)).removeFirestationByAddress(firestationToDelete
+                .getAddress());
     }
 
 }

@@ -49,6 +49,7 @@ public class FirestationServiceImpl implements FirestationService{
         List<Person> peopleByFirestation = new ArrayList<>();
 
         for(String address: addressesHandledByFirestation){
+
             peopleByFirestation.addAll(personRepository.findPeopleByFireStationAddress(address));
         }
         log.info("Completed getPersonsByFireStationNumber() " + firestationNumber);
@@ -89,59 +90,51 @@ public class FirestationServiceImpl implements FirestationService{
     }
 
 
-    //TODO: Unit Test
     @Override
     public List<Houshold> getHousholdsByFirestationNumbers(List<String> firestationNumbers){
 
         log.debug("getHousholdsByFirestationNumbers() " + firestationNumbers);
         List<Houshold> housholdsLinkedToFirestations = new ArrayList<>();
+
         for (String firestationNumber : firestationNumbers){
-            housholdsLinkedToFirestations.addAll(getHousholdsByFirestationNumber(firestationNumber));
+            List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
+            List<MedicalRecord> medicalRecordsOfPeopleByFirestation = medicalRecordRepository
+                    .findMedicalRecordsByPersons(peopleByFirestation);
+
+            List<Integer> ages = medicalRecordRepository.calculateAgesByDatesOfBirth(medicalRecordRepository
+                    .convertListDateStringsToListOfDatesOfBirth(medicalRecordRepository
+                            .findDatesOfBirthInMedicalRecordsByPersons(peopleByFirestation)));
+
+            Map<String, List<PersonWithMedicalInfo>> addressToResidentsMap = new HashMap<>();
+
+            // Uses the 3 lists (peopleByFirestation, medicalRecordsOfPeopleByFirestation and ages) to create a
+            // personWithMedicalInfo. This is done in a loop and added to the Map addressToResidentsMap for each address.
+            for (int i = 0; i < peopleByFirestation.size(); i++) {
+                Person person = peopleByFirestation.get(i);
+                MedicalRecord medicalRecord = medicalRecordsOfPeopleByFirestation.get(i);
+                int age = ages.get(i);
+
+                PersonWithMedicalInfo personWithMedicalInfo = new PersonWithMedicalInfo(person.getFirstName()
+                        , person.getLastName(), person.getPhone(), age, medicalRecord.getMedications()
+                        , medicalRecord.getAllergies());
+                String address = person.getAddress();
+
+                // Check if address is already in the map, if not, create a new empty list of PersonWithMedicalInfo and associate
+                // it with the address in the map.
+                addressToResidentsMap.computeIfAbsent(address, k -> new ArrayList<>()).add(personWithMedicalInfo);
+            }
+
+            // Add Houshold to the list of Housholds by using key and value of hashMap to create each Houshold object.
+            for (Map.Entry<String, List<PersonWithMedicalInfo>> entry : addressToResidentsMap.entrySet()) {
+                housholdsLinkedToFirestations.add(new Houshold(entry.getKey(), entry.getValue()));
+            }
+
+            log.info("completed getHousholdsByFirestationNumbers() " + firestationNumbers);
         }
-        log.info("completed getHousholdsByFirestationNumbers() " + firestationNumbers);
+
         return housholdsLinkedToFirestations;
     }
 
-    private List<Houshold> getHousholdsByFirestationNumber(String firestationNumber){
-
-        List<Person> peopleByFirestation = getPersonsByFireStationNumber(firestationNumber);
-        List<MedicalRecord> medicalRecordsOfPeopleByFirestation = medicalRecordRepository
-                .findMedicalRecordsByPersons(peopleByFirestation);
-
-        List<Integer> ages = medicalRecordRepository.calculateAgesByDatesOfBirth(medicalRecordRepository
-                .convertListDateStringsToListOfDatesOfBirth(medicalRecordRepository
-                        .findDatesOfBirthInMedicalRecordsByPersons(peopleByFirestation)));
-
-        Map<String, List<PersonWithMedicalInfo>> addressToResidentsMap = new HashMap<>();
-        /*
-        uses the 3 lists (peopleByFirestation, medicalRecordsOfPeopleByFirestation and ages) to creat a
-        personWithMedicalInfo this is done in loop and added to the Map addressToResidentsMap for each address
-         */
-        for (int i = 0; i < peopleByFirestation.size(); i++) {
-            Person person = peopleByFirestation.get(i);
-            MedicalRecord medicalRecord = medicalRecordsOfPeopleByFirestation.get(i);
-            int age = ages.get(i);
-
-            PersonWithMedicalInfo personWithMedicalInfo = new PersonWithMedicalInfo(person.getFirstName()
-                    , person.getLastName(), person.getPhone(), age, medicalRecord.getMedications()
-                    , medicalRecord.getAllergies());
-            String address = person.getAddress();
-
-            /*
-            check if address is already in map, if not, creat new empty list of PersonWithMedicalInfo and associate
-            it with the address in the map.
-            */
-            addressToResidentsMap.computeIfAbsent(address, k -> new ArrayList<>()).add(personWithMedicalInfo);
-        }
-
-        List<Houshold> households = new ArrayList<>();
-
-        //add Houshold to list of Housholds by using key and value of hashMap to creat each Houshold object
-        for (Map.Entry<String, List<PersonWithMedicalInfo>> entry : addressToResidentsMap.entrySet()) {
-            households.add(new Houshold(entry.getKey(), entry.getValue()));
-        }
-        return households;
-    }
 
     //add firestation from request boddy to listOfAllFirestations
     @Override

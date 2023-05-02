@@ -26,7 +26,7 @@ public class FirestationController {
     @GetMapping("/firestation")
     public ResponseEntity<PeopleByFirestationNumber> getPeopleByFirestationNumber(@RequestParam("stationNumber") String stationNumber) {
 
-        log.debug("getPeopleByFirestationNumber()" + stationNumber);
+        log.debug("getPeopleByFirestationNumber() " + stationNumber);
         PeopleByFirestationNumber result = firestationService
                 .getAdultsAndMinorsCoveredByFirestationNumber(stationNumber);
         return ResponseEntity.ok(result);
@@ -35,7 +35,7 @@ public class FirestationController {
     @GetMapping("/phoneAlert")
     public ResponseEntity<PhoneNumbersByFirestation> getPhoneNumbersOfPeopleByFirestation(@RequestParam("firestation") String stationNumber) {
 
-        log.debug("getPhoneNumbersOfPeopleByFirestation()" + stationNumber);
+        log.debug("getPhoneNumbersOfPeopleByFirestation() " + stationNumber);
         PhoneNumbersByFirestation result = firestationService.getPhoneNumbersByFirestationNumber(stationNumber);
         return ResponseEntity.ok(result);
     }
@@ -43,7 +43,7 @@ public class FirestationController {
     @GetMapping("/flood/stations")
     public ResponseEntity<List<Houshold>> getHousholds(@RequestParam("stations") List<String> stationNumbers) {
 
-        log.debug("getHousholds()" + stationNumbers);
+        log.debug("getHousholds() " + stationNumbers);
         List<Houshold> result = firestationService.getHousholdsByFirestationNumbers(stationNumbers);
         return ResponseEntity.ok(result);
     }
@@ -52,7 +52,7 @@ public class FirestationController {
     @PostMapping("/firestation")
     public ResponseEntity<Firestation> postFirestation(@RequestBody Firestation firestation) {
 
-        log.debug("postFirestation()" + firestation);
+        log.debug("postFirestation() " + firestation);
         Firestation addedFirestation = firestationService.postFireStation(firestation);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedFirestation);
     }
@@ -60,7 +60,7 @@ public class FirestationController {
     @PutMapping("/firestation")
     public ResponseEntity<Firestation> putFirestationNumber(@RequestBody Firestation firestationToEdit) {
 
-        log.debug("putFirestationNumber()" + firestationToEdit);
+        log.debug("putFirestationNumber() " + firestationToEdit);
         Firestation updatedFirestation = firestationService.putFireStaion(firestationToEdit);
         return ResponseEntity.status(HttpStatus.OK).body(updatedFirestation);
     }
@@ -68,7 +68,7 @@ public class FirestationController {
     @DeleteMapping("/firestation")
     public ResponseEntity<Void> deleteFirestationCoverageofaddress(@RequestBody Firestation firestationToDelete) {
 
-        log.debug("deleteFirestationCoverageofaddress()" + firestationToDelete);
+        log.debug("deleteFirestationCoverageofaddress() " + firestationToDelete);
         firestationService.deleteFirestation(firestationToDelete);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
