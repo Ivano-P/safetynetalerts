@@ -112,7 +112,6 @@ public class PersonRepositoryImpl implements PersonRepository{
     }
 
     //edits Person with same first and last name as person in parsed in as argument.
-    //TODO: unit test
     @Override
     public Person updatePerson(Person personToEdit) {
 

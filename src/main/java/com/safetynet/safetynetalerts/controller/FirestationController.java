@@ -19,7 +19,7 @@ public class FirestationController {
     private final FirestationService firestationService;
 
     @Autowired
-    public FirestationController(FirestationService firestationService){
+    public FirestationController(FirestationService firestationService) {
         this.firestationService = firestationService;
     }
 
@@ -39,6 +39,7 @@ public class FirestationController {
         PhoneNumbersByFirestation result = firestationService.getPhoneNumbersByFirestationNumber(stationNumber);
         return ResponseEntity.ok(result);
     }
+
 
     @GetMapping("/flood/stations")
     public ResponseEntity<List<Houshold>> getHousholds(@RequestParam("stations") List<String> stationNumbers) {
@@ -70,7 +71,7 @@ public class FirestationController {
 
         log.debug("deleteFirestationCoverageofaddress() " + firestationToDelete);
         firestationService.deleteFirestation(firestationToDelete);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

@@ -21,7 +21,7 @@ public class PersonController {
     private final PersonService personService;
 
     @Autowired
-    public PersonController(PersonService personService){
+    public PersonController(PersonService personService) {
         this.personService = personService;
     }
 
@@ -33,7 +33,7 @@ public class PersonController {
     }
 
     @GetMapping("/fire")
-    public PeopleMedicalRecordsAndFirestation getPersonMedicalRecordAndFirestation(@RequestParam("address") String address){
+    public PeopleMedicalRecordsAndFirestation getPersonMedicalRecordAndFirestation(@RequestParam("address") String address) {
 
         log.debug("getPersonMedicalRecordAndFirestation()" + address);
         return personService.getPeopleMedicalRecordsAndFirestationByAddress(address);
@@ -42,21 +42,21 @@ public class PersonController {
     @GetMapping("/personInfo")
     public List<PersonInfoAndMedicalRecord> getPersonInfoAndMedicalRecords(
             @RequestParam("firstName") String firstName,
-            @RequestParam("lastName") String lastName){
+            @RequestParam("lastName") String lastName) {
 
         log.debug("getPersonInfoAndMedicalRecords()" + firstName + " " + lastName);
         return personService.getPersonInfoAndMedicalRecordByName(firstName, lastName);
     }
 
     @GetMapping("/communityEmail")
-    public List<String> getEmailsOfPeopleFromCity(@RequestParam("city") String city){
+    public List<String> getEmailsOfPeopleFromCity(@RequestParam("city") String city) {
 
         log.debug("getEmailsOfPeopleFromCity()" + city);
         return personService.getEmailsByCity(city);
     }
 
     @PostMapping("/person")
-    public ResponseEntity<Person> addNewPerson(@RequestBody Person person){
+    public ResponseEntity<Person> addNewPerson(@RequestBody Person person) {
 
         log.debug("addNewPerson()" + person);
         Person addedPerson = personService.postNewPerson(person);
@@ -64,7 +64,7 @@ public class PersonController {
     }
 
     @PutMapping("/person")
-    public ResponseEntity<Person> editPerson(@RequestBody Person person){
+    public ResponseEntity<Person> editPerson(@RequestBody Person person) {
 
         log.debug("editPerson()" + person);
         Person updatedPerson = personService.putPerson(person);
@@ -74,7 +74,7 @@ public class PersonController {
 
     @DeleteMapping("/person")
     public ResponseEntity<Void> deletePerson(@RequestParam("firstName") String firstName,
-                                               @RequestParam("lastName") String lastName){
+                                             @RequestParam("lastName") String lastName) {
 
         log.debug("deletePerson()" + firstName + lastName);
         personService.deletePerson(firstName, lastName);
