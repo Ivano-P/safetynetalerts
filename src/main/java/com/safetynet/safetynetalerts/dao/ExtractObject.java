@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class ExtractObject {
+public final class ExtractObject {
+
+    private ExtractObject(){}
+
     public static SafetyNet safetyNet = null;
     public static SafetyNet extractDataFromJason(){
         File jsonInput = new File("src/main/resources/data/data.json") ;

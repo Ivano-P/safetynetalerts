@@ -13,7 +13,8 @@ public class PersonInfoAndMedicalRecord {
     List<String> medication;
     List<String> allergies;
 
-    public PersonInfoAndMedicalRecord(String firstName, String lastName, String address, String city, String zip, int age, String mail, List<String> medication, List<String> allergies) {
+    public PersonInfoAndMedicalRecord(String firstName, String lastName, String address, String city, String zip,
+                                      int age, String mail, List<String> medication, List<String> allergies) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;

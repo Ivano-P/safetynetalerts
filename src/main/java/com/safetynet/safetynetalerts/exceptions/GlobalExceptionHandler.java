@@ -11,12 +11,14 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    private static final String MESSAGE = "message";
+    private static final String TIMESTAMP = "timestamp";
 
     @ExceptionHandler(DuplicateFirestationException.class)
     public ResponseEntity<Object> handleDuplicateFirestationException(DuplicateFirestationException dfe) {
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("message", dfe.getMessage());
-        responseBody.put("timestamp", LocalDateTime.now());
+        responseBody.put(MESSAGE, dfe.getMessage());
+        responseBody.put(TIMESTAMP, LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
@@ -24,8 +26,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FirestationNotFoundException.class)
     public ResponseEntity<Object> handleFirestationNotFoundException(FirestationNotFoundException fnfe){
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("message", fnfe.getMessage());
-        responseBody.put("timestamp", LocalDateTime.now());
+        responseBody.put(MESSAGE, fnfe.getMessage());
+        responseBody.put(TIMESTAMP, LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
@@ -33,8 +35,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateMedicalRecordException.class)
     public ResponseEntity<Object> handleDuplicateMedicalRecordException(DuplicateMedicalRecordException dmre){
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("message", dmre.getMessage());
-        responseBody.put("timestamp", LocalDateTime.now());
+        responseBody.put(MESSAGE, dmre.getMessage());
+        responseBody.put(TIMESTAMP, LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
@@ -42,8 +44,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MedicalRecordNotFoundException.class)
     public ResponseEntity<Object> handleMedicalRecordNotFountException(MedicalRecordNotFoundException mrnfe){
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("message", mrnfe.getMessage());
-        responseBody.put("timestamp", LocalDateTime.now());
+        responseBody.put(MESSAGE, mrnfe.getMessage());
+        responseBody.put(TIMESTAMP, LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
@@ -51,8 +53,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicatedPersonException.class)
     public ResponseEntity<Object> handleDuplicatePersonException(DuplicatedPersonException dpe){
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("message", dpe.getMessage());
-        responseBody.put("timestamp", LocalDateTime.now());
+        responseBody.put(MESSAGE, dpe.getMessage());
+        responseBody.put(TIMESTAMP, LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
@@ -60,8 +62,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PersonNotFoundException.class)
     public ResponseEntity<Object> handlePersonNotFoundException(PersonNotFoundException pnfe){
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("message", pnfe.getMessage());
-        responseBody.put("timestamp", LocalDateTime.now());
+        responseBody.put(MESSAGE, pnfe.getMessage());
+        responseBody.put(TIMESTAMP, LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
