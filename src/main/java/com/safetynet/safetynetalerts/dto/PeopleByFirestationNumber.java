@@ -1,7 +1,6 @@
 package com.safetynet.safetynetalerts.dto;
 
 import com.safetynet.safetynetalerts.model.Person;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 

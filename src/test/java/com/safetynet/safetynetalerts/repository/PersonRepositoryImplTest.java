@@ -125,8 +125,9 @@ class PersonRepositoryImplTest {
 
         // Assert
         assertThat(updatedPerson).isEqualTo(personToUpdate);
-        assertThat(personRepository.listOfAllPersons).contains(updatedPerson);
-        assertThat(personRepository.listOfAllPersons).doesNotContain(new Person("John", "Doe",
+        assertThat(personRepository.listOfAllPersons)
+                .contains(updatedPerson)
+                .doesNotContain(new Person("John", "Doe",
                "1 route saint george", "City1", "12345", "111-111-1111",
                 "john@example.com"));
     }

@@ -103,8 +103,12 @@ public class PersonServiceImpl implements PersonService{
     public List<PersonInfoAndMedicalRecord> getPersonInfoAndMedicalRecordByName(String firstName, String lastName){
 
         log.debug("getPersonInfoAndMedicalRecordByName()" + firstName + " " + lastName);
-        //stores list of people found  with that first and lsat name.
+        //stores list of people found  with that first and last name.
         List<Person> personByName = personRepository.findPeopleByName(firstName, lastName);
+
+        //stores list of personInfo found  with that first and last name.
+        List<PersonInfo> personsInfo = getPersonInfo(firstName, lastName);
+
         //stores their medical records
         List<MedicalRecord> medicalRecordsOfPersonByName = medicalRecordRepository
                 .findMedicalRecordsByPersons(personByName);
@@ -122,16 +126,30 @@ public class PersonServiceImpl implements PersonService{
         there are multiple people with the same name
          */
         for (int i= 0; i < personByName.size(); i++){
-            Person person = personByName.get(i);
+            PersonInfo personInfo = personsInfo.get(i);
             MedicalRecord medicalRecord = medicalRecordsOfPersonByName.get(i);
             int age = ages.get(i);
 
-        personInfoAndMedicalRecords.add(new PersonInfoAndMedicalRecord(person.getFirstName(), person.getLastName()
-                , person.getAddress(), person.getCity(), person.getZip(), age ,person.getEmail()
-                , medicalRecord.getMedications(), medicalRecord.getAllergies()));
+        personInfoAndMedicalRecords.add(new PersonInfoAndMedicalRecord(personInfo, age,
+                medicalRecord.getMedications(), medicalRecord.getAllergies()));
         }
         log.info("Completed getPersonInfoAndMedicalRecordByName()" + firstName + " " + lastName);
         return personInfoAndMedicalRecords;
+    }
+
+    //gets person info without phone number to creat PersonInfAndMedicalRecord
+    public List<PersonInfo> getPersonInfo(String firstName, String lastName){
+
+        log.debug("getPersonInfo() " + firstName + " " + lastName);
+        //stores list of people found  with that first and lsat name.
+        List<Person> personByName = personRepository.findPeopleByName(firstName, lastName);
+        List<PersonInfo> personInfoByName= new ArrayList<>();
+        for(Person person :  personByName){
+                personInfoByName.add(new PersonInfo(person.getFirstName(), person.getLastName(), person.getAddress(),
+                        person.getCity(), person.getZip(), person.getEmail()));
+        }
+        log.debug("completed getPersonInfo() " + firstName + " " + lastName);
+        return personInfoByName;
     }
 
     @Override

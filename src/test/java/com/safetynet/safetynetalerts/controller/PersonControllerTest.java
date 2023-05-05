@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.controller;
 
 import com.safetynet.safetynetalerts.dto.MinorAndFamily;
 import com.safetynet.safetynetalerts.dto.PeopleMedicalRecordsAndFirestation;
+import com.safetynet.safetynetalerts.dto.PersonInfo;
 import com.safetynet.safetynetalerts.dto.PersonInfoAndMedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.PersonRepositoryImpl;
@@ -95,9 +96,11 @@ class PersonControllerTest {
         // Arrange
         String firstName = person.getFirstName();
         String lastName = person.getLastName();
+        PersonInfo personInfo = new PersonInfo(firstName, lastName, "mock address", "mockCity",
+                "12345", "mockEmail");
         List<PersonInfoAndMedicalRecord> mockPersonInfoAndMedicalRecords =
-                Collections.singletonList(new PersonInfoAndMedicalRecord(firstName, lastName,
-                        null, null, null, 21, null, null, null));
+                Collections.singletonList(new PersonInfoAndMedicalRecord(personInfo,
+                        21, null, null));
 
         when(personService.getPersonInfoAndMedicalRecordByName(firstName, lastName))
                 .thenReturn(mockPersonInfoAndMedicalRecords);

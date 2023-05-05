@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.dto.MinorAndFamily;
 import com.safetynet.safetynetalerts.dto.PeopleMedicalRecordsAndFirestation;
+import com.safetynet.safetynetalerts.dto.PersonInfo;
 import com.safetynet.safetynetalerts.dto.PersonInfoAndMedicalRecord;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
@@ -135,11 +136,50 @@ class PersonServiceImplTest {
                 .thenReturn(ages);
 
         // Act
-        List<PersonInfoAndMedicalRecord> piamr = personService.getPersonInfoAndMedicalRecordByName(firstName, lastName);
+        List<PersonInfoAndMedicalRecord> actualPiamr = personService.getPersonInfoAndMedicalRecordByName(firstName, lastName);
 
         // Assert
-        assertThat(piamr).hasSize(3);
+        assertThat(actualPiamr).hasSize(3);
     }
+
+    @Test
+    void testGetPersonInfo() {
+        // Arrange
+        String firstName = "John";
+        String lastName = "Doe";
+
+        List<Person> personByName = Arrays.asList(
+                new Person("John", "Doe", "123 Main St", "Anytown", "12345",
+                        "555-1234", "johndoe@example.com"),
+                new Person("John", "Doe", "456 Main St", "Anytown", "67890",
+                        "555-6789", "john.doe@example.com")
+        );
+
+        when(personRepository.findPeopleByName(firstName, lastName)).thenReturn(personByName);
+
+        // Act
+        List<PersonInfo> personInfoList = personService.getPersonInfo(firstName, lastName);
+
+        // Assert
+        assertThat(personInfoList).hasSize(2);
+
+        assertThat(personInfoList.get(0).getFirstName()).isEqualTo(firstName);
+        assertThat(personInfoList.get(0).getLastName()).isEqualTo(lastName);
+        assertThat(personInfoList.get(0).getAddress()).isEqualTo("123 Main St");
+        assertThat(personInfoList.get(0).getCity()).isEqualTo("Anytown");
+        assertThat(personInfoList.get(0).getZip()).isEqualTo("12345");
+        assertThat(personInfoList.get(0).getEmail()).isEqualTo("johndoe@example.com");
+
+        assertThat(personInfoList.get(1).getFirstName()).isEqualTo(firstName);
+        assertThat(personInfoList.get(1).getLastName()).isEqualTo(lastName);
+        assertThat(personInfoList.get(1).getAddress()).isEqualTo("456 Main St");
+        assertThat(personInfoList.get(1).getCity()).isEqualTo("Anytown");
+        assertThat(personInfoList.get(1).getZip()).isEqualTo("67890");
+        assertThat(personInfoList.get(1).getEmail()).isEqualTo("john.doe@example.com");
+
+        verify(personRepository).findPeopleByName(firstName, lastName);
+    }
+
 
     @Test
     void testGetEmailsByCity() {

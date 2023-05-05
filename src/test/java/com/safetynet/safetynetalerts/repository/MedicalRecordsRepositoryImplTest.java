@@ -27,6 +27,7 @@ class MedicalRecordsRepositoryImplTest {
                 , null, null));
         mockListOfAllMedicalRecords.add(new MedicalRecord("Jack", "Doe", "06/06/2026"
                 , null, null));
+
         medicalRecordsRepositoryImpl = new MedicalRecordRepositoryImpl(mockListOfAllMedicalRecords);
     }
 
@@ -128,7 +129,7 @@ class MedicalRecordsRepositoryImplTest {
                 LocalDate.of(2005, 5, 5),
                 LocalDate.of(2010, 10, 10)
         );
-        List<Integer> expectedAges = Arrays.asList(23, 17, 12);
+        List<Integer> expectedAges = Arrays.asList(23, 18, 12);
 
         //Act
         List<Integer> actualAges = medicalRecordsRepositoryImpl.calculateAgesByDatesOfBirth(datesOfBirth);
@@ -174,20 +175,20 @@ class MedicalRecordsRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("test remove existing medical record")
+    @DisplayName("Remove existing medical record by name")
     void testRemoveMedicalRecordByName() {
-        //Arrange
+        // Arrange
         String firstName = "John";
         String lastName = "Doe";
 
-        //Act
-        MedicalRecord deletedMedicalRecord = medicalRecordsRepositoryImpl.removeMedicalRecordByName(firstName, lastName);
-        List<MedicalRecord> medicalRecords = medicalRecordsRepositoryImpl.findMedicalRecordsByPersons(
-                List.of(new Person(firstName, lastName, null, null, null, null, null)));
+        // Act
+        MedicalRecord deletedMedicalRecord = medicalRecordsRepositoryImpl.removeMedicalRecordByName(firstName,
+                lastName);
 
-        //Assert
+        // Assert
         assertThat(deletedMedicalRecord).isNotNull();
-        assertThat(medicalRecords).doesNotContain(deletedMedicalRecord);
+        assertThat(mockListOfAllMedicalRecords)
+                .isNotEmpty()
+                .doesNotContain(deletedMedicalRecord);
     }
-
 }

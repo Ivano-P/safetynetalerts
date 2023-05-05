@@ -95,11 +95,7 @@
 
     <reporting>
         <plugins>
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.7.2.0</version>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
@@ -143,7 +139,6 @@
 
                     <execution>
                         <id>after-unit-test-execution</id>
-                        <!-- <phase>test</phase>-->
                         <goals>
                             <goal>report</goal>
                         </goals>
