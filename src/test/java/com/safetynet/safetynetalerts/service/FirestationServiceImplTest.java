@@ -64,7 +64,7 @@ class FirestationServiceImplTest {
     void testGetAdultsAndMinorsCoveredByFirestationNumber() {
         // Arrange
         String firestationNumber = "1";
-        when(firestationsRepository.findAddressByFirestationNumber(anyString())).thenReturn(Arrays.asList("1 route saint george"));
+        when(firestationsRepository.findAddressByFirestationNumber(anyString())).thenReturn(List.of("1 route saint george"));
         when(personRepository.findPeopleByFireStationAddress(anyString())).thenReturn(mockPersons);
 
         List<LocalDate> mockDatesOfBirth = Arrays.asList(

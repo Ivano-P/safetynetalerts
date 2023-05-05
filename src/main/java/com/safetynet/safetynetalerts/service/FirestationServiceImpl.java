@@ -106,9 +106,10 @@ public class FirestationServiceImpl implements FirestationService{
                             .findDatesOfBirthInMedicalRecordsByPersons(peopleByFirestation)));
 
             Map<String, List<PersonWithMedicalInfo>> addressToResidentsMap = new HashMap<>();
-
-            // Uses the 3 lists (peopleByFirestation, medicalRecordsOfPeopleByFirestation and ages) to create a
-            // personWithMedicalInfo. This is done in a loop and added to the Map addressToResidentsMap for each address.
+            /*
+            Uses the 3 lists (peopleByFirestation, medicalRecordsOfPeopleByFirestation and ages) to create a
+            personWithMedicalInfo. This is done in a loop and added to the Map addressToResidentsMap for each address.
+             */
             for (int i = 0; i < peopleByFirestation.size(); i++) {
                 Person person = peopleByFirestation.get(i);
                 MedicalRecord medicalRecord = medicalRecordsOfPeopleByFirestation.get(i);
