@@ -55,6 +55,7 @@ public class FirestationController {
     }
 
     //to add FireStation in body of post request
+    @Operation(summary = "Create new fire station and associate it with an address")
     @PostMapping("/firestation")
     public ResponseEntity<Firestation> postFirestation(@RequestBody Firestation firestation) {
 
@@ -63,6 +64,7 @@ public class FirestationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addedFirestation);
     }
 
+    @Operation(summary = "Update fire station's number by associated address")
     @PutMapping("/firestation")
     public ResponseEntity<Firestation> putFirestationNumber(@RequestBody Firestation firestationToEdit) {
 
@@ -71,6 +73,7 @@ public class FirestationController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedFirestation);
     }
 
+    @Operation(summary = "Delete fire station and its association with an address")
     @DeleteMapping("/firestation")
     public ResponseEntity<Void> deleteFirestationCoverageofaddress(@RequestBody Firestation firestationToDelete) {
 

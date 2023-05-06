@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.controller;
 
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.service.MedicalRecordService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ public class MedicalRecordController {
     }
 
     //adds MedicalRecord in, body of of post request
+    @Operation(summary = "Create new medical record for person")
     @PostMapping("/medicalRecord")
     public ResponseEntity<MedicalRecord> postNewMedicalRecord(@RequestBody MedicalRecord newMedicalRecordToPost){
 
@@ -30,6 +32,7 @@ public class MedicalRecordController {
     }
 
     //updates MedicalRecord with information of MedicalRecord in body
+    @Operation(summary = "Update medical record for person")
     @PutMapping("/medicalRecord")
     public ResponseEntity<MedicalRecord> putMedicalRecord(@RequestBody MedicalRecord updatedMedicalRecord){
 
@@ -39,6 +42,7 @@ public class MedicalRecordController {
     }
 
     //deletes MedicalRecord using first and last name imputed as parameter
+    @Operation(summary = "Delete medical record by person's first and last name")
     @DeleteMapping("/medicalRecord")
     public ResponseEntity<Void> deleteMedicalRecord(@RequestParam ("firstName") String firstName,
                                                       @RequestParam ("lastName") String lastName){

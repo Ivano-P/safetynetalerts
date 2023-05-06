@@ -59,7 +59,7 @@ public class PersonController {
         log.debug("getEmailsOfPeopleFromCity()" + city);
         return personService.getEmailsByCity(city);
     }
-
+    @Operation(summary = "Creat new person")
     @PostMapping("/person")
     public ResponseEntity<Person> addNewPerson(@RequestBody Person person) {
 
@@ -68,6 +68,7 @@ public class PersonController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addedPerson);
     }
 
+    @Operation(summary = "Update person using first and last name")
     @PutMapping("/person")
     public ResponseEntity<Person> editPerson(@RequestBody Person person) {
 
@@ -76,7 +77,7 @@ public class PersonController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedPerson);
     }
 
-
+    @Operation(summary = "Delete person by first and last name")
     @DeleteMapping("/person")
     public ResponseEntity<Void> deletePerson(@RequestParam("firstName") String firstName,
                                              @RequestParam("lastName") String lastName) {
