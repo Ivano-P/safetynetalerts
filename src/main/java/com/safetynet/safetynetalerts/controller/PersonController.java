@@ -6,6 +6,7 @@ import com.safetynet.safetynetalerts.dto.PersonInfoAndMedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.service.PersonService;
 import com.safetynet.safetynetalerts.service.PersonServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class PersonController {
         this.personService = personService;
     }
 
+    @Operation(summary = "Get a list of children by address. The list will also specify other family members for each child")
     @GetMapping("/childAlert")
     public List<MinorAndFamily> getMinorAndFamilyByAddress(@RequestParam("address") String address) {
 
@@ -32,6 +34,7 @@ public class PersonController {
         return personService.getMinorsAndFamilyByAddress(address);
     }
 
+    @Operation(summary = "Get a list of people, their medical records, and the fire station that covers them by their address.")
     @GetMapping("/fire")
     public PeopleMedicalRecordsAndFirestation getPersonMedicalRecordAndFirestation(@RequestParam("address") String address) {
 
@@ -39,6 +42,7 @@ public class PersonController {
         return personService.getPeopleMedicalRecordsAndFirestationByAddress(address);
     }
 
+    @Operation(summary = "Get a person and their medical information by their first and last name.")
     @GetMapping("/personInfo")
     public List<PersonInfoAndMedicalRecord> getPersonInfoAndMedicalRecords(
             @RequestParam("firstName") String firstName,
@@ -48,6 +52,7 @@ public class PersonController {
         return personService.getPersonInfoAndMedicalRecordByName(firstName, lastName);
     }
 
+    @Operation(summary = "Get email addresses of people by their city.")
     @GetMapping("/communityEmail")
     public List<String> getEmailsOfPeopleFromCity(@RequestParam("city") String city) {
 
