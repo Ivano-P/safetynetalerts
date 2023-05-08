@@ -92,6 +92,10 @@ and last name as a unique identifier).
 To interact with these endpoints, you can use tools like Postman or curl,\
 or integrate the API into a front-end application.
 
+## Documentation
+Once the API is running, you can view the documentation UI at:
+http://localhost:8080/api-documentation
+
 
 ## Testing
 
