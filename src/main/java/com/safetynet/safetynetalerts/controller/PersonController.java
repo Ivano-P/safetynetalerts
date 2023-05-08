@@ -9,6 +9,8 @@ import com.safetynet.safetynetalerts.service.PersonServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
@@ -93,12 +95,28 @@ public class PersonController {
     }
 
     @Operation(summary = "Update person using first and last name",
-            responses = {@ApiResponse(responseCode = "200", description = "OK"),
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK", headers = {@Header(name = "Good request")},
+                            content = @Content(mediaType = "application/json", schema = @Schema(
+                                    example = "{\"firstName\":\"John\",\"lastName\":\"Doe\",\"address\":\"1509 Culver " +
+                                            "St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"123-123-" +
+                                            "123\",\"email\":\"john.doe@example.com\"}"))
+                    ),
                     @ApiResponse(responseCode = "404", description = "Not Found",
-                            headers = {@Header(name = "Person not found")}),
+                            headers = {@Header(name = "Person not found")}, content = @Content(mediaType = "application/json", schema = @Schema(
+                            example = "{\"firstName\":\"Johnathan\",\"lastName\":\"Doe\",\"address\":\"1509 Culver " +
+                                    "St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"123-123-" +
+                                    "123\",\"email\":\"john.doe@example.com\"}"))
+                    ),
                     @ApiResponse(responseCode = "400", description = "Bad Request",
                             headers = {@Header(name = "Incomplete request",
-                                    description = "Request must contain 'first name', 'last name")})})
+                                    description = "Request must contain 'first name', 'last name")},
+                            content = @Content(mediaType = "application/json", schema = @Schema(
+                                    example = "{\"firstName\":\"\",\"lastName\":\"Doe\",\"address\":\"1509 Culver " +
+                                            "St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"123-123-" +
+                                            "123\",\"email\":\"john.doe@example.com\"}"))
+                    )
+            })
     @PutMapping("/person")
     public ResponseEntity<Person> editPerson(@RequestBody Person person) {
 
@@ -108,9 +126,10 @@ public class PersonController {
     }
 
     @Operation(summary = "Delete person by first and last name",
-            responses = { @ApiResponse(responseCode = "204", description = "No Content"),
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "No Content"),
                     @ApiResponse(responseCode = "404", description = "Not Found",
-                            headers = {@Header(name = "No Person found with specified first and last name") })})
+                            headers = {@Header(name = "No Person found with specified first and last name")})})
     @DeleteMapping("/person")
     public ResponseEntity<Void> deletePerson(
             @Parameter(description = "First name of person to delete") @RequestParam("firstName") String firstName,

@@ -80,7 +80,7 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
-    
+
     @ExceptionHandler(IncompleteRequestException.class)
     public ResponseEntity<Object> handleIncompleteRequestException(IncompleteRequestException ire){
         Map<String, Object> responseBody = new HashMap<>();
