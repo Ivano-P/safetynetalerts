@@ -1,4 +1,4 @@
-package com.safetynet.safetynetalerts.dao;
+package com.safetynet.safetynetalerts.data;
 
 import com.google.gson.Gson;
 import com.safetynet.safetynetalerts.model.SafetyNet;

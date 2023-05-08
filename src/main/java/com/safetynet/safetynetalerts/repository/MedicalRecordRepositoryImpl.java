@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.safetynet.safetynetalerts.dao.ExtractObject.extractDataFromJason;
+import static com.safetynet.safetynetalerts.data.ExtractObject.extractDataFromJason;
 
 @Log4j2
 @Repository

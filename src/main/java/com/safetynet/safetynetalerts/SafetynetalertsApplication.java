@@ -1,6 +1,6 @@
 package com.safetynet.safetynetalerts;
 
-import com.safetynet.safetynetalerts.dao.ExtractObject;
+import com.safetynet.safetynetalerts.data.ExtractObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

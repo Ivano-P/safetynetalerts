@@ -1,4 +1,4 @@
-package com.safetynet.safetynetalerts.dao;
+package com.safetynet.safetynetalerts.data;
 
 import com.safetynet.safetynetalerts.model.Firestation;
 import com.safetynet.safetynetalerts.model.MedicalRecord;

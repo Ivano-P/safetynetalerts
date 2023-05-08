@@ -1,7 +1,9 @@
 package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.MedicalRecord;
+import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.MedicalRecordRepositoryImpl;
+import com.safetynet.safetynetalerts.repository.PersonRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -21,6 +26,9 @@ class MedicalRecordServiceImplTest {
 
     @Mock
     private MedicalRecordRepositoryImpl medicalRecordRepositoryImpl;
+
+    @Mock
+    private PersonRepositoryImpl personRepositoryImpl;
 
     private MedicalRecord newMedicalRecord;
     private MedicalRecord updatedMedicalRecord;
@@ -42,6 +50,9 @@ class MedicalRecordServiceImplTest {
     void testPostNewMedicalRecord() {
         // Arrange
         when(medicalRecordRepositoryImpl.addNewMedicalRecord(newMedicalRecord)).thenReturn(newMedicalRecord);
+        when(personRepositoryImpl.findPeopleByName(anyString(), anyString()))
+                .thenReturn(List.of(new Person("first", "last", "null", "null",
+                        "null", "null", "null")));
 
         // Act
         MedicalRecord result = medicalRecordServiceImpl.postNewMedicalRecord(newMedicalRecord);
