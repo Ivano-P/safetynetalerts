@@ -1,7 +1,10 @@
 package com.safetynet.safetynetalerts.model;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class SafetyNet{
     private List<Person> persons;
     private List<Firestation> firestations;
@@ -15,27 +18,4 @@ public class SafetyNet{
         this.medicalrecords = medicalRecords;
     }
 
-    public List<Person> getPersons() {
-        return persons;
-    }
-
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
-    }
-
-    public List<Firestation> getFirestations() {
-        return firestations;
-    }
-
-    public void setFirestations(List<Firestation> firestations) {
-        this.firestations = firestations;
-    }
-
-    public List<MedicalRecord> getMedicalRecords() {
-        return medicalrecords;
-    }
-
-    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
-        this.medicalrecords = medicalRecords;
-    }
 }

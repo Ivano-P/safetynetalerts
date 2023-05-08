@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ExtractObjectTest {
 
     @Test
-    @DisplayName("test that json is being deserialized, SafetyNet shoud have at the least" +
+    @DisplayName("test that json is being deserialized, SafetyNet should have at the least" +
             "one list of Firestations, one list of Person and one list of MedicalRecords")
     void testExtractDateFromJason(){
         // Arrange: SafetyNet object should have a minimum of one of each list
@@ -27,7 +27,7 @@ class ExtractObjectTest {
         SafetyNet extractedSafetyNet = ExtractObject.extractDataFromJason();
         List<Firestation> firestations = extractedSafetyNet.getFirestations();
         List<Person> persons = extractedSafetyNet.getPersons();
-        List<MedicalRecord> medicalRecords = extractedSafetyNet.getMedicalRecords();
+        List<MedicalRecord> medicalRecords = extractedSafetyNet.getMedicalrecords();
 
         // Assert:
         assertThat(firestations).hasSizeGreaterThanOrEqualTo(minNumberOfFirestations);

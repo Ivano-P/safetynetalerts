@@ -1,6 +1,7 @@
 package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.dto.*;
+import com.safetynet.safetynetalerts.exceptions.IncompleteRequestException;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.repository.*;
@@ -172,6 +173,16 @@ public class PersonServiceImpl implements PersonService{
     //adds newPersonToAd as a list of one newPersonToAd, since safetyNet take a list of Persons
     @Override
     public Person postNewPerson(Person newPersonToAd){
+        if (newPersonToAd.getLastName() == null || newPersonToAd.getLastName().isEmpty() || newPersonToAd
+                .getFirstName() == null || newPersonToAd.getFirstName().isEmpty() || newPersonToAd
+                .getAddress() == null || newPersonToAd.getAddress().isEmpty() || newPersonToAd
+                .getZip() == null || newPersonToAd.getZip().isEmpty() || newPersonToAd
+                .getPhone() == null || newPersonToAd.getPhone().isEmpty() || newPersonToAd
+                .getEmail() == null || newPersonToAd.getEmail().isEmpty()){
+
+            log.error("Incomplete request exception");
+            throw new IncompleteRequestException("Incomplete Request. Request must contain all fields");
+        }
 
         log.debug("postNewPerson()" + newPersonToAd);
         return personRepository.addPerson(newPersonToAd);
@@ -179,6 +190,13 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public Person putPerson(Person personToEdit){
+
+        if (personToEdit.getLastName() == null || personToEdit.getLastName().isEmpty() || personToEdit
+                .getFirstName() == null || personToEdit.getFirstName().isEmpty() ){
+
+            log.error("Incomplete request exception");
+            throw new IncompleteRequestException("Incomplete Request. Request must contain 'first name', 'last name");
+        }
 
         log.debug("putPerson()" + personToEdit);
        return personRepository.updatePerson(personToEdit);

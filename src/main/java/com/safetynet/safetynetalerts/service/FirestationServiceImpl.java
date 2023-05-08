@@ -4,6 +4,7 @@ import com.safetynet.safetynetalerts.dto.Houshold;
 import com.safetynet.safetynetalerts.dto.PeopleByFirestationNumber;
 import com.safetynet.safetynetalerts.dto.PersonWithMedicalInfo;
 import com.safetynet.safetynetalerts.dto.PhoneNumbersByFirestation;
+import com.safetynet.safetynetalerts.exceptions.IncompleteRequestException;
 import com.safetynet.safetynetalerts.model.Firestation;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.Person;
@@ -142,6 +143,14 @@ public class FirestationServiceImpl implements FirestationService{
     public Firestation postFireStation(Firestation firestation)  {
 
         log.debug("postFireStation() " + firestation);
+        // Check if the required fields are present in the Firestation object
+        if (firestation.getAddress() == null || firestation.getAddress().isEmpty() ||
+                firestation.getStation() == null || firestation.getStation().isEmpty()) {
+            log.error("Incomplete Request Exception");
+            throw new IncompleteRequestException("Incomplete request. Both 'address' and 'station' fields must be " +
+                    "provided in the request body.");
+        }
+
         return firestationRepository.addFirestation(firestation);
     }
 
@@ -149,6 +158,13 @@ public class FirestationServiceImpl implements FirestationService{
     public Firestation putFireStaion(Firestation firestationToUpdate) {
 
         log.debug("putFireStaion() " + firestationToUpdate);
+        // Check if the required fields are present in the Firestation object
+        if (firestationToUpdate.getAddress() == null || firestationToUpdate.getAddress().isEmpty() ||
+                firestationToUpdate.getStation() == null || firestationToUpdate.getStation().isEmpty()) {
+            log.error("Incomplete Request Exception");
+            throw new IncompleteRequestException("Incomplete request. Both 'address' and 'station' fields must be " +
+                    "provided in the request body.");
+        }
        return firestationRepository.updateFirestationByAddress(firestationToUpdate.getAddress(), firestationToUpdate
                 .getStation());
     }

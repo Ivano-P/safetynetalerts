@@ -80,7 +80,10 @@ public class PersonController {
     }
 
     @Operation(summary = "Creat new person",
-            responses = {@ApiResponse(responseCode = "201", description = "Created")})
+            responses = {@ApiResponse(responseCode = "201", description = "Created"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request",
+                            headers = {@Header(name = "Incomplete request",
+                                    description = "Request must contain all fields")})})
     @PostMapping("/person")
     public ResponseEntity<Person> addNewPerson(@RequestBody Person person) {
 
@@ -92,7 +95,10 @@ public class PersonController {
     @Operation(summary = "Update person using first and last name",
             responses = {@ApiResponse(responseCode = "200", description = "OK"),
                     @ApiResponse(responseCode = "404", description = "Not Found",
-                            headers = {@Header(name = "Person not found")})})
+                            headers = {@Header(name = "Person not found")}),
+                    @ApiResponse(responseCode = "400", description = "Bad Request",
+                            headers = {@Header(name = "Incomplete request",
+                                    description = "Request must contain 'first name', 'last name")})})
     @PutMapping("/person")
     public ResponseEntity<Person> editPerson(@RequestBody Person person) {
 

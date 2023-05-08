@@ -25,7 +25,7 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
 
     //Dependency injection constructor for production
     public MedicalRecordRepositoryImpl() {
-        this.listOfAllMedicalRecords = extractDataFromJason().getMedicalRecords();
+        this.listOfAllMedicalRecords = extractDataFromJason().getMedicalrecords();
     }
 
     //Dependency injection constructor for test

@@ -30,7 +30,10 @@ public class MedicalRecordController {
             responses = { @ApiResponse(responseCode = "201", description = "Created"),
                              @ApiResponse(responseCode = "404", description = "Not Found",
                                      headers = {@Header(name = "Person not found" ,
-                                             description = "Medical record cannot be created for person that is not in db") })})
+                                             description = "Medical record cannot be created for person that is not in db") }),
+                    @ApiResponse(responseCode = "400", description = "Bad Request",
+                            headers = {@Header(name = "Incomplete request" ,
+                                    description = "request must contain 'first name', 'last name and 'date of birth'")})})
     @PostMapping("/medicalRecord")
     public ResponseEntity<MedicalRecord> postNewMedicalRecord(@RequestBody MedicalRecord newMedicalRecordToPost){
 
@@ -43,9 +46,11 @@ public class MedicalRecordController {
     //updates MedicalRecord with information of MedicalRecord in body
     @Operation(summary = "Update medical record for person",
             responses = { @ApiResponse(responseCode = "200", description = "OK"),
-                    @ApiResponse(responseCode = "404",
-                            description = "Not Found" ,
-                            headers = {@Header(name = "Medical Record not found") })})
+                    @ApiResponse(responseCode = "404", description = "Not Found" ,
+                            headers = {@Header(name = "Medical Record not found") }),
+                    @ApiResponse(responseCode = "400", description = "Bad Request",
+                            headers = {@Header(name = "Incomplete request" ,
+                                    description = "request must contain 'first name', 'last name and 'date of birth'")})})
     @PutMapping("/medicalRecord")
     public ResponseEntity<MedicalRecord> putMedicalRecord(@RequestBody MedicalRecord updatedMedicalRecord){
 

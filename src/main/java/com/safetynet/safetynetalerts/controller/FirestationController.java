@@ -75,19 +75,26 @@ public class FirestationController {
 
     //to add FireStation in body of post request
     @Operation(summary = "Create new fire station and associate it with an address",
-            responses = { @ApiResponse(responseCode = "201", description = "Created")})
+            responses = { @ApiResponse(responseCode = "201", description = "Created"),
+                            @ApiResponse(responseCode = "400", description = "Bad Request",
+                            headers = {@Header(name = "Incomplete request" ,
+                                    description = "Both 'address' and 'station number' fields must be provided in the request body.")})})
     @PostMapping("/firestation")
     public ResponseEntity<Firestation> postFirestation( @RequestBody Firestation firestation) {
 
         log.debug("postFirestation() " + firestation);
+
         Firestation addedFirestation = firestationService.postFireStation(firestation);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedFirestation);
     }
 
     @Operation(summary = "Update fire station's number by associated address",
-            responses = { @ApiResponse(responseCode = "200", description = "OK"),
-                            @ApiResponse(responseCode = "404",
-                                    description = "No firestation found with the specified address")})
+            responses = {@ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "404", description = "Not Found",
+                            headers = {@Header(name = "No fire station found with the specified address")}),
+                    @ApiResponse(responseCode = "400", description = "Bad Request",
+                            headers = {@Header(name = "Incomplete request" ,
+                                    description = "Both 'address' and 'station number' fields must be provided in the request body.")})})
     @PutMapping("/firestation")
     public ResponseEntity<Firestation> putFirestationNumber(@RequestBody Firestation firestationToEdit) {
 
@@ -98,8 +105,8 @@ public class FirestationController {
 
     @Operation(summary = "Delete fire station and its association with an address",
             responses = { @ApiResponse(responseCode = "204", description = "No Content"),
-                            @ApiResponse(responseCode = "404",
-                                    description = "No firestation found with the specified address")})
+                    @ApiResponse(responseCode = "404", description = "Not Found",
+                            headers = {@Header(name = "No fire station found with the specified address")})})
     @DeleteMapping("/firestation")
     public ResponseEntity<Void> deleteFirestationCoverageofaddress(@RequestBody Firestation firestationToDelete) {
 

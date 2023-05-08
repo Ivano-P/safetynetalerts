@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -140,4 +141,22 @@ class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.message").value("Person already exists"))
                 .andExpect(jsonPath("$.timestamp").exists());
     }
+
+    @Test
+    void testHandleIncompleteRequestException() throws Exception {
+
+        // Arrange
+        when(personRepositoryImpl.addPerson(any(Person.class)))
+                .thenThrow(new IncompleteRequestException("Incomplete request"));
+
+        // Act & Assert
+        mockMvc.perform(post("/person")
+                        .contentType("application/json")
+                        .content("{\"firstName\":\"John\",\"lastName\":\"Doe\",\"address\":\"1509 Culver St\"," +
+                                "\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6512\"}")) // Email is missing
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Incomplete Request. Request must contain all fields"))
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
+
 }

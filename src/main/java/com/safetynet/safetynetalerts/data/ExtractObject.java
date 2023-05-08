@@ -7,12 +7,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 
-public final class ExtractObject {
+public final class ExtractObject{
 
     private ExtractObject(){}
 
     public static SafetyNet safetyNet = null;
-    public static SafetyNet extractDataFromJason(){
+    public static SafetyNet extractDataFromJason() {
         Gson gson = new Gson();
 
         try {
