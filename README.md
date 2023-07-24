@@ -1,4 +1,4 @@
-# Project Title
+#Safetynet Alerts
 SafetyNet Alerts is an application that retrieves subscribers' essential information, \
 such as medical history and current medications, to send to emergency service systems. \
 This information is used by first responders to provide faster and more accurate care in emergency situations.
